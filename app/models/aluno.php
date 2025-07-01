@@ -13,9 +13,9 @@
             return $result->execute([$nome, $cpf, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $datanascimento, $email, $telefone, $situacao]);
         }
 
-        public function alterar($nome, $cpf, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $datanascimento, $email, $telefone){
+        public function alterar($idaluno, $nome, $cpf, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $datanascimento, $email, $telefone){
             $result = $this->pdo->prepare("UPDATE aluno SET nome = ?, cpf = ?, cep = ?, rua = ?, numero = ?, bairro = ?, complemento = ?, responsavel = ?, tel_responsavel = ?, datanascimento = ?, email = ?, telefone = ? WHERE idaluno = ?");
-            return $result->execute([$$nome, $cpf, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $datanascimento, $email, $telefone]);
+            return $result->execute([$nome, $cpf, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $datanascimento, $email, $telefone, $idaluno]);
         }
 
         public function excluir($id){
@@ -24,12 +24,13 @@
         }
 
         public function listarTodos(){
-            $result = $this->pdo->query("SELECT * FROM aluno");
+            $result = $this->pdo->query("SELECT * FROM aluno"); // é melhor usar o '*' ou especificar cada campo?
             return $result->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function listarId($id){
             $result = $this->pdo->prepare("SELECT * FROM aluno WHERE idaluno = ?");
+            $result->execute([$id]);
             return $result->fetch(PDO::FETCH_ASSOC);
         }
     }
