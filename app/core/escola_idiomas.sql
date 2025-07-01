@@ -226,12 +226,12 @@ CREATE TABLE calendario_aula(
 CREATE TABLE presenca (
     idpresenca INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idaula INT NOT NULL,
-    idaluno INT NOT NULL, -- trocar para aluno_turma
+    idaluno_turma INT NOT NULL,
     presente BOOLEAN DEFAULT NULL,
     observacao TEXT,
     
     FOREIGN KEY (idaula) REFERENCES calendario_aula(idaula),
-    FOREIGN KEY (idaluno) REFERENCES aluno(idaluno)
+    FOREIGN KEY (idaluno_turma) REFERENCES aluno_turma(idaluno_turma)
 );
 
 CREATE TABLE nota(
