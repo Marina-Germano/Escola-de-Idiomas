@@ -1,0 +1,23 @@
+escola_idiomas/
+│
+├── config/
+│   └── db.php             # Conexão com o banco de dados
+│
+├── login/
+│   ├── login.php          # Tela de login
+│   ├── autenticar.php     # Verificação do login
+│   └── logout.php         # Encerrar sessão
+│
+├── admin/
+│   ├── dashboard.php      # Tela inicial do painel admin
+│   ├── alunos.php         # Gerenciar alunos
+│   ├── professores.php    # Gerenciar professores
+│   ├── turmas.php         # Gerenciar turmas
+│   ├── ...                # Demais tabelas
+│
+├── includes/
+│   └── header.php         # Menu e topo
+│   └── footer.php         # Rodapé
+│
+├── index.php              # Redireciona para login
+└── .htaccess              # Proteção (opcional)
