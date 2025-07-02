@@ -9,7 +9,7 @@
         }
 
         public function cadastrar($idtipo_documento, $nome_arquivo, $caminho_arquivo, $observacoes, $status_documento) {
-            $result = $this->pdo->prepare("INSERT INTO documento_aluno VALUES (null, ?)");
+            $result = $this->pdo->prepare("INSERT INTO documento_aluno VALUES (null, ?, ?, ?, ?, ?)");
             return $result->execute([$idtipo_documento,$nome_arquivo, $caminho_arquivo, $observacoes, $status_documento]);
         }
 

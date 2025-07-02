@@ -33,5 +33,13 @@
             $result->execute([$id]);
             return $result->fetch(PDO::FETCH_ASSOC);
         }
+
+        public function buscarIdPorCpf($cpf) {
+            $result = $this->pdo->prepare("SELECT idaluno FROM aluno WHERE cpf = ?");
+            $result->execute([$cpf]);
+            $dados = $result->fetch(PDO::FETCH_ASSOC);
+            return $dados ? $dados['idaluno'] : null;
+    }
+
     }
 ?>
