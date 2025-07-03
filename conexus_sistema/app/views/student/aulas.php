@@ -4,8 +4,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Conexus</title>
 
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+  <!-- font awesome cdn link  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
   
   <!-- Bootstrap Icons -->
   <link
@@ -43,30 +43,30 @@
             <a href="register.html" class="option-btn">sair</a>
         </div>
     </div>
-    </section>  
+    </section>
     </header>
     <!-- header section ends -->
     <!-- sidebar section starts -->
     <div class="side-bar">
 
       <div id="close-btn">
-         <i class="fas fa-times"></i>
+        <i class="fas fa-times"></i>
       </div>
 
       <div class="profile">
-         <img src="/public/img/pic-1-removebg-preview.png" alt="">
-         <h3>Alexandre Quintão</h3>
-         <span>2024002167</span>
-         <a href="profile.html" class="btn">acessar perfil</a>
+        <img src="/public/img/pic-1-removebg-preview.png" alt="">
+        <h3>Alexandre Quintão</h3>
+        <span>2024002167</span>
+        <a href="profile.html" class="btn">acessar perfil</a>
       </div>
 
       <nav class="navbar">
-         <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
-         <a href="aulas.html"><i class="bi bi-calendar-week"></i><span>aulas</span></a>
-         <a href="materiais.html"><i class="bi bi-folder-check"></i><span>materiais</span></a>
-         <a href="boletim.html"><i class="bi bi-reception-4"></i><span>boletim</span></a>
-         <a href="financeiro.html"><i class="bi bi-piggy-bank-fill"></i><span>financeiro</span></a>
-         <a href="contact.html"><i class="fas fa-headset"></i><span>nos contate</span></a>
+        <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
+        <a href="aulas.html"><i class="bi bi-calendar-week"></i><span>aulas</span></a>
+        <a href="materiais.html"><i class="bi bi-folder-check"></i><span>materiais</span></a>
+        <a href="boletim.html"><i class="bi bi-reception-4"></i><span>boletim</span></a>
+        <a href="financeiro.html"><i class="bi bi-piggy-bank-fill"></i><span>financeiro</span></a>
+        <a href="contact.html"><i class="fas fa-headset"></i><span>nos contate</span></a>
       </nav>
     </div>
     <!-- sidebar section ends -->
