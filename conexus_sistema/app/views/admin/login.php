@@ -1,6 +1,6 @@
 <?php
 
-include '../Escola-de-Idiomas/conexus_sistema/app/config/conexao.php';
+include '../components/connect.php';
 
 if(isset($_POST['submit'])){
 
@@ -14,8 +14,8 @@ if(isset($_POST['submit'])){
    $row = $select_tutor->fetch(PDO::FETCH_ASSOC);
    
    if($select_tutor->rowCount() > 0){
-      setcookie('tutor_id', $row['id'], time() + 60*60*24*30, '/');
-      header('location:dashboard.php');
+     setcookie('tutor_id', $row['id'], time() + 60*60*24*30, '/');
+     header('location:dashboard.php');
    }else{
       $message[] = 'incorrect email or password!';
    }
