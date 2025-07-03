@@ -27,7 +27,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas professores, administradores ou funcionários podem executar essa ação.";
+                echo "Acesso negado. Apenas usuários autorizados podem executar essa ação.";
                 exit;
             }
             if ($acao == 'cadastrar') {
@@ -47,7 +47,8 @@ if (isset($_GET['acao'])) {
                 );
                 echo "Aula cadastrada com sucesso!";
                 
-            } elseif ($acao == 'alterar') {
+            } 
+            elseif ($acao == 'alterar') {
                 $calendario->alterar(
                     $_POST['idaula'],
                     $_POST['data_aula'],
@@ -64,7 +65,8 @@ if (isset($_GET['acao'])) {
                     isset($_POST['recorrente']) ? (bool)$_POST['recorrente'] : false
                 );
                 echo "Aula alterada com sucesso!";
-            } elseif ($acao == 'excluir') {
+            } 
+            elseif ($acao == 'excluir') {
                 $calendario->excluir($_GET['idaula']);
                 echo "Aula excluída com sucesso!";
             }

@@ -38,7 +38,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissaoAlterarExcluir()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores e funcionários podem executar essa ação.";
+                echo "Acesso negado. Apenas usuários autorizados podem executar essa ação.";
                 exit;
             }
             if ($acao == 'alterar') {

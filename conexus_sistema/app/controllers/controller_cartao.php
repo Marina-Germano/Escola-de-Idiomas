@@ -25,7 +25,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores podem cadastrar cartões.";
+                echo "Acesso negado. Apenas usuários autorizados podem cadastrar cartões.";
                 exit;
             }
             $cartao->cadastrar(
@@ -43,7 +43,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, funcionários ou professores podem alterar cartões.";
+                echo "Acesso negado. Apenas usuários autorizados podem alterar cartões.";
                 exit;
             }
             $cartao->alterar(
@@ -62,7 +62,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, funcionários ou professores podem excluir cartões.";
+                echo "Acesso negado. Apenas usuários autorizados podem excluir cartões.";
                 exit;
             }
             $cartao->excluir($_GET['idcartao']);

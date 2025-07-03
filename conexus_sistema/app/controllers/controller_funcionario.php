@@ -25,7 +25,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem cadastrar funcionários.";
+                echo "Acesso negado. Apenas usuários autorizados podem cadastrar funcionários.";
                 exit;
             }
             $funcionario->cadastrar(
@@ -43,7 +43,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem alterar funcionários.";
+                echo "Acesso negado. Apenas usuários autorizados podem alterar funcionários.";
                 exit;
             }
             $funcionario->alterar(
@@ -62,7 +62,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem excluir funcionários.";
+                echo "Acesso negado. Apenas usuários autorizados podem excluir funcionários.";
                 exit;
             }
             $funcionario->excluir($_GET['idfuncionario']);

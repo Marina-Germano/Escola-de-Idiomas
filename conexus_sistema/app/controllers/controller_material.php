@@ -21,7 +21,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!verificarPermissaoProfessorOuAdmin()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas professores ou administradores podem cadastrar materiais.";
+                echo "Acesso negado. Apenas usuários autorizados podem cadastrar materiais.";
                 exit;
             }
 
@@ -42,7 +42,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!verificarPermissaoProfessorOuAdmin()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas professores ou administradores podem alterar materiais.";
+                echo "Acesso negado. Apenas usuários autorizados podem alterar materiais.";
                 exit;
             }
 
@@ -64,7 +64,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!verificarPermissaoProfessorOuAdmin()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas professores ou administradores podem excluir materiais.";
+                echo "Acesso negado. Apenas usuários autorizados podem excluir materiais.";
                 exit;
             }
 

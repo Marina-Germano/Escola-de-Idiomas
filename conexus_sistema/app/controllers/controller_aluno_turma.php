@@ -49,7 +49,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!estaLogado() || !temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem excluir matrículas.";
+                echo "Acesso negado. ccc";
                 exit;
             }
             $alunoTurma->excluir($_GET['idaluno_turma']);

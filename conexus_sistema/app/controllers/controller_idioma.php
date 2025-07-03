@@ -25,7 +25,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem cadastrar idiomas.";
+                echo "Acesso negado. Apenas usuários autorizados podem cadastrar idiomas.";
                 exit;
             }
             $idioma->cadastrar($_POST['idioma']);
@@ -35,7 +35,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem alterar idiomas.";
+                echo "Acesso negado. Apenas usuários autorizados podem alterar idiomas.";
                 exit;
             }
             $idioma->alterar($_POST['ididioma'], $_POST['idioma']);
@@ -45,7 +45,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem excluir idiomas.";
+                echo "Acesso negado. Apenas usuários autorizados podem excluir idiomas.";
                 exit;
             }
             $idioma->excluir($_GET['ididioma']);

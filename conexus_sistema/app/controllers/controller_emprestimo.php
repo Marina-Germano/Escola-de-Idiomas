@@ -22,7 +22,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!estaLogado() || !temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas funcionários ou administradores podem cadastrar empréstimos.";
+                echo "Acesso negado. Apenas usuários autorizados podem cadastrar empréstimos.";
                 exit;
             }
 
@@ -42,7 +42,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!estaLogado() || !temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas funcionários ou administradores podem alterar empréstimos.";
+                echo "Acesso negado. Apenas usuários autorizados podem alterar empréstimos.";
                 exit;
             }
 
@@ -63,7 +63,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!estaLogado() || !temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas funcionários ou administradores podem excluir empréstimos.";
+                echo "Acesso negado. Apenas usuários autorizados podem excluir empréstimos.";
                 exit;
             }
 

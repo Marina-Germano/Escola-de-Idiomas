@@ -26,7 +26,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas professores, funcionários ou administradores podem executar essa ação.";
+                echo "Acesso negado. Apenas usuários autorizados podem executar essa ação.";
                 exit;
             }
             if ($acao == 'cadastrar') {

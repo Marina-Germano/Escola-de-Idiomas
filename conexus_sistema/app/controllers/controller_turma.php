@@ -9,7 +9,7 @@ function estaLogado() {
 }
 
 function temPermissaoTotal() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
 }
 
 if (!estaLogado()) {
@@ -26,7 +26,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!temPermissaoTotal()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem cadastrar turmas.";
+                echo "Apenas usuários autorizados podem cadastrar turmas.";
                 exit;
             }
 
@@ -45,7 +45,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!temPermissaoTotal()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem alterar turmas.";
+                echo "Apenas usuários autorizados podem alterar turmas.";
                 exit;
             }
 
@@ -65,7 +65,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissaoTotal()) {
                 http_response_code(403);
-                echo "Apenas administradores, professores ou funcionários podem excluir turmas.";
+                echo "Apenas usuários autorizados podem excluir turmas.";
                 exit;
             }
 

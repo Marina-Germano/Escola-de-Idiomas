@@ -9,7 +9,7 @@ function estaLogado() {
 }
 
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
 }
 
 if (!estaLogado()) {
@@ -25,7 +25,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, funcionários ou professores podem cadastrar formas de pagamento.";
+                echo "Acesso negado. Apenas usuários autorizados podem cadastrar formas de pagamento.";
                 exit;
             }
             $formaPagamento->cadastrar($_POST['forma_pagamento']);
@@ -35,7 +35,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, funcionários ou professores podem alterar formas de pagamento.";
+                echo "Apenas usuários autorizados podem alterar formas de pagamento.";
                 exit;
             }
             $formaPagamento->alterar($_POST['idforma_pagamento'], $_POST['forma_pagamento']);
@@ -45,7 +45,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, funcionários ou professores podem excluir formas de pagamento.";
+                echo "Apenas usuários autorizados podem excluir formas de pagamento.";
                 exit;
             }
             $formaPagamento->excluir($_GET['idforma_pagamento']);

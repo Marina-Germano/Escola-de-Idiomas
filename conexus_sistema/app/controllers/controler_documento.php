@@ -9,7 +9,7 @@ function estaLogado() {
 }
 
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
 }
 
 if (!estaLogado()) {
@@ -25,7 +25,7 @@ if (isset($_GET['acao'])) {
         case 'cadastrar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, professores ou funcionários podem cadastrar documentos.";
+                echo "Acesso negado. Apenas usuários autorizados podem cadastrar documentos.";
                 exit;
             }
             $documento->cadastrar(
@@ -41,7 +41,7 @@ if (isset($_GET['acao'])) {
         case 'alterar':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, professores ou funcionários podem alterar documentos.";
+                echo "Acesso negado. Apenas usuários autorizados podem alterar documentos.";
                 exit;
             }
             $documento->alterar(
@@ -58,7 +58,7 @@ if (isset($_GET['acao'])) {
         case 'excluir':
             if (!temPermissao()) {
                 http_response_code(403);
-                echo "Acesso negado. Apenas administradores, professores ou funcionários podem excluir documentos.";
+                echo "Acesso negado. Apenas usuários autorizados podem excluir documentos.";
                 exit;
             }
             $documento->excluir($_GET['iddocumento_aluno']);
