@@ -60,5 +60,18 @@
             $result->execute($params);
             return $result->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        //Adicionando busca por aluno
+        public function buscarPorAluno($idAluno) {
+        $sql = "SELECT m.*, p.nome AS professor, p.foto AS foto_professor
+                FROM material m
+                JOIN professor p ON m.idprofessor = p.idprofessor
+                JOIN turma t ON m.idturma = t.idturma
+                JOIN aluno_turma at ON at.idturma = t.idturma
+                WHERE at.idaluno = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$idAluno]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 ?>
