@@ -14,73 +14,101 @@ function temPermissao() {
 
 if (!estaLogado()) {
     http_response_code(401);
-    echo "Acesso negado. Faça login.";
+    echo "Acesso negado. Faça login para continuar.";
     exit;
 }
 
-if (isset($_GET['acao'])) {
-    $acao = $_GET['acao'];
-
-    switch ($acao) {
-        case 'cadastrar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Somente funcionários e administradores podem cadastrar pagamentos.";
-                exit;
-            }
-            $pagamento->cadastrar(
-                $_POST['valor'],
-                $_POST['data_vencimento'],
-                $_POST['status_pagamento'],
-                $_POST['data_pagamento'],
-                $_POST['valor_pago'],
-                $_POST['observacoes'],
-                $_POST['multa']
-            );
-            echo "Pagamento cadastrado!";
-            break;
-
-        case 'alterar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Sem permissão para alterar pagamento.";
-                exit;
-            }
-            $pagamento->alterar(
-                $_POST['idaluno'],
-                $_POST['valor'],
-                $_POST['data_vencimento'],
-                $_POST['status_pagamento'],
-                $_POST['data_pagamento'],
-                $_POST['valor_pago'],
-                $_POST['observacoes'],
-                $_POST['multa']
-            );
-            echo "Pagamento alterado!";
-            break;
-
-        case 'excluir':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Sem permissão para excluir pagamento.";
-                exit;
-            }
-            $pagamento->excluir($_GET['idpagamento']);
-            echo "Pagamento excluído!";
-            break;
-
-        case 'listarTodos':
-            echo json_encode($pagamento->listarTodos());
-            break;
-
-        case 'listarId':
-            echo json_encode($pagamento->listarId($_GET['idpagamento']));
-            break;
-
-        default:
-            echo "Ação inválida.";
-            break;
-    }
-} else {
+if (!isset($_GET['acao'])) {
     echo "Nenhuma ação definida.";
+    exit;
+}
+
+$acao = $_GET['acao'];
+
+switch ($acao) {
+    case 'cadastrar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem cadastrar pagamentos.";
+            exit;
+        }
+
+        $dados = $_POST;
+
+        $ok = $pagamento->cadastrar(
+            $dados['idforma_pagamento'],
+            $dados['idaluno'],
+            $dados['valor'],
+            $dados['data_vencimento'],
+            $dados['status_pagamento'],
+            $dados['data_pagamento'] ?? null,
+            $dados['valor_pago'] ?? null,
+            $dados['observacoes'] ?? null,
+            $dados['multa'] ?? 0.00
+        );
+
+        echo $ok ? "Pagamento cadastrado com sucesso!" : "Erro ao cadastrar pagamento.";
+        break;
+
+    case 'alterar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem alterar pagamentos.";
+            exit;
+        }
+
+        $dados = $_POST;
+
+        $ok = $pagamento->alterar(
+            $dados['idpagamento'],
+            $dados['idforma_pagamento'],
+            $dados['idaluno'],
+            $dados['valor'],
+            $dados['data_vencimento'],
+            $dados['status_pagamento'],
+            $dados['data_pagamento'] ?? null,
+            $dados['valor_pago'] ?? null,
+            $dados['observacoes'] ?? null,
+            $dados['multa'] ?? 0.00
+        );
+
+        echo $ok ? "Pagamento alterado com sucesso!" : "Erro ao alterar pagamento.";
+        break;
+
+    case 'excluir':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem excluir pagamentos.";
+            exit;
+        }
+
+        $id = $_GET['idpagamento'] ?? null;
+
+        if (!$id) {
+            echo "ID do pagamento não informado.";
+            exit;
+        }
+
+        $ok = $pagamento->excluir($id);
+        echo $ok ? "Pagamento excluído com sucesso!" : "Erro ao excluir pagamento.";
+        break;
+
+    case 'listarTodos':
+        echo json_encode($pagamento->listarTodos());
+        break;
+
+    case 'listarId':
+        $id = $_GET['idpagamento'] ?? null;
+
+        if (!$id) {
+            echo "ID do pagamento não informado.";
+            exit;
+        }
+
+        echo json_encode($pagamento->listarId($id));
+        break;
+
+    default:
+        echo "Ação inválida.";
+        break;
 }

@@ -8,8 +8,8 @@
             $this->pdo = Conexao::conectar();
         }
 
-        public function cadastrar($idaluno, $idmaterial, $data_emprestimo, $data_prevista_devolucao, $data_devolvido, $status = 'Disponível', $observacoes = null, $valor_multa = 0.00) {
-            $result = $this->pdo->prepare("INSERT INTO emprestimo_material VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)");
+        public function cadastrar($idaluno, $idmaterial, $data_emprestimo, $data_prevista_devolucao, $data_devolvido = null, $status = 'emprestado', $observacoes = null, $valor_multa = 0.00) {
+            $result = $this->pdo->prepare("INSERT INTO emprestimo_material VALUES (null, ?, ?, ?, ?, ?, ?, ?)");
             return $result->execute([$idaluno, $idmaterial, $data_emprestimo, $data_prevista_devolucao, $data_devolvido, $status, $observacoes, $valor_multa]);
         }
 

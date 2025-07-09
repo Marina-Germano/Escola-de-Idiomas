@@ -1,17 +1,20 @@
 <?php
 session_start();
 require_once "../model/Aluno.php";
-require_once "../model/material.php";
+require_once "../model/Usuario.php";
+require_once "../model/Material.php";
 
 $aluno = new Aluno();
+$usuarioModel = new Usuario();
+$material = new Material();
 
 function estaLogado() {
     return isset($_SESSION['idusuario']);
 }
 
-// Ajuste permissões conforme seu sistema — ex: apenas admin e funcionário podem alterar dados dos alunos
+// Apenas admin e funcionário podem cadastrar alunos
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']); //edito aqui quem tem a permissao
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
 }
 
 if (!estaLogado()) {
@@ -20,97 +23,124 @@ if (!estaLogado()) {
     exit;
 }
 
-if (isset($_GET['acao'])) {
-    $acao = $_GET['acao'];
-
-    switch ($acao) {
-        case 'cadastrar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem cadastrar alunos.";
-                exit;
-            }
-            $aluno->cadastrar(
-                $_POST['nome'],
-                $_POST['cpf'],
-                $_POST['cep'],
-                $_POST['rua'],
-                $_POST['numero'],
-                $_POST['bairro'],
-                $_POST['complemento'],
-                $_POST['responsavel'],
-                $_POST['tel_responsavel'],
-                $_POST['datanascimento'],
-                $_POST['email'],
-                $_POST['telefone'],
-                $_POST['situacao']
-            );
-            echo "Aluno cadastrado com sucesso!";
-            break;
-
-        case 'alterar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem alterar alunos.";
-                exit;
-            }
-            $aluno->alterar(
-                $_POST['idaluno'],
-                $_POST['nome'],
-                $_POST['cpf'],
-                $_POST['cep'],
-                $_POST['rua'],
-                $_POST['numero'],
-                $_POST['bairro'],
-                $_POST['complemento'],
-                $_POST['responsavel'],
-                $_POST['tel_responsavel'],
-                $_POST['datanascimento'],
-                $_POST['email'],
-                $_POST['telefone']
-            );
-            echo "Aluno alterado com sucesso!";
-            break;
-
-        case 'excluir':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem excluir alunos.";
-                exit;
-            }
-            $aluno->excluir($_GET['idaluno']);
-            echo "Aluno excluído com sucesso!";
-            break;
-
-        case 'listarTodos':
-            echo json_encode($aluno->listarTodos());
-            break;
-
-        case 'listarId':
-            echo json_encode($aluno->listarId($_GET['idaluno']));
-            break;
-
-        case 'listarMateriais':
-            // Aqui está a nova função para o painel do aluno
-            $idAluno = $_SESSION['idaluno'] ?? null;
-
-            if (!$idAluno) {
-                echo "Aluno não identificado na sessão.";
-                exit;
-            }
-
-            try {
-                $materiais = $material->buscarPorAluno($idAluno);
-                include '../view/aluno/materiais.php'; // View com foreach que exibe os materiais
-            } catch (Exception $e) {
-                echo "Erro ao listar materiais: " . $e->getMessage();
-            }
-            break;
-
-        default:
-            echo "Ação inválida.";
-            break;
-    }
-} else {
+if (!isset($_GET['acao'])) {
     echo "Nenhuma ação definida.";
+    exit;
+}
+
+$acao = $_GET['acao'];
+
+switch ($acao) {
+    case 'cadastrarCompleto':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem cadastrar alunos.";
+            exit;
+        }
+
+        // Dados do usuário
+        $nome = $_POST['nome'] ?? null;
+        $telefone = $_POST['telefone'] ?? null;
+        $email = $_POST['email'] ?? null;
+        $data_nascimento = $_POST['data_nascimento'] ?? null;
+        $cpf = $_POST['cpf'] ?? null;
+        $senha = $_POST['senha'] ?? null;
+
+        // Dados do aluno
+        $cep = $_POST['cep'] ?? null;
+        $rua = $_POST['rua'] ?? null;
+        $numero = $_POST['numero'] ?? null;
+        $bairro = $_POST['bairro'] ?? null;
+        $complemento = $_POST['complemento'] ?? null;
+        $responsavel = $_POST['responsavel'] ?? null;
+        $tel_responsavel = $_POST['tel_responsavel'] ?? null;
+        $situacao = $_POST['situacao'] ?? 'ativo';
+
+        // Validação básica
+        if (!$nome || !$telefone || !$email || !$data_nascimento || !$cpf || !$senha || !$cep || !$rua || !$numero || !$bairro || !$responsavel || !$tel_responsavel) {
+            echo "Erro: Todos os campos obrigatórios devem ser preenchidos.";
+            exit;
+        }
+
+        // Verifica se já existe usuário com esse CPF
+        if ($usuarioModel->buscarPorCpf($cpf)) {
+            echo "Erro: Já existe um usuário com esse CPF.";
+            exit;
+        }
+
+        // 1. Cadastrar usuário
+        $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'aluno');
+
+        // 2. Obter o idusuario
+        $usuario = $usuarioModel->buscarPorCpf($cpf);
+        $idusuario = $usuario['idusuario'] ?? null;
+
+        if (!$idusuario) {
+            echo "Erro ao recuperar ID do usuário.";
+            exit;
+        }
+
+        // 3. Cadastrar aluno
+        $aluno->cadastrar($idusuario, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $situacao);
+
+        echo "Aluno cadastrado com sucesso!";
+        break;
+
+    case 'alterar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem alterar alunos.";
+            exit;
+        }
+
+        $aluno->alterar(
+            $_POST['idaluno'],
+            $_POST['cep'],
+            $_POST['rua'],
+            $_POST['numero'],
+            $_POST['bairro'],
+            $_POST['complemento'],
+            $_POST['responsavel'],
+            $_POST['tel_responsavel'],
+            $_POST['situacao']
+        );
+        echo "Aluno alterado com sucesso!";
+        break;
+
+    case 'excluir':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem excluir alunos.";
+            exit;
+        }
+
+        $aluno->excluir($_GET['idaluno']);
+        echo "Aluno excluído com sucesso!";
+        break;
+
+    case 'listarTodos':
+        echo json_encode($aluno->listarTodos());
+        break;
+
+    case 'listarId':
+        echo json_encode($aluno->listarId($_GET['idaluno']));
+        break;
+
+    case 'listarMateriais':
+        // Acesso exclusivo do aluno aos materiais
+        $idaluno = $_SESSION['idaluno'] ?? null;
+
+        if (!$idaluno) {
+            http_response_code(403);
+            echo "Aluno não identificado na sessão.";
+            exit;
+        }
+
+        $materiais = $material->buscarPorAluno($idaluno);
+        include '../view/aluno/materiais.php';
+        break;
+
+    default:
+        echo "Ação inválida.";
+        break;
 }

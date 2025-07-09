@@ -12,7 +12,6 @@
             $numero_criptografado = md5($numero_cartao); // criptografia MD5
             $result = $this->pdo->prepare("INSERT INTO cartao VALUES (null, ?, ?, ?, ?, ?, ?, ?)");
             return $result->execute([$idaluno, $nome_titular, $bandeira, $ultimos_digitos, $numero_criptografado, $validade_mes, $validade_ano]);
-            // essa ordem de cadastro fará com que os 4 ultimos digitos fiquem salvos separadamente antes da criptografia do cartão?
         }
 
         public function alterar($idcartao, $idaluno, $nome_titular, $bandeira, $ultimos_digitos, $numero_cartao, $validade_mes, $validade_ano) {

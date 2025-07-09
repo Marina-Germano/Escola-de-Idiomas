@@ -1,15 +1,19 @@
 <?php
 session_start();
 require_once "../model/Professor.php";
+require_once "../model/Funcionario.php";
+require_once "../model/Usuario.php";
 
 $professor = new Professor();
+$funcionarioModel = new Funcionario();
+$usuarioModel = new Usuario();
 
 function estaLogado() {
     return isset($_SESSION['idusuario']);
 }
 
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
+    return isset($_SESSION['papel']) && $_SESSION['papel'] === 'admin';
 }
 
 if (!estaLogado()) {
@@ -18,67 +22,107 @@ if (!estaLogado()) {
     exit;
 }
 
-if (isset($_GET['acao'])) {
-    $acao = $_GET['acao'];
-
-    switch ($acao) {
-        case 'cadastrar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem cadastrar professores.";
-                exit;
-            }
-            $professor->cadastrar(
-                $_POST['nome'],
-                $_POST['cpf'],
-                $_POST['datanascimento'],
-                $_POST['email'],
-                $_POST['telefone'],
-                $_POST['especialidade']
-            );
-            echo "Professor cadastrado com sucesso!";
-            break;
-
-        case 'alterar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem alterar professores.";
-                exit;
-            }
-            $professor->alterar(
-                $_POST['idprofessor'],
-                $_POST['nome'],
-                $_POST['cpf'],
-                $_POST['datanascimento'],
-                $_POST['email'],
-                $_POST['telefone'],
-                $_POST['especialidade']
-            );
-            echo "Professor alterado com sucesso!";
-            break;
-
-        case 'excluir':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem excluir professores.";
-                exit;
-            }
-            $professor->excluir($_GET['idprofessor']);
-            echo "Professor excluído com sucesso!";
-            break;
-
-        case 'listarTodos':
-            echo json_encode($professor->listarTodos());
-            break;
-
-        case 'listarId':
-            echo json_encode($professor->listarId($_GET['idprofessor']));
-            break;
-
-        default:
-            echo "Ação inválida.";
-            break;
-    }
-} else {
+if (!isset($_GET['acao'])) {
     echo "Nenhuma ação definida.";
+    exit;
+}
+
+$acao = $_GET['acao'];
+
+switch ($acao) {
+    case 'cadastrarCompleto':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas administradores podem cadastrar professores.";
+            exit;
+        }
+
+        // Recebendo dados do usuário
+        $nome = $_POST['nome'] ?? null;
+        $telefone = $_POST['telefone'] ?? null;
+        $email = $_POST['email'] ?? null;
+        $data_nascimento = $_POST['data_nascimento'] ?? null;
+        $cpf = $_POST['cpf'] ?? null;
+        $senha = $_POST['senha'] ?? null;
+
+        // Dados do funcionário
+        $cargo = $_POST['cargo'] ?? null;
+
+        // Dados do professor
+        $especialidade = $_POST['especialidade'] ?? null;
+
+        // Validação
+        if (!$nome || !$telefone || !$email || !$data_nascimento || !$cpf || !$senha || !$cargo || !$especialidade) {
+            echo "Erro: Todos os campos são obrigatórios.";
+            exit;
+        }
+
+        // Verifica se já existe usuário com esse CPF
+        if ($usuarioModel->buscarPorCpf($cpf)) {
+            echo "Erro: Já existe um usuário com esse CPF.";
+            exit;
+        }
+
+        // 1. Cadastrar o usuário
+        $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'professor');
+
+        // 2. Recuperar o idusuario
+        $usuario = $usuarioModel->buscarPorCpf($cpf);
+        $idusuario = $usuario['idusuario'] ?? null;
+
+        if (!$idusuario) {
+            echo "Erro ao recuperar ID do usuário.";
+            exit;
+        }
+
+        // 3. Cadastrar funcionário
+        $funcionarioModel->cadastrar($idusuario, $cargo);
+
+        // 4. Recuperar o idfuncionario
+        $idfuncionario = $funcionarioModel->buscarIdPorUsuario($idusuario);
+
+        if (!$idfuncionario) {
+            echo "Erro ao recuperar ID do funcionário.";
+            exit;
+        }
+
+        // 5. Cadastrar professor
+        $professor->cadastrar($idfuncionario, $especialidade);
+
+        echo "Professor cadastrado com sucesso!";
+        break;
+
+    case 'alterar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas administradores podem alterar professores.";
+            exit;
+        }
+
+        $professor->alterar($_POST['idprofessor'], $_POST['especialidade']);
+        echo "Professor alterado com sucesso!";
+        break;
+
+    case 'excluir':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas administradores podem excluir professores.";
+            exit;
+        }
+
+        $professor->excluir($_GET['idprofessor']);
+        echo "Professor excluído com sucesso!";
+        break;
+
+    case 'listarTodos':
+        echo json_encode($professor->listarTodos());
+        break;
+
+    case 'listarId':
+        echo json_encode($professor->listarId($_GET['idprofessor']));
+        break;
+
+    default:
+        echo "Ação inválida.";
+        break;
 }

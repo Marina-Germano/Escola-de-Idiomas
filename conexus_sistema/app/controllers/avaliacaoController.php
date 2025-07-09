@@ -8,74 +8,97 @@ function estaLogado() {
     return isset($_SESSION['idusuario']);
 }
 
-// Ajuste as permissões conforme sua regra de negócio
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'professor']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
 }
 
-if (isset($_GET['acao'])) {
-    $acao = $_GET['acao'];
+if (!estaLogado()) {
+    http_response_code(401);
+    echo "Acesso negado. Faça login para continuar.";
+    exit;
+}
 
-    switch ($acao) {
-        case 'cadastrar':
-            if (!estaLogado() || !temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem cadastrar avaliações.";
-                exit;
-            }
-            $avaliacao->cadastrar(
-                $_POST['idaluno_turma'],
-                $_POST['tipo_avaliacao'],
-                $_POST['titulo'] ?? null,
-                $_POST['data_avaliacao'],
-                $_POST['nota'],
-                $_POST['peso'] ?? 1.0,
-                $_POST['observacao'] ?? null
-            );
-            echo "Avaliação cadastrada com sucesso!";
-            break;
-
-        case 'alterar':
-            if (!estaLogado() || !temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem alterar avaliações.";
-                exit;
-            }
-            $avaliacao->alterar(
-                $_POST['idavaliacao'],
-                $_POST['idaluno_turma'],
-                $_POST['tipo_avaliacao'],
-                $_POST['titulo'] ?? null,
-                $_POST['data_avaliacao'],
-                $_POST['nota'],
-                $_POST['peso'] ?? 1.0,
-                $_POST['observacao'] ?? null
-            );
-            echo "Avaliação alterada com sucesso!";
-            break;
-
-        case 'excluir':
-            if (!estaLogado() || !temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem excluir avaliações.";
-                exit;
-            }
-            $avaliacao->excluir($_GET['idavaliacao']);
-            echo "Avaliação excluída com sucesso!";
-            break;
-
-        case 'listarTodos':
-            echo json_encode($avaliacao->listarTodos());
-            break;
-
-        case 'listarId':
-            echo json_encode($avaliacao->listarId($_GET['idavaliacao']));
-            break;
-
-        default:
-            echo "Ação inválida.";
-            break;
-    }
-} else {
+if (!isset($_GET['acao'])) {
     echo "Nenhuma ação definida.";
+    exit;
+}
+
+$acao = $_GET['acao'];
+
+switch ($acao) {
+    case 'cadastrar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem cadastrar avaliações.";
+            exit;
+        }
+
+        $ok = $avaliacao->cadastrar(
+            $_POST['idaluno_turma'],
+            $_POST['descricao'],
+            $_POST['titulo'],
+            $_POST['data_avaliacao'],
+            $_POST['nota'],
+            $_POST['peso'] ?? 1.0,
+            $_POST['observacao'] ?? null
+        );
+
+        echo $ok ? "Avaliação cadastrada com sucesso!" : "Erro ao cadastrar avaliação.";
+        break;
+
+    case 'alterar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem alterar avaliações.";
+            exit;
+        }
+
+        $ok = $avaliacao->alterar(
+            $_POST['idavaliacao'],
+            $_POST['idaluno_turma'],
+            $_POST['descricao'],
+            $_POST['titulo'],
+            $_POST['data_avaliacao'],
+            $_POST['nota'],
+            $_POST['peso'] ?? 1.0,
+            $_POST['observacao'] ?? null
+        );
+
+        echo $ok ? "Avaliação alterada com sucesso!" : "Erro ao alterar avaliação.";
+        break;
+
+    case 'excluir':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem excluir avaliações.";
+            exit;
+        }
+
+        if (!isset($_GET['idavaliacao'])) {
+            http_response_code(400);
+            echo "ID da avaliação não informado.";
+            exit;
+        }
+
+        $ok = $avaliacao->excluir($_GET['idavaliacao']);
+        echo $ok ? "Avaliação excluída com sucesso!" : "Erro ao excluir avaliação.";
+        break;
+
+    case 'listarTodos':
+        echo json_encode($avaliacao->listarTodos());
+        break;
+
+    case 'listarId':
+        if (!isset($_GET['idavaliacao'])) {
+            http_response_code(400);
+            echo "ID da avaliação não informado.";
+            exit;
+        }
+
+        echo json_encode($avaliacao->listarId($_GET['idavaliacao']));
+        break;
+
+    default:
+        echo "Ação inválida.";
+        break;
 }

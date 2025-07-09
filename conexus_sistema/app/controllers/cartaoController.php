@@ -18,69 +18,105 @@ if (!estaLogado()) {
     exit;
 }
 
-if (isset($_GET['acao'])) {
-    $acao = $_GET['acao'];
-
-    switch ($acao) {
-        case 'cadastrar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem cadastrar cartões.";
-                exit;
-            }
-            $cartao->cadastrar(
-                $_POST['idaluno'],
-                $_POST['nome_titular'],
-                $_POST['bandeira'],
-                $_POST['ultimos_digitos'],
-                $_POST['numero_cartao'], // recebe o número do cartão em texto, será criptografado no model
-                $_POST['validade_mes'],
-                $_POST['validade_ano']
-            );
-            echo "Cartão cadastrado com sucesso!";
-            break;
-
-        case 'alterar':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem alterar cartões.";
-                exit;
-            }
-            $cartao->alterar(
-                $_POST['idcartao'],
-                $_POST['idaluno'],
-                $_POST['nome_titular'],
-                $_POST['bandeira'],
-                $_POST['ultimos_digitos'],
-                $_POST['numero_cartao'], // também será criptografado no model
-                $_POST['validade_mes'],
-                $_POST['validade_ano']
-            );
-            echo "Cartão alterado com sucesso!";
-            break;
-
-        case 'excluir':
-            if (!temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem excluir cartões.";
-                exit;
-            }
-            $cartao->excluir($_GET['idcartao']);
-            echo "Cartão excluído com sucesso!";
-            break;
-
-        case 'listarTodos':
-            echo json_encode($cartao->listarTodos());
-            break;
-
-        case 'listarId':
-            echo json_encode($cartao->listarId($_GET['idcartao']));
-            break;
-
-        default:
-            echo "Ação inválida.";
-            break;
-    }
-} else {
+if (!isset($_GET['acao'])) {
     echo "Nenhuma ação definida.";
+    exit;
+}
+
+$acao = $_GET['acao'];
+
+switch ($acao) {
+    case 'cadastrar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem cadastrar cartões.";
+            exit;
+        }
+
+        if (
+            !isset($_POST['idaluno'], $_POST['nome_titular'], $_POST['bandeira'], $_POST['ultimos_digitos'],
+                     $_POST['numero_cartao'], $_POST['validade_mes'], $_POST['validade_ano'])
+        ) {
+            http_response_code(400);
+            echo "Campos obrigatórios não informados.";
+            exit;
+        }
+
+        $ok = $cartao->cadastrar(
+            $_POST['idaluno'],
+            $_POST['nome_titular'],
+            $_POST['bandeira'],
+            $_POST['ultimos_digitos'],
+            $_POST['numero_cartao'],
+            $_POST['validade_mes'],
+            $_POST['validade_ano']
+        );
+
+        echo $ok ? "Cartão cadastrado com sucesso!" : "Erro ao cadastrar cartão.";
+        break;
+
+    case 'alterar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem alterar cartões.";
+            exit;
+        }
+
+        if (
+            !isset($_POST['idcartao'], $_POST['idaluno'], $_POST['nome_titular'], $_POST['bandeira'],
+                     $_POST['ultimos_digitos'], $_POST['numero_cartao'], $_POST['validade_mes'], $_POST['validade_ano'])
+        ) {
+            http_response_code(400);
+            echo "Campos obrigatórios não informados.";
+            exit;
+        }
+
+        $ok = $cartao->alterar(
+            $_POST['idcartao'],
+            $_POST['idaluno'],
+            $_POST['nome_titular'],
+            $_POST['bandeira'],
+            $_POST['ultimos_digitos'],
+            $_POST['numero_cartao'],
+            $_POST['validade_mes'],
+            $_POST['validade_ano']
+        );
+
+        echo $ok ? "Cartão alterado com sucesso!" : "Erro ao alterar cartão.";
+        break;
+
+    case 'excluir':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado. Apenas usuários autorizados podem excluir cartões.";
+            exit;
+        }
+
+        if (!isset($_GET['idcartao'])) {
+            http_response_code(400);
+            echo "ID do cartão não informado.";
+            exit;
+        }
+
+        $ok = $cartao->excluir($_GET['idcartao']);
+        echo $ok ? "Cartão excluído com sucesso!" : "Erro ao excluir cartão.";
+        break;
+
+    case 'listarTodos':
+        echo json_encode($cartao->listarTodos());
+        break;
+
+    case 'listarId':
+        if (!isset($_GET['idcartao'])) {
+            http_response_code(400);
+            echo "ID do cartão não informado.";
+            exit;
+        }
+
+        echo json_encode($cartao->listarId($_GET['idcartao']));
+        break;
+
+    default:
+        echo "Ação inválida.";
+        break;
 }

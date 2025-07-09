@@ -8,14 +8,14 @@
             $this->pdo = Conexao::conectar();
         }
 
-        public function cadastrar($idtipo_material, $ididioma, $idnivel, $titulo, $descricao, $quantidade, $formato_arquivo, $link_download, $idprofessor = null) {
+        public function cadastrar($idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor) {
             $result = $this->pdo->prepare("INSERT INTO material VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, DEFAULT, ?)");
-            return $result->execute([$idtipo_material, $ididioma, $idnivel, $titulo, $descricao, $quantidade, $formato_arquivo, $link_download, $idprofessor]);
+            return $result->execute([$idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor]);
         }
 
-        public function alterar($idmaterial, $idtipo_material, $ididioma, $idnivel, $titulo, $descricao, $quantidade, $formato_arquivo, $link_download, $idprofessor = null) {
-            $result = $this->pdo->prepare("UPDATE material SET idtipo_material = ?, ididioma = ?, idnivel = ?, titulo = ?, descricao = ?, quantidade = ?, formato_arquivo = ?, link_download = ?, idprofessor = ? WHERE idmaterial = ?");
-            return $result->execute([$idtipo_material, $ididioma, $idnivel, $titulo, $descricao, $quantidade, $formato_arquivo, $link_download, $idprofessor, $idmaterial]);
+        public function alterar($idmaterial, $idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor) {
+            $result = $this->pdo->prepare("UPDATE material SET idtipo_material = ?, ididioma = ?, idnivel = ?, idturma = ?, titulo = ?, descricao = ?, quantidade = ?, formato_arquivo = ?, arquivo = ?, idprofessor = ? WHERE idmaterial = ?");
+            return $result->execute([$idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor, $idmaterial]);
         }
 
         public function excluir($id) {
@@ -71,6 +71,14 @@
                 WHERE at.idaluno = ?";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([$idAluno]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // No Model Material.php
+        public function listarMateriaisPorAluno($idaluno) {
+            $sql = "SELECT m.* FROM material m JOIN aluno_turma at ON m.idturma = at.idturma WHERE at.idaluno = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$idaluno]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }

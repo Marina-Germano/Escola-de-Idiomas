@@ -35,14 +35,32 @@ if (isset($_GET['acao'])) {
                 exit;
             }
 
-            $cpf = $_POST['cpf'];
-            $senha = $_POST['senha'];
-            $papel = $_POST['papel'];
+            // Recebe os dados do POST
+            $nome = $_POST['nome'] ?? null;
+            $telefone = $_POST['telefone'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $data_nascimento = $_POST['data_nascimento'] ?? null;
+            $cpf = $_POST['cpf'] ?? null;
+            $senha = $_POST['senha'] ?? null;
+            $papel = $_POST['papel'] ?? null;
 
-            // Verifica se o CPF pertence a alguém já cadastrado
-            $idaluno = $aluno->buscarIdPorCpf($cpf);
-            $idprofessor = $professor->buscarIdPorCpf($cpf);
-            $idfuncionario = $funcionario->buscarIdPorCpf($cpf);
+            // Verifica se todos os campos obrigatórios foram informados
+            if (!$nome || !$telefone || !$email || !$data_nascimento || !$cpf || !$senha || !$papel) {
+                echo "Erro: Todos os campos são obrigatórios.";
+                exit;
+            }
+
+            // Verifica se o CPF já está cadastrado no sistema
+            $usuarioExistente = $usuario->buscarPorCpf($cpf);
+            if ($usuarioExistente) {
+                echo "Erro: CPF já cadastrado no sistema.";
+                exit;
+            }
+
+            // // Opcional: verificar se CPF existe nas tabelas reais (aluno, professor, funcionario)
+            // $idaluno = $aluno->buscarIdPorCpf($cpf);
+            // $idprofessor = $professor->buscarIdPorCpf($cpf);
+            // $idfuncionario = $funcionario->buscarIdPorCpf($cpf);
 
             if ($papel === 'aluno' && !$idaluno) {
                 echo "Erro: CPF informado não pertence a nenhum aluno cadastrado.";
@@ -59,14 +77,17 @@ if (isset($_GET['acao'])) {
                 exit;
             }
 
+            // Cadastro do usuário
             $usuario->cadastrar(
+                $nome,
+                $telefone,
+                $email,
+                $data_nascimento,
                 $cpf,
                 $senha,
-                $papel,
-                $idaluno,
-                $idprofessor,
-                $idfuncionario
+                $papel
             );
+
             echo "Usuário cadastrado com sucesso!";
             break;
 
@@ -79,16 +100,18 @@ if (isset($_GET['acao'])) {
 
             $usuario->alterar(
                 $_POST['idusuario'],
+                $_POST['nome'],
+                $_POST['telefone'],
+                $_POST['email'],
+                $_POST['data_nascimento'],
                 $_POST['cpf'],
                 $_POST['senha'],
                 $_POST['papel'],
-                $_POST['idaluno'] ?? null,
-                $_POST['idprofessor'] ?? null,
-                $_POST['idfuncionario'] ?? null,
                 $_POST['ativo'] ?? true,
                 $_POST['tentativas_login'] ?? 0,
                 $_POST['bloqueado'] ?? false
             );
+
             echo "Usuário alterado com sucesso!";
             break;
 
@@ -98,6 +121,7 @@ if (isset($_GET['acao'])) {
                 echo "Apenas usuários autorizados podem excluir usuários.";
                 exit;
             }
+
             $usuario->excluir($_GET['idusuario']);
             echo "Usuário excluído com sucesso!";
             break;

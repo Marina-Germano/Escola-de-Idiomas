@@ -2,87 +2,113 @@
 session_start();
 require_once "../model/EmprestimoMaterial.php";
 
-$emprestimo = new EmprestimoMaterial();
+$emprestimoMaterial = new EmprestimoMaterial();
 
-// Função simples para verificar se o usuário está logado (exemplo básico)
 function estaLogado() {
     return isset($_SESSION['idusuario']);
 }
 
-// Aqui você pode adaptar a permissão para quem pode cadastrar/alterar/excluir,
-// por exemplo, só funcionários ou administradores podem realizar essas ações.
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['funcionario', 'admin']);
+    // Permite admin e funcionario gerenciar empréstimos
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
 }
 
-if (isset($_GET['acao'])) {
-    $acao = $_GET['acao'];
+if (!estaLogado()) {
+    http_response_code(401);
+    echo "Acesso negado. Faça login para continuar.";
+    exit;
+}
 
-    switch ($acao) {
-        case 'cadastrar':
-            if (!estaLogado() || !temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem cadastrar empréstimos.";
-                exit;
-            }
-
-            $emprestimo->cadastrar(
-                $_POST['idaluno'],
-                $_POST['idmaterial'],
-                $_POST['data_emprestimo'],
-                $_POST['data_prevista_devolucao'],
-                $_POST['data_devolvido'],
-                $_POST['status'] ?? 'Disponível',
-                $_POST['observacoes'] ?? null,
-                $_POST['valor_multa'] ?? 0.00
-            );
-            echo "Empréstimo cadastrado com sucesso!";
-            break;
-
-        case 'alterar':
-            if (!estaLogado() || !temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem alterar empréstimos.";
-                exit;
-            }
-
-            $emprestimo->alterar(
-                $_POST['idemprestimo'],
-                $_POST['idaluno'],
-                $_POST['idmaterial'],
-                $_POST['data_emprestimo'],
-                $_POST['data_prevista_devolucao'],
-                $_POST['data_devolvido'],
-                $_POST['status'],
-                $_POST['observacoes'] ?? null,
-                $_POST['valor_multa'] ?? 0.00
-            );
-            echo "Empréstimo alterado com sucesso!";
-            break;
-
-        case 'excluir':
-            if (!estaLogado() || !temPermissao()) {
-                http_response_code(403);
-                echo "Acesso negado. Apenas usuários autorizados podem excluir empréstimos.";
-                exit;
-            }
-
-            $emprestimo->excluir($_GET['idemprestimo']);
-            echo "Empréstimo excluído com sucesso!";
-            break;
-
-        case 'listarTodos':
-            echo json_encode($emprestimo->listarTodos());
-            break;
-
-        case 'listarId':
-            echo json_encode($emprestimo->listarId($_GET['idemprestimo']));
-            break;
-
-        default:
-            echo "Ação inválida.";
-            break;
-    }
-} else {
+if (!isset($_GET['acao'])) {
     echo "Nenhuma ação definida.";
+    exit;
+}
+
+$acao = $_GET['acao'];
+
+switch ($acao) {
+    case 'cadastrar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem cadastrar empréstimos.";
+            exit;
+        }
+
+        $ok = $emprestimoMaterial->cadastrar(
+            $_POST['idaluno'],
+            $_POST['idmaterial'],
+            $_POST['data_emprestimo'],
+            $_POST['data_prevista_devolucao'],
+            $_POST['data_devolvido'] ?? null,
+            $_POST['status'] ?? 'emprestado',
+            $_POST['observacoes'] ?? null,
+            $_POST['valor_multa'] ?? 0.00
+        );
+
+        echo $ok ? "Empréstimo cadastrado com sucesso!" : "Erro ao cadastrar empréstimo.";
+        break;
+
+    case 'alterar':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem alterar empréstimos.";
+            exit;
+        }
+
+        $ok = $emprestimoMaterial->alterar(
+            $_POST['idemprestimo'],
+            $_POST['idaluno'],
+            $_POST['idmaterial'],
+            $_POST['data_emprestimo'],
+            $_POST['data_prevista_devolucao'],
+            $_POST['data_devolvido'] ?? null,
+            $_POST['status'] ?? 'emprestado',
+            $_POST['observacoes'] ?? null,
+            $_POST['valor_multa'] ?? 0.00
+        );
+
+        echo $ok ? "Empréstimo alterado com sucesso!" : "Erro ao alterar empréstimo.";
+        break;
+
+    case 'excluir':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem excluir empréstimos.";
+            exit;
+        }
+        if (!isset($_GET['idemprestimo'])) {
+            http_response_code(400);
+            echo "ID do empréstimo não informado.";
+            exit;
+        }
+        $ok = $emprestimoMaterial->excluir($_GET['idemprestimo']);
+        echo $ok ? "Empréstimo excluído com sucesso!" : "Erro ao excluir empréstimo.";
+        break;
+
+    case 'listarTodos':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado.";
+            exit;
+        }
+        echo json_encode($emprestimoMaterial->listarTodos());
+        break;
+
+    case 'listarId':
+        if (!temPermissao()) {
+            http_response_code(403);
+            echo "Acesso negado.";
+            exit;
+        }
+        if (!isset($_GET['idemprestimo'])) {
+            http_response_code(400);
+            echo "ID do empréstimo não informado.";
+            exit;
+        }
+        echo json_encode($emprestimoMaterial->listarId($_GET['idemprestimo']));
+        break;
+
+    default:
+        echo "Ação inválida.";
+        break;
 }

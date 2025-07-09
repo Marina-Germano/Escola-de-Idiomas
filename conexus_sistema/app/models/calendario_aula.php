@@ -17,14 +17,12 @@ class CalendarioAula {
         $idmaterial,
         $sala = null,
         $observacoes = null,
-        $status_aula = "Agendada",
         $link_reuniao = null,
-        $aula_extra = false,
-        $recorrente = false
+        $aula_extra = false
     ) {
-        $result = $this->pdo->prepare("INSERT INTO calendario_aula 
-            (data_aula, hora_inicio, hora_fim, idprofessor, idturma, idmaterial, sala, observacoes, status_aula, link_reuniao, aula_extra, recorrente) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $result = $this->pdo->prepare("INSERT INTO calendario_aula
+            (data_aula, hora_inicio, hora_fim, idprofessor, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         return $result->execute([
             $data_aula,
             $hora_inicio,
@@ -34,31 +32,15 @@ class CalendarioAula {
             $idmaterial,
             $sala,
             $observacoes,
-            $status_aula,
             $link_reuniao,
-            $aula_extra,
-            $recorrente
+            $aula_extra
         ]);
     }
 
-    public function alterar(
-        $idaula,
-        $data_aula,
-        $hora_inicio,
-        $hora_fim,
-        $idprofessor,
-        $idturma,
-        $idmaterial,
-        $sala = null,
-        $observacoes = null,
-        $status_aula = "Agendada",
-        $link_reuniao = null,
-        $aula_extra = false,
-        $recorrente = false
+    public function alterar($idaula, $data_aula, $hora_inicio, $hora_fim, $idprofessor, $idturma, $idmaterial, $sala = null, $observacoes = null, $link_reuniao = null, $aula_extra = false
     ) {
         $result = $this->pdo->prepare("UPDATE calendario_aula SET
-            data_aula = ?, hora_inicio = ?, hora_fim = ?, idprofessor = ?, idturma = ?, idmaterial = ?, sala = ?, observacoes = ?, status_aula = ?, link_reuniao = ?, aula_extra = ?, recorrente = ?
-            WHERE idaula = ?");
+            data_aula = ?, hora_inicio = ?, hora_fim = ?, idprofessor = ?, idturma = ?, idmaterial = ?, sala = ?, observacoes = ?, link_reuniao = ?, aula_extra = ? WHERE idaula = ?");
         return $result->execute([
             $data_aula,
             $hora_inicio,
@@ -68,12 +50,9 @@ class CalendarioAula {
             $idmaterial,
             $sala,
             $observacoes,
-            $status_aula,
             $link_reuniao,
             $aula_extra,
-            $recorrente,
-            $idaula
-        ]);
+            $idaula]);
     }
 
     public function excluir($idaula) {

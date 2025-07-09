@@ -8,14 +8,14 @@
             $this->pdo = Conexao::conectar();
         }
 
-        public function cadastrar($tipo) {
+        public function cadastrar($descricao) {
             $result = $this->pdo->prepare("INSERT INTO tipo_material VALUES (null, ?)");
-            return $result->execute([$tipo]);
+            return $result->execute([$descricao]);
         }
 
-        public function alterar($idtipo_material, $tipo) {
-            $result = $this->pdo->prepare("UPDATE tipo_material SET tipo = ? WHERE idtipo_material = ?");
-            return $result->execute([$tipo, $idtipo_material]);
+        public function alterar($idtipo_material, $descricao) {
+            $result = $this->pdo->prepare("UPDATE tipo_material SET descricao = ? WHERE idtipo_material = ?");
+            return $result->execute([$descricao, $idtipo_material]);
         }
 
         public function excluir($id) {

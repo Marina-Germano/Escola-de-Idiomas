@@ -8,14 +8,14 @@ class Presenca {
         $this->pdo = Conexao::conectar();
     }
 
-    public function cadastrar($idaula, $idaluno, $presente = null, $observacao = null) {
+    public function cadastrar($idaula, $idaluno_turma, $presente, $observacao = null) {
         $result = $this->pdo->prepare("INSERT INTO presenca VALUES (null, ?, ?, ?, ?)");
-        return $result->execute([$idaula, $idaluno, $presente, $observacao]);
+        return $result->execute([$idaula, $idaluno_turma, $presente, $observacao]);
     }
 
-    public function alterar($idpresenca, $idaula, $idaluno, $presente = null, $observacao = null) {
-        $result = $this->pdo->prepare("UPDATE presenca SET idaula = ?, idaluno = ?, presente = ?, observacao = ? WHERE idpresenca = ?");
-        return $result->execute([$idaula, $idaluno, $presente, $observacao, $idpresenca]);
+    public function alterar($idpresenca, $idaula, $idaluno_turma, $presente, $observacao = null) {
+        $result = $this->pdo->prepare("UPDATE presenca SET idaula = ?, idaluno_turma = ?, presente = ?, observacao = ? WHERE idpresenca = ?");
+        return $result->execute([$idaula, $idaluno_turma, $presente, $observacao, $idpresenca]);
     }
 
     public function excluir($id) {
