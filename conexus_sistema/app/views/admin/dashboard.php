@@ -1,117 +1,81 @@
 <?php
+session_start();
+require_once(__DIR__ . '/../../config/conexao.php');
 
-include '../components/connect.php';
-
-if(isset($_COOKIE['tutor_id'])){
-   $tutor_id = $_COOKIE['tutor_id'];
-}else{
-   $tutor_id = '';
-   header('location:login.php');
+if (!isset($_SESSION['idusuario']) || $_SESSION['papel'] !== 'admin') {
+   header('Location: /conexus_sistema/app/views/login.php');
+   exit;
 }
 
-$select_contents = $conn->prepare("SELECT * FROM `content` WHERE tutor_id = ?");
-$select_contents->execute([$tutor_id]);
-$total_contents = $select_contents->rowCount();
+$idusuario = $_SESSION['idusuario'];
+$conn = Conexao::conectar();
 
-$select_playlists = $conn->prepare("SELECT * FROM `playlist` WHERE tutor_id = ?");
-$select_playlists->execute([$tutor_id]);
-$total_playlists = $select_playlists->rowCount();
-
-$select_likes = $conn->prepare("SELECT * FROM `likes` WHERE tutor_id = ?");
-$select_likes->execute([$tutor_id]);
-$total_likes = $select_likes->rowCount();
-
-$select_comments = $conn->prepare("SELECT * FROM `comments` WHERE tutor_id = ?");
-$select_comments->execute([$tutor_id]);
-$total_comments = $select_comments->rowCount();
-
+// Busca nome do admin
+$stmt = $conn->prepare("SELECT nome FROM usuario WHERE idusuario = ?");
+$stmt->execute([$idusuario]);
+$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+$nome = $usuario['nome'] ?? 'Administrador';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
    <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Dashboard</title>
-
-   <!-- font awesome cdn link  -->
+   <title>Dashboard Admin</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-
-   <!-- custom css file link  -->
    <link rel="stylesheet" href="/conexus_sistema/public/css/admin_style.css">
-
 </head>
 <body>
 
 <?php include '../components/admin_header.php'; ?>
-   
-<section class="dashboard">
 
-   <h1 class="heading">dashboard</h1>
+<section class="dashboard">
+   <h1 class="heading">Painel do Administrador</h1>
 
    <div class="box-container">
 
       <div class="box">
-         <h3>welcome!</h3>
-         <p><?= $fetch_profile['name']; ?></p>
-         <a href="profile.php" class="btn">view profile</a>
+         <h3>Bem-vindo, <?= htmlspecialchars($nome) ?>!</h3>
+         <p>Administrador do sistema</p>
+         <a href="profile.php" class="btn">Ver perfil</a>
       </div>
 
       <div class="box">
-         <h3><?= $total_contents; ?></h3>
-         <p>total contents</p>
-         <a href="add_content.php" class="btn">add new content</a>
+         <h3>Cadastrar Aluno</h3>
+         <p>Gerencie os alunos da escola</p>
+         <a href="/conexus_sistema/app/views/admin/cadastrar_aluno.php" class="btn">Cadastrar Aluno</a>
       </div>
 
       <div class="box">
-         <h3><?= $total_playlists; ?></h3>
-         <p>total playlists</p>
-         <a href="add_playlist.php" class="btn">add new playlist</a>
+         <h3>Cadastrar Professor</h3>
+         <p>Adicione novos professores</p>
+         <a href="/conexus_sistema/app/views/admin/cadastrar_professor.php" class="btn">Cadastrar Professor</a>
       </div>
 
       <div class="box">
-         <h3><?= $total_likes; ?></h3>
-         <p>total likes</p>
-         <a href="contents.php" class="btn">view contents</a>
+         <h3>Cadastrar Funcionário</h3>
+         <p>Gerencie a equipe administrativa</p>
+         <a href="/conexus_sistema/app/views/admin/cadastrar_funcionario.php" class="btn">Cadastrar Funcionário</a>
       </div>
 
       <div class="box">
-         <h3><?= $total_comments; ?></h3>
-         <p>total comments</p>
-         <a href="comments.php" class="btn">view comments</a>
+         <h3>Relatório Financeiro</h3>
+         <p>Visualize receitas e despesas</p>
+         <a href="/conexus_sistema/app/views/admin/relatorio_financeiro.php" class="btn">Gerar Relatório</a>
       </div>
 
       <div class="box">
-         <h3>quick select</h3>
-         <p>login or register</p>
-         <div class="flex-btn">
-            <a href="login.php" class="option-btn">login</a>
-            <a href="register.php" class="option-btn">register</a>
-         </div>
+         <h3>Relatório de Materiais</h3>
+         <p>Acompanhe o uso de materiais</p>
+         <a href="/conexus_sistema/app/views/admin/relatorio_materiais.php" class="btn">Ver Relatório</a>
       </div>
 
    </div>
-
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <?php include '../components/footer.php'; ?>
 
-<script src="../js/admin_script.js"></script>
-
+<script src="/conexus_sistema/public/js/admin_script.js"></script>
 </body>
 </html>

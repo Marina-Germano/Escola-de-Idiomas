@@ -30,10 +30,10 @@ class Aluno {
     }
 
     public function listarTodos() {
-        // Boa prática: listar os campos
         $result = $this->pdo->query(
             "SELECT a.*, u.nome, u.cpf, u.email, u.telefone, u.data_nascimento
-            FROM aluno a JOIN usuario u ON u.idusuario = a.idusuario"
+            FROM aluno a 
+            JOIN usuario u ON u.idusuario = a.idusuario"
         );
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -41,7 +41,7 @@ class Aluno {
     public function listarId($id) {
         $result = $this->pdo->prepare(
             "SELECT a.*, u.nome, u.cpf, u.email, u.telefone, u.data_nascimento
-            FROM aluno a
+            FROM aluno a 
             JOIN usuario u ON u.idusuario = a.idusuario WHERE a.idaluno = ?"
         );
         $result->execute([$id]);
@@ -55,11 +55,17 @@ class Aluno {
         return $dados ? $dados['idaluno'] : null;
     }
 
+    // Método para buscar aluno pelo CPF (juntando com usuario)
     public function buscarIdPorCpf($cpf) {
-    $result = $this->pdo->prepare("SELECT a.idaluno FROM aluno a JOIN usuario u ON u.idusuario = a.idusuario WHERE u.cpf = ?");
-    $result->execute([$cpf]);
-    $dados = $result->fetch(PDO::FETCH_ASSOC);
-    return $dados ? $dados['idaluno'] : null;
+        $result = $this->pdo->prepare(
+            "SELECT a.idaluno 
+            FROM aluno a 
+            JOIN usuario u ON u.idusuario = a.idusuario 
+            WHERE u.cpf = ?"
+        );
+        $result->execute([$cpf]);
+        $dados = $result->fetch(PDO::FETCH_ASSOC);
+        return $dados ? $dados['idaluno'] : null;
     }
 }
 ?>

@@ -28,12 +28,21 @@ class Funcionario {
     }
 
     public function listarTodos() {
-        $result = $this->pdo->query("SELECT f.*, u.nome, u.email, u.cpf, u.telefone FROM funcionario f JOIN usuario u ON u.idusuario = f.idusuario");
+        $result = $this->pdo->query(
+            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone 
+            FROM funcionario f 
+            JOIN usuario u ON u.idusuario = f.idusuario"
+        );
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function listarId($id) {
-        $result = $this->pdo->prepare("SELECT f.*, u.nome, u.email, u.cpf, u.telefone FROM funcionario f JOIN usuario u ON u.idusuario = f.idusuario WHERE f.idfuncionario = ?");
+        $result = $this->pdo->prepare(
+            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone 
+            FROM funcionario f 
+            JOIN usuario u ON u.idusuario = f.idusuario 
+            WHERE f.idfuncionario = ?"
+        );
         $result->execute([$id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
@@ -45,12 +54,17 @@ class Funcionario {
         return $dados ? $dados['idfuncionario'] : null;
     }
 
+    // Novo método para buscar funcionário por CPF
     public function buscarIdPorCpf($cpf) {
-    $result = $this->pdo->prepare("SELECT idfuncionario FROM funcionario WHERE cpf = ?");
-    $result->execute([$cpf]);
-    $row = $result->fetch(PDO::FETCH_ASSOC);
-    return $row ? $row['idfuncionario'] : null;
-}
-
+        $result = $this->pdo->prepare(
+            "SELECT f.idfuncionario
+            FROM funcionario f
+            JOIN usuario u ON u.idusuario = f.idusuario
+            WHERE u.cpf = ?"
+        );
+        $result->execute([$cpf]);
+        $dados = $result->fetch(PDO::FETCH_ASSOC);
+        return $dados ? $dados['idfuncionario'] : null;
+    }
 }
 ?>

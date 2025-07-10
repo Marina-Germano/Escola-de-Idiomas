@@ -58,9 +58,9 @@ if (isset($_GET['acao'])) {
             }
 
             // // Opcional: verificar se CPF existe nas tabelas reais (aluno, professor, funcionario)
-            // $idaluno = $aluno->buscarIdPorCpf($cpf);
-            // $idprofessor = $professor->buscarIdPorCpf($cpf);
-            // $idfuncionario = $funcionario->buscarIdPorCpf($cpf);
+            $idaluno = $aluno->buscarIdPorCpf($cpf);
+            $idprofessor = $professor->buscarIdPorCpf($cpf);
+            $idfuncionario = $funcionario->buscarIdPorCpf($cpf);
 
             if ($papel === 'aluno' && !$idaluno) {
                 echo "Erro: CPF informado não pertence a nenhum aluno cadastrado.";

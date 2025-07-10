@@ -69,7 +69,12 @@ switch ($acao) {
         }
 
         // 1. Cadastrar usuário
-        $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'aluno');
+        $cadastroUsuario = $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'aluno');
+
+        if (!$cadastroUsuario) {
+            echo "Erro ao cadastrar o usuário.";
+            exit;
+        }
 
         // 2. Obter o idusuario
         $usuario = $usuarioModel->buscarPorCpf($cpf);

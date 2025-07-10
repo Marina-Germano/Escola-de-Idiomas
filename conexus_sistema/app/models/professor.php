@@ -28,15 +28,23 @@ class Professor {
     }
 
     public function listarTodos() {
-        $result = $this->pdo->query("SELECT p.*, f.cargo, u.nome, u.email, u.telefone FROM professor p
-            JOIN funcionario f ON f.idfuncionario = p.idfuncionario JOIN usuario u ON u.idusuario = f.idusuario"
+        $result = $this->pdo->query(
+            "SELECT p.*, f.cargo, u.nome, u.email, u.telefone
+            FROM professor p
+            JOIN funcionario f ON f.idfuncionario = p.idfuncionario
+            JOIN usuario u ON u.idusuario = f.idusuario"
         );
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function listarId($id) {
-        $result = $this->pdo->prepare("SELECT p.*, f.cargo, u.nome, u.email, u.telefone FROM professor p
-            JOIN funcionario f ON f.idfuncionario = p.idfuncionario JOIN usuario u ON u.idusuario = f.idusuario WHERE p.idprofessor = ?");
+        $result = $this->pdo->prepare(
+            "SELECT p.*, f.cargo, u.nome, u.email, u.telefone
+            FROM professor p
+            JOIN funcionario f ON f.idfuncionario = p.idfuncionario
+            JOIN usuario u ON u.idusuario = f.idusuario
+            WHERE p.idprofessor = ?"
+        );
         $result->execute([$id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
@@ -44,6 +52,20 @@ class Professor {
     public function buscarIdPorFuncionario($idfuncionario) {
         $result = $this->pdo->prepare("SELECT idprofessor FROM professor WHERE idfuncionario = ?");
         $result->execute([$idfuncionario]);
+        $dados = $result->fetch(PDO::FETCH_ASSOC);
+        return $dados ? $dados['idprofessor'] : null;
+    }
+
+    // Novo método para buscar professor por CPF via funcionario e usuario
+    public function buscarIdPorCpf($cpf) {
+        $result = $this->pdo->prepare(
+            "SELECT p.idprofessor 
+            FROM professor p 
+            JOIN funcionario f ON f.idfuncionario = p.idfuncionario 
+            JOIN usuario u ON u.idusuario = f.idusuario 
+            WHERE u.cpf = ?"
+        );
+        $result->execute([$cpf]);
         $dados = $result->fetch(PDO::FETCH_ASSOC);
         return $dados ? $dados['idprofessor'] : null;
     }

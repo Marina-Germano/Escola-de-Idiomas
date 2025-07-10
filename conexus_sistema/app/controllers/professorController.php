@@ -76,7 +76,12 @@ switch ($acao) {
         }
 
         // 3. Cadastrar funcionário
-        $funcionarioModel->cadastrar($idusuario, $cargo);
+        $cadastroUsuario = $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'professor');
+
+        if (!$cadastroUsuario) {
+            echo "Erro ao cadastrar o usuário.";
+            exit;
+        }
 
         // 4. Recuperar o idfuncionario
         $idfuncionario = $funcionarioModel->buscarIdPorUsuario($idusuario);

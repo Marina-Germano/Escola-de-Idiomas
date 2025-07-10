@@ -243,7 +243,7 @@ CREATE TABLE contato(
 INSERT INTO usuario (nome, telefone, email, data_nascimento, cpf, senha, papel)
 VALUES 
 ('Ana Souza', '11999999999', 'ana@example.com', '2001-04-10', '12345678901', 'senha123', 'aluno'),
-('Carlos Lima', '21988887777', 'carlos@example.com', '1980-11-23', '23456789012', 'senha123', 'funcionario'),
+('Carlos Lima', '21988887777', 'carlos@example.com', '1980-11-23', '11111111111', 'admin', 'admin'),
 ('Fernanda Dias', '31977776666', 'fernanda@example.com', '1990-07-15', '34567890123', 'senha123', 'professor');
 
 INSERT INTO aluno (idusuario, cep, rua, numero, bairro, complemento, responsavel, tel_responsavel)
