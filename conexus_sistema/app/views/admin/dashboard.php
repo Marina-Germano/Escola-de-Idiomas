@@ -44,7 +44,7 @@ $nome = $usuario['nome'] ?? 'Administrador';
       <div class="box">
          <h3>Cadastrar Aluno</h3>
          <p>Gerencie os alunos da escola</p>
-         <a href="/conexus_sistema/app/views/admin/cadastrar_aluno.php" class="btn">Cadastrar Aluno</a>
+         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/register_student.php" class="btn">Cadastrar Aluno</a>
       </div>
 
       <div class="box">
@@ -56,19 +56,19 @@ $nome = $usuario['nome'] ?? 'Administrador';
       <div class="box">
          <h3>Cadastrar Funcionário</h3>
          <p>Gerencie a equipe administrativa</p>
-         <a href="/conexus_sistema/app/views/admin/cadastrar_funcionario.php" class="btn">Cadastrar Funcionário</a>
+         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/register_employee.php" class="btn">Cadastrar Funcionário</a>
       </div>
 
       <div class="box">
          <h3>Relatório Financeiro</h3>
          <p>Visualize receitas e despesas</p>
-         <a href="/conexus_sistema/app/views/admin/relatorio_financeiro.php" class="btn">Gerar Relatório</a>
+         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/financial_report.php" class="btn">Gerar Relatório</a>
       </div>
 
       <div class="box">
          <h3>Relatório de Materiais</h3>
          <p>Acompanhe o uso de materiais</p>
-         <a href="/conexus_sistema/app/views/admin/relatorio_materiais.php" class="btn">Ver Relatório</a>
+         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/material_report.php" class="btn">Ver Relatório</a>
       </div>
 
    </div>

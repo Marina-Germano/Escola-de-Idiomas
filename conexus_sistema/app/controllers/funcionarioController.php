@@ -56,8 +56,26 @@ switch ($acao) {
             exit;
         }
 
-        // 1. Cadastra o usuário
-        $cadastroUsuario = $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'funcionario');
+        // Upload da foto
+        $foto_nome = null;
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            $extensao = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+            $foto_nome = uniqid('foto_', true) . '.' . $extensao;
+            $caminho = __DIR__ . '/../public/img/' . $foto_nome;
+            move_uploaded_file($_FILES['foto']['tmp_name'], $caminho);
+        }
+
+        // 1. Cadastra o usuário com papel = funcionario
+        $cadastroUsuario = $usuarioModel->cadastrar(
+            $nome,
+            $telefone,
+            $email,
+            $data_nascimento,
+            $cpf,
+            $senha,
+            'funcionario',
+            $foto_nome
+        );
 
         if (!$cadastroUsuario) {
             echo "Erro ao cadastrar o usuário.";

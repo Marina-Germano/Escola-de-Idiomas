@@ -11,6 +11,7 @@ CREATE TABLE usuario (
     senha VARCHAR(255) NOT NULL,        -- senha criptografada (ex: bcrypt ou SHA-256)
     papel VARCHAR(255) NOT NULL, -- aluno, professor, funcionário, admin...
     ativo BOOLEAN DEFAULT TRUE,
+    foto VARCHAR(255),
     
 	-- bloquear o usuario depois de algumas tentativas (definidas no php)
 	tentativas_login INT DEFAULT 0,
@@ -240,11 +241,11 @@ CREATE TABLE contato(
 -- povoando as tabelas
 
 -- Inserir usuários (1 aluno, 1 funcionário, 1 professor)
-INSERT INTO usuario (nome, telefone, email, data_nascimento, cpf, senha, papel)
+INSERT INTO usuario (nome, telefone, email, data_nascimento, cpf, foto, senha, papel)
 VALUES 
-('Ana Souza', '11999999999', 'ana@example.com', '2001-04-10', '12345678901', 'senha123', 'aluno'),
-('Carlos Lima', '21988887777', 'carlos@example.com', '1980-11-23', '11111111111', 'admin', 'admin'),
-('Fernanda Dias', '31977776666', 'fernanda@example.com', '1990-07-15', '34567890123', 'senha123', 'professor');
+('Ana Souza', '11999999999', 'ana@example.com', '2001-04-10', '12345678901', NULL, 'senha123', 'aluno'),
+('Carlos Lima', '21988887777', 'carlos@example.com', '1980-11-23', '11111111111', NULL, 'admin', 'admin'),
+('Fernanda Dias', '31977776666', 'fernanda@example.com', '1990-07-15', '34567890123', NULL, 'senha123', 'professor');
 
 INSERT INTO aluno (idusuario, cep, rua, numero, bairro, complemento, responsavel, tel_responsavel)
 VALUES 

@@ -57,7 +57,7 @@ if (isset($_GET['acao'])) {
                 exit;
             }
 
-            // // Opcional: verificar se CPF existe nas tabelas reais (aluno, professor, funcionario)
+            // Verificações adicionais por tipo de papel
             $idaluno = $aluno->buscarIdPorCpf($cpf);
             $idprofessor = $professor->buscarIdPorCpf($cpf);
             $idfuncionario = $funcionario->buscarIdPorCpf($cpf);
@@ -77,6 +77,15 @@ if (isset($_GET['acao'])) {
                 exit;
             }
 
+            // Tratamento da imagem de perfil (foto)
+            $foto_nome = null;
+            if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+                $foto_nome = uniqid('foto_', true) . '.' . $ext;
+                $caminho_destino = __DIR__ . "/../public/uploads/" . $foto_nome;
+                move_uploaded_file($_FILES['foto']['tmp_name'], $caminho_destino);
+            }
+
             // Cadastro do usuário
             $usuario->cadastrar(
                 $nome,
@@ -85,7 +94,8 @@ if (isset($_GET['acao'])) {
                 $data_nascimento,
                 $cpf,
                 $senha,
-                $papel
+                $papel,
+                $foto_nome
             );
 
             echo "Usuário cadastrado com sucesso!";
@@ -98,6 +108,16 @@ if (isset($_GET['acao'])) {
                 exit;
             }
 
+            $foto_nome = $_POST['foto_atual'] ?? null;
+
+            // Caso o admin esteja alterando a foto
+            if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+                $foto_nome = uniqid('foto_', true) . '.' . $ext;
+                $caminho_destino = __DIR__ . "/../public/img/" . $foto_nome;
+                move_uploaded_file($_FILES['foto']['tmp_name'], $caminho_destino);
+            }
+
             $usuario->alterar(
                 $_POST['idusuario'],
                 $_POST['nome'],
@@ -107,6 +127,7 @@ if (isset($_GET['acao'])) {
                 $_POST['cpf'],
                 $_POST['senha'],
                 $_POST['papel'],
+                $foto_nome,
                 $_POST['ativo'] ?? true,
                 $_POST['tentativas_login'] ?? 0,
                 $_POST['bloqueado'] ?? false

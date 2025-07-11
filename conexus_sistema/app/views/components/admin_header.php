@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../../config/conexao.php');
 
 // Verifica se o admin está logado
 if (!isset($_SESSION['idusuario']) || $_SESSION['papel'] !== 'admin') {
-   header('Location: /conexus_sistema/app/views/login.php');
+   header('Location: escola-de-idiomas/conexus_sistema/app/views/login.php');
    exit;
 }
 

@@ -63,10 +63,33 @@ switch ($acao) {
             exit;
         }
 
-        // 1. Cadastrar o usuário
-        $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'professor');
+        // Upload da foto (opcional, mas recomendado)
+        $foto_nome = null;
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+            $foto_nome = uniqid('foto_', true) . '.' . $ext;
+            $destino = __DIR__ . "/../public/img/" . $foto_nome;
+            move_uploaded_file($_FILES['foto']['tmp_name'], $destino);
+        }
 
-        // 2. Recuperar o idusuario
+        // 1. Cadastrar o usuário com papel 'professor'
+        $usuarioCriado = $usuarioModel->cadastrar(
+            $nome,
+            $telefone,
+            $email,
+            $data_nascimento,
+            $cpf,
+            $senha,
+            'professor',
+            $foto_nome
+        );
+
+        if (!$usuarioCriado) {
+            echo "Erro ao cadastrar o usuário.";
+            exit;
+        }
+
+        // 2. Recuperar idusuario
         $usuario = $usuarioModel->buscarPorCpf($cpf);
         $idusuario = $usuario['idusuario'] ?? null;
 
@@ -75,15 +98,10 @@ switch ($acao) {
             exit;
         }
 
-        // 3. Cadastrar funcionário
-        $cadastroUsuario = $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'professor');
+        // 3. Cadastrar funcionário vinculado ao usuário
+        $funcionarioModel->cadastrar($idusuario, $cargo);
 
-        if (!$cadastroUsuario) {
-            echo "Erro ao cadastrar o usuário.";
-            exit;
-        }
-
-        // 4. Recuperar o idfuncionario
+        // 4. Recuperar idfuncionario
         $idfuncionario = $funcionarioModel->buscarIdPorUsuario($idusuario);
 
         if (!$idfuncionario) {
@@ -91,7 +109,7 @@ switch ($acao) {
             exit;
         }
 
-        // 5. Cadastrar professor
+        // 5. Cadastrar professor vinculado ao funcionário
         $professor->cadastrar($idfuncionario, $especialidade);
 
         echo "Professor cadastrado com sucesso!";

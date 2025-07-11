@@ -68,8 +68,30 @@ switch ($acao) {
             exit;
         }
 
+        // Upload da imagem
+        $foto_nome = null;
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            $extensao = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+            $foto_nome = uniqid('foto_', true) . '.' . $extensao;
+            $caminho = __DIR__ . '/../public/img/' . $foto_nome;
+
+            if (!move_uploaded_file($_FILES['foto']['tmp_name'], $caminho)) {
+                echo "Erro ao fazer upload da imagem.";
+                exit;
+            }
+        }
+
         // 1. Cadastrar usuário
-        $cadastroUsuario = $usuarioModel->cadastrar($nome, $telefone, $email, $data_nascimento, $cpf, $senha, 'aluno');
+        $cadastroUsuario = $usuarioModel->cadastrar(
+            $nome,
+            $telefone,
+            $email,
+            $data_nascimento,
+            $cpf,
+            $senha,
+            'aluno',
+            $foto_nome
+        );
 
         if (!$cadastroUsuario) {
             echo "Erro ao cadastrar o usuário.";
@@ -86,7 +108,17 @@ switch ($acao) {
         }
 
         // 3. Cadastrar aluno
-        $aluno->cadastrar($idusuario, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $situacao);
+        $aluno->cadastrar(
+            $idusuario,
+            $cep,
+            $rua,
+            $numero,
+            $bairro,
+            $complemento,
+            $responsavel,
+            $tel_responsavel,
+            $situacao
+        );
 
         echo "Aluno cadastrado com sucesso!";
         break;
