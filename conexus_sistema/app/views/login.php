@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
       
         // Redirecionamento baseado no papel
       if ($user['papel'] === 'admin') {
-         header('location:/escola-de-idiomas/conexus_sistema/app/views/admin/dashboard.php');
+         header('location:admin/dashboard.php');
       exit;
       }
       
@@ -61,7 +61,7 @@ ob_end_flush();
    <title>Login - Conexus</title>
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-   <link rel="stylesheet" href="/conexus_sistema/public/css/style.css">
+   <link rel="stylesheet" href="../../public/css/style.css">
 </head>
 <body>
 

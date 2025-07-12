@@ -46,7 +46,7 @@ switch ($acao) {
         $senha = $_POST['senha'] ?? null;
 
         // Dados do funcionário
-        $cargo = $_POST['cargo'] ?? null;
+        $cargo = $_POST['cargo'] ?? null;;
 
         // Dados do professor
         $especialidade = $_POST['especialidade'] ?? null;

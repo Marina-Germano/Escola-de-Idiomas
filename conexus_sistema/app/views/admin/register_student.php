@@ -3,8 +3,6 @@ require_once(__DIR__ . '/../../config/conexao.php'); // ajuste o caminho conform
 $conn = Conexao::conectar(); // cria a conexão para ser usada no header
 ?>
 
-<?php include '../components/admin_header.php'; ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -17,35 +15,12 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="/conexus_sistema/public/css/admin_style.css" />
+    <link rel="stylesheet" href="../../../public/css/admin_style.css" />
 </head>
 <body style="padding-left: 0;">
 
 <!-- Cabeçalho -->
 <?php include '../components/admin_header.php'; ?>
-
-<!-- Sidebar -->
-<div class="side-bar">
-    <div class="close-side-bar">
-        <i class="fas fa-times"></i>
-    </div>
-
-    <div class="profile">
-        <img src="/conexus_sistema/public/img/pic-1-removebg-preview.png" alt="Perfil" />
-        <h3>Administrador</h3>
-        <span>Administrativo</span>
-        <a href="profile.php" class="btn">Ver perfil</a>
-        <a href="../components/admin_logout.php" onclick="return confirm('Deseja sair?');" class="delete-btn">Logout</a>
-    </div>
-
-    <nav class="navbar">
-        <a href="dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a>
-        <a href="cadastrar_aluno.php"><i class="fas fa-user-graduate"></i><span>Cadastrar Aluno</span></a>
-        <a href="cadastrar_professor.php"><i class="fas fa-chalkboard-teacher"></i><span>Cadastrar Professor</span></a>
-        <a href="cadastrar_funcionario.php"><i class="fas fa-user-tie"></i><span>Cadastrar Funcionário</span></a>
-        <a href="../components/admin_logout.php" onclick="return confirm('Deseja sair?');"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
-    </nav>
-</div>
 
 <!-- Formulário -->
 <section class="form-container">
@@ -120,7 +95,7 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
     </form>
 </section>
 
-<script src="/conexus_sistema/public/js/admin_script.js"></script>
+<script src="../../../public/js/admin_script.js"></script>
 
 </body>
 </html>

@@ -24,7 +24,7 @@ $nome = $usuario['nome'] ?? 'Administrador';
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Dashboard Admin</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-   <link rel="stylesheet" href="/conexus_sistema/public/css/admin_style.css">
+   <link rel="stylesheet" href="../../../public/css/admin_style.css">
 </head>
 <body>
 
@@ -44,19 +44,19 @@ $nome = $usuario['nome'] ?? 'Administrador';
       <div class="box">
          <h3>Cadastrar Aluno</h3>
          <p>Gerencie os alunos da escola</p>
-         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/register_student.php" class="btn">Cadastrar Aluno</a>
+         <a href="register_student.php" class="btn">Cadastrar Aluno</a>
       </div>
 
       <div class="box">
          <h3>Cadastrar Professor</h3>
          <p>Adicione novos professores</p>
-         <a href="/conexus_sistema/app/views/admin/cadastrar_professor.php" class="btn">Cadastrar Professor</a>
+         <a href="register_teacher.php" class="btn">Cadastrar Professor</a>
       </div>
 
       <div class="box">
          <h3>Cadastrar Funcionário</h3>
          <p>Gerencie a equipe administrativa</p>
-         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/register_employee.php" class="btn">Cadastrar Funcionário</a>
+         <a href="register_employer.php" class="btn">Cadastrar Funcionário</a>
       </div>
 
       <div class="box">
