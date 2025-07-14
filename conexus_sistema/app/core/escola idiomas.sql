@@ -37,16 +37,9 @@ CREATE TABLE funcionario(
 	idfuncionario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	idusuario INT NOT NULL,
     cargo VARCHAR(100), -- ex: recepcionista, professor
+    especialidade VARCHAR(100),
     
     FOREIGN KEY (idusuario) REFERENCES usuario(idusuario)
-);
-
-CREATE TABLE professor(
-	idprofessor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	idfuncionario INT NOT NULL,
-    especialidade VARCHAR(100) NOT NULL, -- INGLES, espanhol...
-    
-    FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario)
 );
 
 CREATE TABLE tipo_documento(
@@ -115,16 +108,16 @@ CREATE TABLE turma(
 	idturma INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	ididioma INT NOT NULL,
 	idnivel INT NOT NULL,
+    idfuncionario INT NOT NULL,
     descricao VARCHAR(100), -- nome da turma
     dias_semana VARCHAR(255),
 	hora_inicio TIME NOT NULL, -- ex: seg e qua 14h-15h
 	capacidade_maxima INT NOT NULL,
     sala VARCHAR(100),
     imagem VARCHAR(255),
-    idprofessor INT NOT NULL,
 	tipo_recorrencia ENUM('diaria', 'semanal', 'mensal') DEFAULT NULL,
     
-    FOREIGN KEY (idprofessor) REFERENCES professor(idprofessor),
+    FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario),
     FOREIGN KEY (ididioma) REFERENCES idioma(ididioma),
     FOREIGN KEY (idnivel) REFERENCES nivel(idnivel)
 );
@@ -146,10 +139,10 @@ CREATE TABLE material(
     formato_arquivo VARCHAR(10),
     arquivo VARCHAR(255), -- para upload e dowloand
     data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    idprofessor INT NOT NULL,
+    idfuncionario INT NOT NULL,
     -- verificar como o aluno vai acessar esses materiais
 
-	FOREIGN KEY (idprofessor) REFERENCES professor(idprofessor),
+	FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario),
     FOREIGN KEY (idtipo_material) REFERENCES tipo_material(idtipo_material),
     FOREIGN KEY (ididioma) REFERENCES idioma(ididioma),
 	FOREIGN KEY (idnivel) REFERENCES nivel (idnivel),
@@ -186,6 +179,7 @@ CREATE TABLE aluno_turma(
 CREATE TABLE avaliacao(
 	idavaliacao INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idaluno_turma INT NOT NULL,
+    idfuncionario INT NOT NULL,
     descricao VARCHAR(255) NOT NULL, -- prova de ingles, atividade verbo to be
     titulo VARCHAR(255),
     data_avaliacao DATE NOT NULL,
@@ -193,7 +187,8 @@ CREATE TABLE avaliacao(
     peso DECIMAL(3,2) DEFAULT 1.0,
     observacao TEXT,
     
-    FOREIGN KEY (idaluno_turma) REFERENCES aluno_turma(idaluno_turma)
+    FOREIGN KEY (idaluno_turma) REFERENCES aluno_turma(idaluno_turma),
+    FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario)
 );
 
 CREATE TABLE calendario_aula(
@@ -201,7 +196,7 @@ CREATE TABLE calendario_aula(
     data_aula DATE NOT NULL,
     hora_inicio TIME NOT NULL,
     hora_fim TIME NOT NULL,
-    idprofessor INT NOT NULL,
+    idfuncionario INT NOT NULL,
     idturma INT NOT NULL,
     idmaterial INT NOT NULL, -- materia da aula(ingles 1, espanhol 2...) 
     sala VARCHAR(100), 
@@ -209,7 +204,7 @@ CREATE TABLE calendario_aula(
     link_reuniao VARCHAR(255),
 	aula_extra BOOLEAN DEFAULT FALSE,
 
-    FOREIGN KEY (idprofessor) REFERENCES professor(idprofessor),
+    FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario),
     FOREIGN KEY (idturma) REFERENCES turma(idturma),
     FOREIGN KEY (idmaterial) REFERENCES material(idmaterial)
 );
@@ -218,11 +213,13 @@ CREATE TABLE presenca (
     idpresenca INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idaula INT NOT NULL,
     idaluno_turma INT NOT NULL,
+    idfuncionario INT NOT NULL,
     presente BOOLEAN NOT NULL DEFAULT FALSE,
     observacao TEXT,
     
     FOREIGN KEY (idaula) REFERENCES calendario_aula(idaula),
-    FOREIGN KEY (idaluno_turma) REFERENCES aluno_turma(idaluno_turma)
+    FOREIGN KEY (idaluno_turma) REFERENCES aluno_turma(idaluno_turma),
+    FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario)
 );
 
 CREATE TABLE contato(
@@ -245,19 +242,18 @@ INSERT INTO usuario (nome, telefone, email, data_nascimento, cpf, foto, senha, p
 VALUES 
 ('Ana Souza', '11999999999', 'ana@example.com', '2001-04-10', '12345678901', NULL, 'senha123', 'aluno'),
 ('Carlos Lima', '21988887777', 'carlos@example.com', '1980-11-23', '11111111111', NULL, 'admin', 'admin'),
-('Fernanda Dias', '31977776666', 'fernanda@example.com', '1990-07-15', '34567890123', NULL, 'senha123', 'professor');
+('Fernanda Dias', '31977776666', 'fernanda@example.com', '1990-07-15', '34567890123', NULL, 'senha123', 'funcionario'),
+('João Oliveira', '11944445555', 'joao.oliveira@example.com', '1985-03-20', '22233344455', NULL, 'senha123', 'funcionario'); -- professor
 
 INSERT INTO aluno (idusuario, cep, rua, numero, bairro, complemento, responsavel, tel_responsavel)
 VALUES 
 (1, '12345678', 'Rua das Flores', '100', 'Jardim', 'Casa 1', 'Maria Souza', '11988888888');
 
-INSERT INTO funcionario (idusuario, cargo)
+INSERT INTO funcionario (idusuario, cargo, especialidade)
 VALUES 
-(2, 'Recepcionista');
+(3, 'Recepcionista', null),
+(4, 'Professor', 'Inglês');
 
-INSERT INTO professor (idfuncionario, especialidade)
-VALUES 
-(1, 'Inglês');
 
 INSERT INTO tipo_documento (descricao) VALUES
 ('RG'),
@@ -293,22 +289,21 @@ INSERT INTO idioma (descricao) VALUES
 ('Espanhol'),
 ('Francês');
 
-INSERT INTO turma (ididioma, idnivel, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, idprofessor, tipo_recorrencia) 
+INSERT INTO turma (ididioma, idnivel, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, idfuncionario, tipo_recorrencia) 
 VALUES
-(1, 1, 'Segunda e Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 1, 'semanal'),
-(2, 2, 'Terça e Quinta', '10:00:00', 15, 'Sala 202', '/imagens/espanhol_intermediario.jpg', 1, 'semanal'),
-(3, 3, 'Sábado', '09:00:00', 10, 'Sala 303', '/imagens/frances_avancado.jpg', 1, 'semanal');
+(1, 1, 'Segunda e Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 2, 'semanal');
 
 INSERT INTO tipo_material (descricao) VALUES
 ('Livro'),
 ('Apostila'),
 ('PDF');
 
-INSERT INTO material (idtipo_material, ididioma, idnivel, idturma, titulo, descricao, quantidade, formato_arquivo, arquivo, idprofessor) 
+
+INSERT INTO material (idtipo_material, ididioma, idnivel, idturma, titulo, descricao, quantidade, formato_arquivo, arquivo, idfuncionario) 
 VALUES
-(1, 1, 1, 1, 'Inglês Básico - Volume 1', 'Livro didático para iniciantes.', 10, 'pdf', '/materiais/ingles_basico_v1.pdf', 1),
-(2, 1, 1, 1, 'Apostila de Verbos', 'Conteúdo complementar focado em verbos.', 20, 'pdf', '/materiais/apostila_verbos.pdf', 1),
-(3, 1, 1, 1, 'Vocabulário Essencial', 'Material digital com vocabulário básico.', 30, 'pdf', '/materiais/vocabulario.pdf', 1);
+(1, 1, 1, 1, 'Inglês Básico - Volume 1', 'Livro didático para iniciantes.', 10, 'pdf', '/materiais/ingles_basico_v1.pdf', 2),
+(2, 1, 1, 1, 'Apostila de Verbos', 'Conteúdo complementar focado em verbos.', 20, 'pdf', '/materiais/apostila_verbos.pdf', 2),
+(3, 1, 1, 1, 'Vocabulário Essencial', 'Material digital com vocabulário básico.', 30, 'pdf', '/materiais/vocabulario.pdf', 2);
 
 INSERT INTO emprestimo_material (idaluno, idmaterial, data_emprestimo, data_prevista_devolucao, data_devolvido, status, observacoes, valor_multa) 
 VALUES
@@ -319,17 +314,17 @@ VALUES
 INSERT INTO aluno_turma (idaluno, idturma) VALUES
 (1, 1);
 
-INSERT INTO avaliacao (idaluno_turma, descricao, titulo, data_avaliacao, nota, peso, observacao) VALUES
-(1, 'Prova de inglês - Unidade 1', 'Prova 1', '2025-07-01', 8.5, 1.0, 'Bom desempenho.');
+INSERT INTO avaliacao (idaluno_turma, idfuncionario, descricao, titulo, data_avaliacao, nota, peso, observacao) VALUES
+(1, 2, 'Prova de inglês - Unidade 1', 'Prova 1', '2025-07-01', 8.5, 1.0, 'Bom desempenho.');
 
-INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idprofessor, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) 
+INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) 
 VALUES
-('2025-07-01', '14:00:00', '15:00:00', 1, 1, 1, 'Sala 101', 'Aula introdutória', NULL, FALSE),
-('2025-07-03', '14:00:00', '15:00:00', 1, 1, 1, 'Sala 101', 'Revisão dos verbos', NULL, FALSE),
-('2025-07-05', '10:00:00', '11:30:00', 1, 1, 1, 'Sala 101', 'Aula extra para dúvidas', NULL, TRUE);
+('2025-07-01', '14:00:00', '15:00:00', 2, 1, 1, 'Sala 101', 'Aula introdutória', NULL, FALSE),
+('2025-07-03', '14:00:00', '15:00:00', 2, 1, 1, 'Sala 101', 'Revisão dos verbos', NULL, FALSE),
+('2025-07-05', '10:00:00', '11:30:00', 2, 1, 1, 'Sala 101', 'Aula extra para dúvidas', NULL, TRUE);
 
-INSERT INTO presenca (idaula, idaluno_turma, presente, observacao) VALUES
-(1, 1, TRUE, 'Participou bem da aula extra.');
+INSERT INTO presenca (idaula, idaluno_turma, idfuncionario, presente, observacao) VALUES
+(1, 1, 2, TRUE, 'Participou bem da aula extra.');
 
 INSERT INTO contato (idusuario, nome, email, telefone, arquivo, motivo_contato, mensagem) VALUES
 (1, 'Ana Souza', 'ana@example.com', '11999999999', NULL, 'Solicitação de material', 'Preciso da apostila do curso para estudar em casa.');

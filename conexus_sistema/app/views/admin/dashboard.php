@@ -48,12 +48,6 @@ $nome = $usuario['nome'] ?? 'Administrador';
       </div>
 
       <div class="box">
-         <h3>Cadastrar Professor</h3>
-         <p>Adicione novos professores</p>
-         <a href="register_teacher.php" class="btn">Cadastrar Professor</a>
-      </div>
-
-      <div class="box">
          <h3>Cadastrar Funcionário</h3>
          <p>Gerencie a equipe administrativa</p>
          <a href="register_employer.php" class="btn">Cadastrar Funcionário</a>
@@ -76,6 +70,6 @@ $nome = $usuario['nome'] ?? 'Administrador';
 
 <?php include '../components/footer.php'; ?>
 
-<script src="/conexus_sistema/public/js/admin_script.js"></script>
+<script src="../../../public/js/admin_script.js"></script>
 </body>
 </html>

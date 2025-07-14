@@ -13,8 +13,7 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
     <title>Conexus - Registro Aluno</title>
     <link
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-    />
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="../../../public/css/admin_style.css" />
 </head>
 <body style="padding-left: 0;">
@@ -58,14 +57,15 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
                 <p>Número: <span>*</span></p>
                 <input type="text" name="numero" placeholder="Número da residência" required class="box" />
 
+            </div>
+
+            <div class="col">
                 <p>Bairro: <span>*</span></p>
                 <input type="text" name="bairro" placeholder="Digite o Bairro" required class="box" />
 
                 <p>Complemento:</p>
                 <input type="text" name="complemento" placeholder="Complemento (opcional)" class="box" />
-            </div>
 
-            <div class="col">
                 <p>Responsável pelo Aluno: <span>*</span></p>
                 <input type="text" name="responsavel" placeholder="Nome do responsável" required class="box" />
 
@@ -91,7 +91,7 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
             </div>
         </div>
 
-        <input type="submit" name="submit" value="Registrar Aluno" class="btn" />
+        <input type="submit" name="submit" value="Registrar" class="btn" />
     </form>
 </section>
 

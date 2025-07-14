@@ -1,4 +1,10 @@
 <?php
+require_once(__DIR__ . '/../../config/conexao.php');
+$conn = Conexao::conectar(); // Conecta o PDO
+?>
+
+
+<?php
 if(isset($message)){
    foreach($message as $message){
       echo '
@@ -31,7 +37,7 @@ if(isset($message)){
       
       <div class="profile">
          <?php
-      $select_profile = $conn->prepare("SELECT * FROM `funcionario` WHERE id = ?");
+      $select_profile = $conn->prepare("SELECT * FROM `usuario` WHERE idusuario = ?");
       $select_profile->execute([$cpf]);
       if($select_profile->rowCount() > 0){
          $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
@@ -59,9 +65,9 @@ if(isset($message)){
       <i class="fas fa-times"></i>
    </div>
 
-  <div class="profile">
+<div class="profile">
    <?php
-      $select_profile = $conn->prepare("SELECT * FROM `funcionario` WHERE id = ?");
+      $select_profile = $conn->prepare("SELECT * FROM `usuario` WHERE idusuario = ?");
       $select_profile->execute([$cpf]);
       if($select_profile->rowCount() > 0){
          $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
@@ -75,11 +81,11 @@ if(isset($message)){
 </div>
 
       <nav class="navbar">
-         <a href="dashboard.html"><i class="fas fa-home"></i><span>Home</span></a>
-         <a href="aula_cadastro.html"><i class="fa-solid fa-bars-staggered"></i><span>Cadastro de Aula</span></a>
-         <a href="register_student.html"><i class="fas fa-graduation-cap"></i><span>Cadastro de Aluno</span></a>
-         <a href="register_employer.html"><i class="fas fa-comment"></i><span>Cadastro de Funcionario</span></a>
-         <a href="update_content.html"><i class="fas fa-comment"></i><span>Cadastro de Materiais</span></a>
+         <a href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a>
+         <a href="aula_cadastro.php"><i class="fa-solid fa-bars-staggered"></i><span>Cadastro de Aula</span></a>
+         <a href="register_student.php"><i class="fas fa-graduation-cap"></i><span>Cadastro de Aluno</span></a>
+         <a href="register_employer.php"><i class="fas fa-comment"></i><span>Cadastro de Funcionario</span></a>
+         <a href="register_material.php"><i class="fas fa-comment"></i><span>Cadastro de Materiais</span></a>
          <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>logout</span></a>
       </nav>
 </div>

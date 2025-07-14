@@ -1,0 +1,89 @@
+<?php
+session_start();
+
+// Redireciona se não estiver logado ou não tiver permissão
+if (!isset($_SESSION['idusuario']) || !in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor'])) {
+    header('Location: /conexus_sistema/app/views/login.php');
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conexus - Cadastrar Materiais</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../public/css/admin_style.css">
+</head>
+<body style="padding-left: 0;">
+
+<?php include '../components/admin_header.php'; ?>
+
+<section class="form-container">
+    <h1 class="heading">Cadastrar Material</h1>
+
+    <form action="/conexus_sistema/app/controllers/MaterialController.php?acao=cadastrar" method="POST" enctype="multipart/form-data">
+
+        <p>Tipo de Material <span>*</span></p>
+        <select name="idtipo_material" required class="box">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="1">Livro</option>
+            <option value="2">PDF</option>
+            <option value="3">Vídeo</option>
+            <!-- Adicione conforme o seu banco -->
+        </select>
+
+        <p>Idioma <span>*</span></p>
+        <select name="ididioma" required class="box">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="1">Inglês</option>
+            <option value="2">Espanhol</option>
+            <option value="3">Francês</option>
+            <!-- Adicione conforme o seu banco -->
+        </select>
+
+        <p>Nível <span>*</span></p>
+        <select name="idnivel" required class="box">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="1">Básico</option>
+            <option value="2">Intermediário</option>
+            <option value="3">Avançado</option>
+        </select>
+
+        <p>Turma <span>*</span></p>
+        <select name="idturma" required class="box">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="1">Turma A</option>
+            <option value="2">Turma B</option>
+            <option value="3">Turma C</option>
+            <!-- Popule dinamicamente se necessário -->
+        </select>
+
+        <p>Título <span>*</span></p>
+        <input type="text" name="titulo" maxlength="255" required placeholder="Título do material" class="box">
+
+        <p>Descrição</p>
+        <textarea name="descricao" class="box" rows="5" placeholder="Descrição do material"></textarea>
+
+        <p>Quantidade <span>*</span></p>
+        <input type="number" name="quantidade" min="1" required class="box">
+
+        <p>Arquivo <span>*</span></p>
+        <input type="file" name="arquivo" accept=".pdf,.doc,.docx,.mp4,.jpg,.png" required class="box">
+
+        <p>ID do Professor <span>*</span></p>
+        <input type="number" name="idprofessor" required placeholder="ID do professor responsável" class="box">
+
+        <input type="submit" value="Cadastrar Material" class="btn">
+    </form>
+</section>
+
+<?php include '../components/footer.php'; ?>
+
+<script src="../../../public/js/admin_script.js"></script>
+
+</body>
+</html>
