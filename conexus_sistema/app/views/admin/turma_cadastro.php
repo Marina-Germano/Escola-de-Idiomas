@@ -1,3 +1,9 @@
+<?php
+require_once(__DIR__ . '/../../config/conexao.php');
+$conn = Conexao::conectar();
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,6 +19,8 @@
 <?php include '../components/admin_header.php'; ?>
 
 <section class="form-container">
+  <!-- <form class="register" action="/conexus_sistema/app/controllers/TurmaController.php?acao=cadastrar" method="post" enctype="multipart/form-data"> -->
+
 <form class="register" action="" method="post" enctype="multipart/form-data">
   <div class="flex">
     <div class="col">
@@ -40,22 +48,22 @@
         <select name="idfuncionario" class="box" required>
             <option value="" disabled selected>-- selecione o funcionário --</option>
             <?php
-            $sql = "
-                SELECT f.idfuncionario, u.nome 
+            $stmt = $conn->prepare("
+                SELECT f.idfuncionario, u.nome
                 FROM funcionario f
                 INNER JOIN usuario u ON f.idusuario = u.idusuario
-                ORDER BY u.nome ASC
-            ";
-            
-            $result = $conn->query($sql);
+                ORDER BY u.nome ASC");
 
-            if ($result && $result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($result && count($result) > 0) {
+                foreach ($result as $row) {
                     echo '<option value="' . $row['idfuncionario'] . '">' . htmlspecialchars($row['nome']) . '</option>';
                 }
-            } else {
-                echo '<option disabled>Nenhum funcionário encontrado</option>';
             }
+            else {
+                echo '<option disabled>Nenhum funcionário encontrado</option>';}
             ?>
         </select>
 

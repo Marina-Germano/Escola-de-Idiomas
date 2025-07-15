@@ -28,8 +28,8 @@
         <p>Cargo:</p>
         <input type="text" name="cargo" placeholder="Digite o cargo do funcionário" maxlength="50" required class="box" value="Cargo">
 
-        <p>Especialidade do Professor: <span>*</span></p>
-        <select name="profession" class="box" required>
+        <p>Especialidade do Professor:</p>
+        <select name="profession" class="box">
           <option value="" disabled selected>-- selecione uma especialidade</option>
           <option value="administracao">Administração</option>
           <option value="p-ingles">Inglês</option>

@@ -1,9 +1,10 @@
 <?php
+session_start();
 require_once(__DIR__ . '/../../config/conexao.php');
-$conn = Conexao::conectar(); // Conecta o PDO
+$conn = Conexao::conectar();
 ?>
 
-
+<!-- Mensagens -->
 <?php
 if(isset($message)){
    foreach($message as $message){
@@ -18,9 +19,7 @@ if(isset($message)){
 ?>
 
 <header class="header">
-
    <section class="flex">
-      
       <a href="dashboard.php" class="logo">Admin.</a>
       
       <form action="search_page.php" method="post" class="search-form">
@@ -37,22 +36,22 @@ if(isset($message)){
       
       <div class="profile">
          <?php
-      $select_profile = $conn->prepare("SELECT * FROM `usuario` WHERE idusuario = ?");
-      $select_profile->execute([$cpf]);
-      if($select_profile->rowCount() > 0){
-         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
+         $idusuario = $_SESSION['idusuario'] ?? null;
+         if ($idusuario !== null) {
+            $select_profile = $conn->prepare("SELECT * FROM `usuario` WHERE idusuario = ?");
+            $select_profile->execute([$idusuario]);
+            if($select_profile->rowCount() > 0){
+               $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
          ?>
-      <img src="../../arquivo/<?= $fetch_profile['foto']; ?>" alt="">
-      <h3><?= $fetch_profile['nome']; ?></h3>
-      <span><?= $fetch_profile['cargo']; ?></span>
-      <?php
-      }
-      ?>
-      <?php echo "ok"; ?>
-</div>
-
+               <img src="../../arquivo/<?= $fetch_profile['foto']; ?>" alt="">
+               <h3><?= $fetch_profile['nome']; ?></h3>
+               <span><?= $fetch_profile['papel']; ?></span>
+         <?php
+            }
+         }
+         ?>
+      </div>
    </section>
-
 </header>
 
 <!-- header section ends -->
@@ -65,20 +64,6 @@ if(isset($message)){
       <i class="fas fa-times"></i>
    </div>
 
-<div class="profile">
-   <?php
-      $select_profile = $conn->prepare("SELECT * FROM `usuario` WHERE idusuario = ?");
-      $select_profile->execute([$cpf]);
-      if($select_profile->rowCount() > 0){
-         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-   ?>
-      <img src="../../arquivo/<?= $fetch_profile['foto']; ?>" alt="">
-      <h3><?= $fetch_profile['nome']; ?></h3>
-      <span><?= $fetch_profile['cargo']; ?></span>
-   <?php
-      }
-   ?>
-</div>
 
       <nav class="navbar">
          <a href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a>
@@ -91,3 +76,6 @@ if(isset($message)){
 </div>
 
 <!-- side bar section ends -->
+
+
+
