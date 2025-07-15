@@ -1,0 +1,55 @@
+/* login_style.css */
+
+/* Reset básico para o body, garantindo que não haja margens ou paddings padrão */
+body {
+    padding-left: 0 !important; /* Remove o padding da sidebar */
+    padding-right: 0 !important; /* Garante que não haja padding à direita */
+    margin: 0 !important;       /* Remove margens padrão do body */
+    overflow-x: hidden;          /* Evita rolagem horizontal indesejada */
+    width: 100vw;                /* Garante que o body ocupe toda a largura da viewport */
+}
+
+/* Estilos para o contêiner do formulário de login */
+.form-container {
+    /* Usa Flexbox para centralização perfeita */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente o conteúdo */
+    align-items: center;     /* Centraliza verticalmente o conteúdo */
+    min-height: 100vh;       /* Garante que ocupe a altura total da viewport */
+    width: 100vw;            /* Garante que ocupe a largura total da viewport */
+    /* Reseta quaisquer posicionamentos ou transformações que possam estar deslocando */
+    position: relative; /* Ou 'static' se não houver necessidade de posicionamento */
+    left: auto;
+    right: auto;
+    transform: none;
+    /* Remove qualquer padding ou border que possa estar empurrando */
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* Estilos para o formulário de login em si */
+.form-container form.login {
+    background-color: var(--white);
+    border-radius: .5rem;
+    padding: 2rem;
+    width: 50rem; /* Largura definida para o formulário de login */
+    max-width: 90%; /* Adiciona responsividade, para telas menores que 50rem */
+    margin: 0 auto; /* Centraliza o formulário dentro do .form-container */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura */
+}
+
+/* Opcional: Ajuste para a mensagem de erro/sucesso se ela estiver deslocada */
+.message.form {
+    max-width: 50rem; /* Alinha com a largura do formulário de login */
+    margin: 2rem auto 0 auto !important; /* Centraliza e adiciona margem superior */
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+}
+
+/* Media query para garantir responsividade em telas muito pequenas */
+@media (max-width: 550px) { /* Ajuste este breakpoint se necessário */
+    .form-container form.login {
+        width: 95%; /* Ocupa quase toda a largura em telas muito pequenas */
+    }
+}

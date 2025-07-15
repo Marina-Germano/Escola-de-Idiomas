@@ -68,7 +68,6 @@ $nome = $usuario['nome'] ?? 'Administrador';
    </div>
 </section>
 
-<?php include '../components/footer.php'; ?>
 
 <script src="../../../public/js/admin_script.js"></script>
 </body>

@@ -16,7 +16,7 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="../../../public/css/admin_style.css" />
 </head>
-<body style="padding-left: 0;">
+<body>
 
 <!-- Cabeçalho -->
 <?php include '../components/admin_header.php'; ?>

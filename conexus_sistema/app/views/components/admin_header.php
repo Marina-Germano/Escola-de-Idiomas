@@ -82,7 +82,7 @@ if(isset($message)){
 
       <nav class="navbar">
          <a href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a>
-         <a href="aula_cadastro.php"><i class="fa-solid fa-bars-staggered"></i><span>Cadastro de Aula</span></a>
+         <a href="turma_cadastro.php"><i class="fa-solid fa-bars-staggered"></i><span>Cadastro de Turma</span></a>
          <a href="register_student.php"><i class="fas fa-graduation-cap"></i><span>Cadastro de Aluno</span></a>
          <a href="register_employer.php"><i class="fas fa-comment"></i><span>Cadastro de Funcionario</span></a>
          <a href="register_material.php"><i class="fas fa-comment"></i><span>Cadastro de Materiais</span></a>
