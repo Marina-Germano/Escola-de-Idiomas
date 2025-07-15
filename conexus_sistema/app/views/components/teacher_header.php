@@ -1,11 +1,4 @@
 <?php
-session_start();
-require_once(__DIR__ . '/../../config/conexao.php');
-$conn = Conexao::conectar();
-?>
-
-<!-- Mensagens -->
-<?php
 if(isset($message)){
    foreach($message as $message){
       echo '
@@ -19,21 +12,23 @@ if(isset($message)){
 ?>
 
 <header class="header">
+
    <section class="flex">
-      <a href="dashboard.php" class="logo">Admin.</a>
-      
-      <form action="search_page.php" method="post" class="search-form">
-         <input type="text" name="search" placeholder="search here..." required maxlength="100">
-         <button type="submit" class="fas fa-search" name="search_btn"></button>
+
+      <a href="home.php" class="logo">Educa.</a>
+
+      <form action="search_course.php" method="post" class="search-form">
+         <input type="text" name="search_course" placeholder="search courses..." required maxlength="100">
+         <button type="submit" class="fas fa-search" name="search_course_btn"></button>
       </form>
-      
+
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>
          <div id="search-btn" class="fas fa-search"></div>
          <div id="user-btn" class="fas fa-user"></div>
          <div id="toggle-btn" class="fas fa-sun"></div>
       </div>
-      
+
       <div class="profile">
          <?php
          $idusuario = $_SESSION['idusuario'] ?? null;
@@ -51,7 +46,9 @@ if(isset($message)){
          }
          ?>
       </div>
+
    </section>
+
 </header>
 
 <!-- header section ends -->
@@ -65,17 +62,14 @@ if(isset($message)){
    </div>
 
 
-      <nav class="navbar">
-         <a href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a>
-         <a href="turma_cadastro.php"><i class="fa-solid fa-bars-staggered"></i><span>Cadastro de Turma</span></a>
-         <a href="register_student.php"><i class="fas fa-graduation-cap"></i><span>Cadastro de Aluno</span></a>
-         <a href="register_employer.php"><i class="fas fa-comment"></i><span>Cadastro de Funcionario</span></a>
-         <a href="register_material.php"><i class="fas fa-comment"></i><span>Cadastro de Materiais</span></a>
-         <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>logout</span></a>
-      </nav>
+   <nav class="navbar">
+      <a href="home.php"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="about.php"><i class="fas fa-question"></i><span>about us</span></a>
+      <a href="courses.php"><i class="fas fa-graduation-cap"></i><span>Turmas</span></a>
+      <a href="teachers.php"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
+      <a href="contact.php"><i class="fas fa-headset"></i><span>contact us</span></a>
+   </nav>
+
 </div>
 
 <!-- side bar section ends -->
-
-
-

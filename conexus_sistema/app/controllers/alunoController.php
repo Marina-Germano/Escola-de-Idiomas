@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once "../model/Aluno.php";
-require_once "../model/Usuario.php";
-require_once "../model/Material.php";
+require_once "../models/aluno.php";
+require_once "../models/usuario.php";
+require_once "../models/material.php";
 
 $aluno = new Aluno();
 $usuarioModel = new Usuario();
@@ -68,18 +68,9 @@ switch ($acao) {
             exit;
         }
 
-        // Upload da imagem
-        $foto_nome = null;
-        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-            $extensao = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
-            $foto_nome = uniqid('foto_', true) . '.' . $extensao;
-            $caminho = __DIR__ . '/../public/img/' . $foto_nome;
+        // Definir imagem padrão
+        $foto_nome = 'user.png';
 
-            if (!move_uploaded_file($_FILES['foto']['tmp_name'], $caminho)) {
-                echo "Erro ao fazer upload da imagem.";
-                exit;
-            }
-        }
 
         // 1. Cadastrar usuário
         $cadastroUsuario = $usuarioModel->cadastrar(
@@ -154,30 +145,29 @@ switch ($acao) {
         $aluno->excluir($_GET['idaluno']);
         echo "Aluno excluído com sucesso!";
         break;
-
-    case 'listarTodos':
-        echo json_encode($aluno->listarTodos());
-        break;
-
-    case 'listarId':
+        case 'listarTodos':
+            echo json_encode($aluno->listarTodos());
+            break;
+            
+            case 'listarId':
         echo json_encode($aluno->listarId($_GET['idaluno']));
         break;
-
-    case 'listarMateriais':
+        
+        case 'listarMateriais':
         // Acesso exclusivo do aluno aos materiais
         $idaluno = $_SESSION['idaluno'] ?? null;
-
+        
         if (!$idaluno) {
             http_response_code(403);
             echo "Aluno não identificado na sessão.";
             exit;
         }
-
+        
         $materiais = $material->buscarPorAluno($idaluno);
         include '../view/aluno/materiais.php';
         break;
-
-    default:
+        
+        default:
         echo "Ação inválida.";
         break;
-}
+    }

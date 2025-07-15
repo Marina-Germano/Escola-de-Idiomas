@@ -14,62 +14,12 @@
   />
 
   <!-- css file link -->
-  <link rel="stylesheet" href="../public/css/style.css">
+  <link rel="stylesheet" href="../../../public/css/style.css">
 
 </head>
 <body>
     <!-- header section strats -->
-    <header class="header">
-    <section class="flex">
-        <a href="/app/views/student/home.html" class="logo"> <img src="/public/img/conexus_sem_fundo.png" alt=""> Conexus </a>
-        <form action="" method="post" class="search-form">
-        <input type="text" name="search_box" placeholder="Pesquisar..."  required maxlength="100" id="search_box">
-        <button type="submit" class="bi bi-search" name="search_box"></button>
-        </form>
-    <div class="icons">
-        <div id="menu-btn" class="bi bi-list"></div>
-        <div id="search-btn" class="bi bi-search"></div>
-        <div id="user-btn" class="bi bi-person"></div>
-        <div id="toggle-btn" class="bi bi-brightness-high"></div>
-    </div>
-
-    <div class="profile">
-        <img src="/public/img/pic-1-removebg-preview.png" alt="">
-        <h3>Alexandre Quintão</h3>
-        <span>2024002167</span>
-        <a href="profile.html" class="btn">acessar perfil</a>
-        <div class="flex-btn">
-            <a href="login.html" class="option-btn">login</a>
-            <a href="register.html" class="option-btn">sair</a>
-        </div>
-    </div>
-    </section>  
-    </header>
-    <!-- header section ends -->
-    <!-- sidebar section starts -->
-    <div class="side-bar">
-
-      <div id="close-btn">
-         <i class="fas fa-times"></i>
-      </div>
-
-      <div class="profile">
-         <img src="/public/img/pic-1-removebg-preview.png" alt="">
-         <h3>Alexandre Quintão</h3>
-         <span>2024002167</span>
-         <a href="profile.html" class="btn">acessar perfil</a>
-      </div>
-
-      <nav class="navbar">
-         <a href="home.html"><i class="fas fa-home"></i><span>home</span></a>
-         <a href="aulas.html"><i class="bi bi-calendar-week"></i><span>aulas</span></a>
-         <a href="materiais.html"><i class="bi bi-folder-check"></i><span>materiais</span></a>
-         <a href="boletim.html"><i class="bi bi-reception-4"></i><span>boletim</span></a>
-         <a href="financeiro.html"><i class="bi bi-piggy-bank-fill"></i><span>financeiro</span></a>
-         <a href="contact.html"><i class="fas fa-headset"></i><span>nos contate</span></a>
-      </nav>
-    </div>
-    <!-- sidebar section ends -->
+<?php include '../components/student_header.php'; ?>
     <!-- classes section starts -->
           <section class="container">
     <h2 class="heading">Próximas Aulas</h2>

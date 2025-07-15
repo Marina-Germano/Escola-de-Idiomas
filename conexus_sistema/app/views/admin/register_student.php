@@ -25,7 +25,7 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
 <section class="form-container">
     <form
         class="register"
-        action="/conexus_sistema/app/controllers/alunoController.php?acao=cadastrarCompleto"
+        action="../../controllers/alunoController.php?acao=cadastrarCompleto"
         method="post"
         enctype="multipart/form-data"
     >
@@ -75,8 +75,8 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
                 <p>Senha: <span>*</span></p>
                 <input type="password" name="senha" placeholder="Crie uma senha" maxlength="20" required class="box" />
 
-                <p>Foto de Perfil: <span>*</span></p>
-                <input type="file" name="foto" accept="image/*" required class="box" />
+                <p>Foto de Perfil: </p>
+                <input type="file" name="foto" accept="image/*" class="box" />
 
                 <p>Situação do Aluno:</p>
                 <select name="situacao" class="box">
@@ -91,7 +91,7 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
             </div>
         </div>
 
-        <input type="submit" name="submit" value="Registrar" class="btn" />
+        <input type="submit" name="submit" value="Registrar" class="btn"/>
     </form>
 </section>
 

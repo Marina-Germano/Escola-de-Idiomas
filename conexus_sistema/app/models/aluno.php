@@ -1,5 +1,5 @@
 <?php
-require_once "config/conexao.php";
+require_once "../config/conexao.php";
 
 class Aluno {
     private $pdo;
@@ -9,11 +9,17 @@ class Aluno {
     }
 
     public function cadastrar($idusuario, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $situacao = 'ativo') {
-        $result = $this->pdo->prepare(
-            "INSERT INTO aluno (idusuario, cep, rua, numero, bairro, complemento, responsavel, tel_responsavel, situacao)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        );
-        return $result->execute([$idusuario, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $situacao]);
+        try{
+            // Verifica se o usuário já é um aluno
+            $result = $this->pdo->prepare(
+                "INSERT INTO aluno (idusuario, cep, rua, numero, bairro, complemento, responsavel, tel_responsavel, situacao)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            return $result->execute([$idusuario, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $situacao]);
+        } catch (PDOException $e) {
+            echo "Erro: " . $e->getMessage();
+            exit;
+        }
     }
 
     public function alterar($idaluno, $cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $situacao) {

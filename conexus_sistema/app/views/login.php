@@ -31,16 +31,14 @@ if (isset($_POST['submit'])) {
       }
       
       elseif ($user['papel'] === 'aluno') {
-         header('location: /escola-de-idiomas/conexus_sistema/app/views/aluno/home.php');
+         header('location: student/home.php');
          exit;
       }
       elseif ($user['papel'] === 'professor') {
-         header('location: /escola-de-idiomas/conexus_sistema/app/views/professor/home.php');
+         header('location: teacher/home.php');
          exit;
       }
-      elseif ($user['papel'] === 'funcionario') {
-         header('Location: /escola-de-idiomas/conexus_sistema/app/views/funcionario/home.php');
-      }
+
       else {
          echo "Papel de usuário inválido.";
       }

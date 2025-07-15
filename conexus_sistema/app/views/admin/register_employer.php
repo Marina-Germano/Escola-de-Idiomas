@@ -13,7 +13,9 @@
 <?php include '../components/admin_header.php'; ?>
 
 <section class="form-container">
-  <form class="register" action="" method="post" enctype="multipart/form-data">
+  <form class="register" 
+  action="../../controllers/funcionarioController.php?acao=cadastrar"
+  method="post" enctype="multipart/form-data">
     <div class="flex">
       <div class="col">
         <p>Nome do Funcionário: <span>*</span></p>

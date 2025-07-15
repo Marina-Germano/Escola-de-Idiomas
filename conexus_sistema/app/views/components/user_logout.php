@@ -2,8 +2,8 @@
 
    include 'connect.php';
 
-   setcookie('user_id', '', time() - 1, '/');
+   setcookie('idusuario', '', time() - 1, '/');
 
-   header('location:../home.php');
+   header('location:../login.php');
 
 ?>
