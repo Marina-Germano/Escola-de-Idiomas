@@ -49,5 +49,20 @@ class Pagamento {
         $result->execute([$idpagamento]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function listarPorAluno($idAluno) {
+        try {
+            $sql = "SELECT * FROM pagamento WHERE idaluno = :idaluno ORDER BY data_vencimento DESC";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':idaluno', $idAluno, PDO::PARAM_INT);
+            $stmt->execute();
+            $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $resultados;
+        } catch (PDOException $e) {
+            error_log("Erro ao listar pagamentos por aluno: " . $e->getMessage());
+            return ['error' => "Erro ao acessar os dados de pagamento."];
+        }
+    }
 }
 ?>

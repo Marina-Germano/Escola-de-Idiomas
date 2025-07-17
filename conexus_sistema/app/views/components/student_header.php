@@ -1,6 +1,6 @@
-   <header class="header">
+    <header class="header">
         <section class="flex">
-            <a href="../student/home.php" class="logo"> <img src="/conexus_sistema/public/img/conexus_sem_fundo.png" alt=""> Conexus </a>
+            <a href="../student/home.php" class="logo"> <img src="../../../public/img/conexus_sem_fundo.png" alt=""> Conexus </a>
             <form action="" method="post" class="search-form">
                 <input type="text" name="search_box" placeholder="Pesquisar..." required maxlength="100" id="search_box">
                 <button type="submit" class="bi bi-search" name="search_box"></button>
@@ -12,13 +12,15 @@
                 <div id="toggle-btn" class="bi bi-brightness-high"></div>
             </div>
 
-            <div class="profile"> 
-                <img src="/conexus_sistema/public/img/pic-1-removebg-preview.png" alt=""> 
-                <h3><?= $fetch_user['nome'] ?? 'Usuário'; ?></h3> <span><?= $fetch_user['idusuario'] ?? 'N/A'; ?></span> <a href="profile.html" class="btn">acessar perfil</a>
+            <div class="profile">
+                <img src="../../../public/img/pic-1-removebg-preview.png" alt="Foto de perfil">
+                <h3><?= $fetch_user['nome'] ?? 'Aluno'; ?></h3>
+                <span><?= $fetch_user['idaluno'] ?? 'Matrícula N/A'; ?></span>
                 <div class="flex-btn">
-                    <a href="/conexus_sistema/app/controllers/usuarioController.php?acao=logout" class="option-btn">sair</a>
+                    <a href="user_logout.php?acao=logout" class="option-btn">sair</a>
                 </div>
             </div>
+
         </section>
     </header>
     

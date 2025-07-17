@@ -1,9 +1,3 @@
-<?php
-session_start();
-require_once(__DIR__ . '/../../config/conexao.php');
-$conn = Conexao::conectar();
-?>
-
 <!-- Mensagens -->
 <?php
 if(isset($message)){

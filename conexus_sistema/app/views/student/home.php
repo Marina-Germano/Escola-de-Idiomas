@@ -3,14 +3,19 @@ session_start();
 require_once(__DIR__ . '/../../config/conexao.php');
 
 if (!isset($_SESSION['idusuario']) || $_SESSION['papel'] !== 'aluno') {
-   header('Location: /conexus_sistema/app/views/login.php');
-   exit;
+    header('Location: ../login.php');
+    exit;
 }
 
 $idusuario = $_SESSION['idusuario'];
 $conn = Conexao::conectar();
 
+// Buscar dados do aluno com base no idusuario
+$stmt = $conn->prepare("SELECT a.idaluno, u.nome FROM aluno a JOIN usuario u ON a.idusuario = u.idusuario WHERE a.idusuario = ?");
+$stmt->execute([$idusuario]);
+$fetch_user = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
+
 
 
 <!DOCTYPE html>
@@ -72,13 +77,13 @@ $conn = Conexao::conectar();
         <?php
         if (!empty($all_materials)) {
             foreach ($all_materials as $material) {
-                $tutor_name = $material['professor'] ?? 'Professor Desconhecido'; 
+                $tutor_name = $material['professor'] ?? 'Professor Desconhecido';
                 $tutor_image = $material['foto_professor'] ?? 'pic-7.jpg';
                 
-                // coluna do material 
+                // coluna do material
                 $material_title = $material['titulo'];
-                $material_files_count = $material['quantidade'] ?? 'N/A'; 
-                $material_id = $material['idmaterial']; 
+                $material_files_count = $material['quantidade'] ?? 'N/A';
+                $material_id = $material['idmaterial'];
                 $material_date = date('d/m/Y');
                 if (isset($material['arquivo']) && !empty($material['arquivo'])) {
                     $file_ext = pathinfo($material['arquivo'], PATHINFO_EXTENSION);
@@ -89,7 +94,7 @@ $conn = Conexao::conectar();
         ?>
         <div class="box">
             <div class="tutor">
-                <img src="/conexus_sistema/public/img/<?= $tutor_image; ?>" alt=""> 
+                <img src="/conexus_sistema/public/img/<?= $tutor_image; ?>" alt="">
                 <div class="info">
                     <h3><?= $tutor_name; ?></h3>
                     <h4>Professor(a)</h4>
@@ -111,7 +116,7 @@ $conn = Conexao::conectar();
         ?>
     </div>
     <div class="more-btn">
-        <a href="/conexus_sistema/app/views/student/materiais.html" class="inline-option-btn">Veja todos Materiais</a>
+        <a href="materiais.php" class="inline-option-btn">Veja todos Materiais</a>
     </div>
 </section>
 

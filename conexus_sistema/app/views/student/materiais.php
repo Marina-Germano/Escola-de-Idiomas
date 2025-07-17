@@ -27,7 +27,7 @@ $conn = Conexao::conectar();
     <link rel="stylesheet" href="../../../public/css/style.css">
 </head>
 <body>
-    <?php include '../components/student_header.php'; ?>
+<?php include '../components/student_header.php'; ?>
     </div>
     <section class="courses">
         <h1 class="heading">Seus Materiais</h1>
@@ -116,6 +116,6 @@ $conn = Conexao::conectar();
             ?>
         </div>
     </section>
-    <script src=../../../public/js/script.js"></script>
+    <script src="../../../public/js/script.js"></script>
 </body>
 </html>

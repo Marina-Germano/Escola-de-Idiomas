@@ -33,5 +33,19 @@ class Idioma {
         $result->execute([$ididioma]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function buscarOuCriar($descricao) {
+        $stmt = $this->pdo->prepare("SELECT ididioma FROM idioma WHERE descricao = ?");
+        $stmt->execute([$descricao]);
+        $res = $stmt->fetch();
+        if ($res) {
+            return $res['ididioma'];
+        } else {
+            $stmt = $this->pdo->prepare("INSERT INTO idioma (descricao) VALUES (?)");
+            $stmt->execute([$descricao]);
+            return $this->pdo->lastInsertId();
+        }
+    }
+
 }
 ?>

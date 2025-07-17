@@ -8,6 +8,11 @@
             $this->pdo = Conexao::conectar();
         }
 
+        public function getPDO() {
+            return $this->pdo;
+        }
+
+
         public function cadastrar($idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor) {
             $result = $this->pdo->prepare("INSERT INTO material VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, DEFAULT, ?)");
             return $result->execute([$idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor]);
@@ -81,5 +86,13 @@
             $stmt->execute([$idaluno]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function listarPorTurma($idturma) {
+        $sql = "SELECT * FROM material WHERE idturma = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$idturma]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     }
 ?>

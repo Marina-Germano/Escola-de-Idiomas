@@ -33,5 +33,19 @@
             $result->execute([$id]);
             return $result->fetch(PDO::FETCH_ASSOC);
         }
+
+        public function buscarOuCriar($descricao) {
+            $stmt = $this->pdo->prepare("SELECT idnivel FROM nivel WHERE descricao = ?");
+            $stmt->execute([$descricao]);
+            $res = $stmt->fetch();
+            if ($res) {
+                return $res['idnivel'];
+            } else {
+                $stmt = $this->pdo->prepare("INSERT INTO nivel (descricao) VALUES (?)");
+                $stmt->execute([$descricao]);
+                return $this->pdo->lastInsertId();
+            }
+        }
+
     }
 ?>

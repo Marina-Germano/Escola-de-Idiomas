@@ -33,5 +33,19 @@
             $result->execute([$id]);
             return $result->fetch(PDO::FETCH_ASSOC);
         }
+
+        public function buscarOuCriar($descricao) {
+            $stmt = $this->pdo->prepare("SELECT idtipo_material FROM tipo_material WHERE descricao = ?");
+            $stmt->execute([$descricao]);
+            $res = $stmt->fetch();
+            if ($res) {
+                return $res['idtipo_material'];
+            } else {
+                $stmt = $this->pdo->prepare("INSERT INTO tipo_material (descricao) VALUES (?)");
+                $stmt->execute([$descricao]);
+                return $this->pdo->lastInsertId();
+            }
+        }
+
     }
 ?>

@@ -97,6 +97,16 @@ switch ($acao) {
         echo json_encode($pagamento->listarTodos());
         break;
 
+    case 'listarPorAluno':
+        $idaluno = $_GET['idaluno'] ?? null;
+        if (!$idaluno) {
+            echo json_encode(['error' => 'ID do aluno não informado']);
+            exit;
+        }
+        echo json_encode($pagamento->listarPorAluno($idaluno));
+        break;
+
+
     case 'listarId':
         $id = $_GET['idpagamento'] ?? null;
 
