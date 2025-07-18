@@ -1,5 +1,5 @@
 <?php
-require_once "config/conexao.php";
+require_once __DIR__ . '/../config/conexao.php';
 
 class Funcionario {
     private $pdo;
@@ -29,7 +29,7 @@ class Funcionario {
 
     public function listarTodos() {
         $result = $this->pdo->query(
-            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone 
+            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone
             FROM funcionario f 
             JOIN usuario u ON u.idusuario = f.idusuario"
         );

@@ -1,66 +1,96 @@
+<?php
+require_once(__DIR__ . '/../../config/conexao.php');
+require_once(__DIR__ . '/../../models/funcionario.php');
+require_once(__DIR__ . '/../../models/usuario.php');
+
+$conn = Conexao::conectar();
+$funcionarioModel = new Funcionario();
+
+$modoEdicao = false;
+$item = [];
+
+if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
+    $modoEdicao = true;
+    $item = $funcionarioModel->listarId($_GET['id']);
+}
+?>
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conexus - Registro Funcionário</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-  <link rel="stylesheet" href="../../../public/css/admin_style.css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conexus - <?= $modoEdicao ? 'Editar funcionario' : 'Registro funcionario' ?></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="../../../public/css/admin_style.css" />
 </head>
 <body>
 
 <?php include '../components/admin_header.php'; ?>
 
 <section class="form-container">
-  <form class="register" 
-  action="../../controllers/funcionarioController.php?acao=cadastrar"
-  method="post" enctype="multipart/form-data">
-    <div class="flex">
-      <div class="col">
-        <p>Nome do Funcionário: <span>*</span></p>
-        <input type="text" name="name" placeholder="Digite o nome do funcionário" maxlength="50" required class="box" value="Nome">
+    <form
+        class="register"
+        action="../../controllers/funcionarioController.php?acao=<?= $modoEdicao ? 'alterar' : 'cadastrarCompleto' ?>"
+        method="post"
+        enctype="multipart/form-data"
+    >
+        <input type="hidden" name="papel" value="funcionario" />
+        <?php if ($modoEdicao): ?>
+            <input type="hidden" name="idfuncionario" value="<?= $item['idfuncionario'] ?>">
+        <?php endif; ?>
 
-        <p>CPF do Funcionário:</p>
-        <input type="text" name="cpf" placeholder="Digite o cpf do funcionário" maxlength="11" required class="box" value="CPF">
+        <div class="flex">
+            <div class="col">
+                <p>Nome: <span>*</span></p>
+                <input type="text" name="nome" required class="box" value="<?= $modoEdicao ? htmlspecialchars($item['nome']) : '' ?>">
 
-        <p>Data de Nascimento:</p>
-        <input type="date" name="data-nasc" required class="box" value="VALOR_NASC">
+                <p>CPF: <span>*</span></p>
+                <input type="text" name="cpf" maxlength="11" required class="box" value="<?= $modoEdicao ? htmlspecialchars($item['cpf']) : '' ?>">
 
-        <p>Cargo:</p>
-        <input type="text" name="cargo" placeholder="Digite o cargo do funcionário" maxlength="50" required class="box" value="Cargo">
+                <p>Data de Nascimento: <span>*</span></p>
+                <input type="date" name="data_nascimento" required class="box" value="<?= $modoEdicao ? $item['data_nascimento'] : '' ?>">
 
-        <p>Especialidade do Professor:</p>
-        <select name="profession" class="box">
-          <option value="" disabled selected>-- selecione uma especialidade</option>
-          <option value="administracao">Administração</option>
-          <option value="p-ingles">Inglês</option>
-          <option value="p-espanhol">Espanhol</option>
-          <option value="p-frances">Francês</option>
-          <option value="p-libras">Libras</option>
-          <option value="p-alemao">Alemão</option>
-          <option value="p-tailandes">Tailandês</option>
-        </select>
-      </div>
-      <div class="col">
-        <p>Senha do funcionário: <span>*</span></p>
-        <input type="password" name="pass" placeholder="Digite a senha do funcionário" maxlength="20" required class="box">
+                <p>Cargo: <span>*</span></p>
+                <input type="text" name="cargo" required class="box" value="<?= $modoEdicao ? htmlspecialchars($item['cargo']) : '' ?>">
 
-        <p>Confirme a senha: <span>*</span></p>
-        <input type="password" name="cpass" placeholder="Confirme a senha do funcionário" maxlength="20" required class="box">
+                <p>Especialidade do Professor:</p>
+                <input type="text" name="especialidade" class="box" value="<?= $modoEdicao ? htmlspecialchars($item['especialidade']) : '' ?>">
+            </div>
 
-        <p>Email do Funcionário: <span>*</span></p>
-        <input type="email" name="email" placeholder="Digite o email do funcionário" maxlength="50" required class="box" value="Email">
+            <div class="col">
+                <?php if (!$modoEdicao): ?>
+                    <p>Senha: <span>*</span></p>
+                    <input type="password" name="senha" maxlength="20" required class="box">
+                <?php endif; ?>
 
-        <p>Telefone do Funcionário:</p>
-        <input type="tel" name="tel" placeholder="Digite o telefone do funcionário" required class="box" value="Telefone">
+                <?php if (!$modoEdicao): ?>
+                    <p>Confirme sua Senha: <span>*</span></p>
+                    <input type="password" name="senha" maxlength="20" required class="box">
+                <?php endif; ?>
 
-        <p>Selecione uma Foto de Perfil: <span>*</span></p>
-        <input type="file" name="image" accept="image/*" required class="box">
-      </div>
-    </div>
-    <input type="submit" name="submit" value="Registrar" class="btn">
-  </form>
+                <p>Email: <span>*</span></p>
+                <input type="email" name="email" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['email']) : '' ?>">
+
+                <p>Telefone: <span>*</span></p>
+                <input type="tel" name="telefone" maxlength="15" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['telefone']) : '' ?>">
+
+                <p>Foto de Perfil: </p>
+                <input type="file" name="foto" accept="image/*" class="box" />
+
+
+                <br /><br />
+                <p style="font-size: 14px;">
+                    <?= $modoEdicao ? 'Edite os item do funcionario conforme necessário.' : 'Ao clicar em "Registrar", o funcionario será vinculado ao CPF informado e seu cadastro completo será salvo.' ?>
+                </p>
+            </div>
+        </div>
+
+        <input type="submit" name="submit" value="<?= $modoEdicao ? 'Salvar Alterações' : 'Registrar' ?>" class="btn"/>
+    </form>
 </section>
 
 <script src="../../../public/js/admin_script.js"></script>

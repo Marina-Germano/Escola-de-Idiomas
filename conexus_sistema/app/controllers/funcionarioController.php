@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "../model/Funcionario.php";
-require_once "../model/Usuario.php";
+require_once "../models/Funcionario.php";
+require_once "../models/Usuario.php";
 
 $funcionario = new Funcionario();
 $usuarioModel = new Usuario();
@@ -61,7 +61,7 @@ switch ($acao) {
         if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
             $extensao = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
             $foto_nome = uniqid('foto_', true) . '.' . $extensao;
-            $caminho = __DIR__ . '/../public/img/' . $foto_nome;
+            $caminho = __DIR__ . '../../public/img/' . $foto_nome;
             move_uploaded_file($_FILES['foto']['tmp_name'], $caminho);
         }
 

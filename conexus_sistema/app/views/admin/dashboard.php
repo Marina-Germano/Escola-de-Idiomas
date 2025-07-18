@@ -38,19 +38,6 @@ $nome = $usuario['nome'] ?? 'Administrador';
       <div class="box">
          <h3>Bem-vindo, <?= htmlspecialchars($nome) ?>!</h3>
          <p>Administrador do sistema</p>
-         <a href="profile.php" class="btn">Ver perfil</a>
-      </div>
-
-      <div class="box">
-         <h3>Cadastrar Aluno</h3>
-         <p>Gerencie os alunos da escola</p>
-         <a href="register_student.php" class="btn">Cadastrar Aluno</a>
-      </div>
-
-      <div class="box">
-         <h3>Cadastrar Funcionário</h3>
-         <p>Gerencie a equipe administrativa</p>
-         <a href="register_employer.php" class="btn">Cadastrar Funcionário</a>
       </div>
 
       <div class="box">
@@ -63,6 +50,24 @@ $nome = $usuario['nome'] ?? 'Administrador';
          <h3>Relatório de Materiais</h3>
          <p>Acompanhe o uso de materiais</p>
          <a href="escola-de-idiomas/conexus_sistema/app/views/admin/material_report.php" class="btn">Ver Relatório</a>
+      </div>
+
+      <div class="box">
+         <h3>Cadastrar Aluno</h3>
+         <p>Gerenciar alunos</p>
+         <a href="register_student.php" class="btn">Cadastrar Aluno</a>
+      </div>
+
+      <div class="box">
+         <h3>Cadastrar Turma</h3>
+         <p>Gerencar turmas</p>
+         <a href="register_class.php" class="btn">Cadastrar Turma</a>
+      </div>
+
+      <div class="box">
+         <h3>Cadastrar Funcionário</h3>
+         <p>Gerenciar equipe administrativa</p>
+         <a href="register_employer.php" class="btn">Cadastrar Funcionário</a>
       </div>
 
    </div>

@@ -145,11 +145,12 @@ switch ($acao) {
         $aluno->excluir($_GET['idaluno']);
         echo "Aluno excluído com sucesso!";
         break;
+
         case 'listarTodos':
             echo json_encode($aluno->listarTodos());
             break;
             
-            case 'listarId':
+        case 'listarId':
         echo json_encode($aluno->listarId($_GET['idaluno']));
         break;
         

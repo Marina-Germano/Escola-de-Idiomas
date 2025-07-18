@@ -1,8 +1,19 @@
 <?php
-require_once(__DIR__ . '/../../config/conexao.php'); // ajuste o caminho conforme seu projeto
-$conn = Conexao::conectar(); // cria a conexão para ser usada no header
-?>
+require_once(__DIR__ . '/../../config/conexao.php');
+require_once(__DIR__ . '/../../models/aluno.php');
+require_once(__DIR__ . '/../../models/usuario.php');
 
+$conn = Conexao::conectar();
+$alunoModel = new Aluno();
+
+$modoEdicao = false;
+$item = [];
+
+if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
+    $modoEdicao = true;
+    $item = $alunoModel->listarId($_GET['id']);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -10,88 +21,100 @@ $conn = Conexao::conectar(); // cria a conexão para ser usada no header
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Conexus - Registro Aluno</title>
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+    <title>Conexus - <?= $modoEdicao ? 'Editar Aluno' : 'Registro Aluno' ?></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="../../../public/css/admin_style.css" />
 </head>
 <body>
 
-<!-- Cabeçalho -->
 <?php include '../components/admin_header.php'; ?>
 
-<!-- Formulário -->
 <section class="form-container">
     <form
         class="register"
-        action="../../controllers/alunoController.php?acao=cadastrarCompleto"
+        action="../../controllers/alunoController.php?acao=<?= $modoEdicao ? 'alterar' : 'cadastrarCompleto' ?>"
         method="post"
         enctype="multipart/form-data"
     >
         <input type="hidden" name="papel" value="aluno" />
+        <?php if ($modoEdicao): ?>
+            <input type="hidden" name="idaluno" value="<?= $item['idaluno'] ?>">
+        <?php endif; ?>
 
         <div class="flex">
             <div class="col">
                 <p>Nome do Aluno: <span>*</span></p>
-                <input type="text" name="nome" placeholder="Digite o nome do aluno" maxlength="100" required class="box" />
+                <input type="text" name="nome" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['nome']) : '' ?>">
 
                 <p>CPF do Aluno: <span>*</span></p>
-                <input type="text" name="cpf" placeholder="Digite o CPF" maxlength="11" required class="box" />
+                <input type="text" name="cpf" maxlength="11" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['cpf']) : '' ?>">
 
                 <p>Data de Nascimento: <span>*</span></p>
-                <input type="date" name="data_nascimento" required class="box" />
+                <input type="date" name="data_nascimento" required class="box"
+                    value="<?= $modoEdicao ? $item['data_nascimento'] : '' ?>">
 
                 <p>Email do Aluno: <span>*</span></p>
-                <input type="email" name="email" placeholder="Digite o email" maxlength="100" required class="box" />
+                <input type="email" name="email" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['email']) : '' ?>">
 
                 <p>Telefone do Aluno: <span>*</span></p>
-                <input type="tel" name="telefone" placeholder="Digite o telefone" maxlength="15" required class="box" />
+                <input type="tel" name="telefone" maxlength="15" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['telefone']) : '' ?>">
 
                 <p>CEP: <span>*</span></p>
-                <input type="text" name="cep" placeholder="Digite o CEP" maxlength="9" required class="box" />
+                <input type="text" name="cep" maxlength="9" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['cep']) : '' ?>">
 
                 <p>Rua: <span>*</span></p>
-                <input type="text" name="rua" placeholder="Digite a Rua" required class="box" />
+                <input type="text" name="rua" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['rua']) : '' ?>">
 
                 <p>Número: <span>*</span></p>
-                <input type="text" name="numero" placeholder="Número da residência" required class="box" />
-
+                <input type="text" name="numero" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['numero']) : '' ?>">
             </div>
 
             <div class="col">
                 <p>Bairro: <span>*</span></p>
-                <input type="text" name="bairro" placeholder="Digite o Bairro" required class="box" />
+                <input type="text" name="bairro" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['bairro']) : '' ?>">
 
                 <p>Complemento:</p>
-                <input type="text" name="complemento" placeholder="Complemento (opcional)" class="box" />
+                <input type="text" name="complemento" class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['complemento']) : '' ?>">
 
                 <p>Responsável pelo Aluno: <span>*</span></p>
-                <input type="text" name="responsavel" placeholder="Nome do responsável" required class="box" />
+                <input type="text" name="responsavel" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['responsavel']) : '' ?>">
 
                 <p>Telefone do Responsável: <span>*</span></p>
-                <input type="tel" name="tel_responsavel" placeholder="Telefone do responsável" required class="box" />
+                <input type="tel" name="tel_responsavel" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['tel_responsavel']) : '' ?>">
 
-                <p>Senha: <span>*</span></p>
-                <input type="password" name="senha" placeholder="Crie uma senha" maxlength="20" required class="box" />
+                <?php if (!$modoEdicao): ?>
+                    <p>Senha: <span>*</span></p>
+                    <input type="password" name="senha" maxlength="20" required class="box">
+                <?php endif; ?>
 
                 <p>Foto de Perfil: </p>
                 <input type="file" name="foto" accept="image/*" class="box" />
 
                 <p>Situação do Aluno:</p>
                 <select name="situacao" class="box">
-                    <option value="ativo" selected>Ativo</option>
-                    <option value="inativo">Inativo</option>
+                    <option value="ativo" <?= $modoEdicao && $item['situacao'] === 'ativo' ? 'selected' : '' ?>>Ativo</option>
+                    <option value="inativo" <?= $modoEdicao && $item['situacao'] === 'inativo' ? 'selected' : '' ?>>Inativo</option>
                 </select>
 
                 <br /><br />
                 <p style="font-size: 14px;">
-                    Ao clicar em "Registrar", o aluno será vinculado ao CPF informado e seu cadastro completo será salvo.
+                    <?= $modoEdicao ? 'Edite os item do aluno conforme necessário.' : 'Ao clicar em "Registrar", o aluno será vinculado ao CPF informado e seu cadastro completo será salvo.' ?>
                 </p>
             </div>
         </div>
 
-        <input type="submit" name="submit" value="Registrar" class="btn"/>
+        <input type="submit" name="submit" value="<?= $modoEdicao ? 'Salvar Alterações' : 'Registrar' ?>" class="btn"/>
     </form>
 </section>
 

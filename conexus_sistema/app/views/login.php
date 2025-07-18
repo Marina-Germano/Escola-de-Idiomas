@@ -7,7 +7,7 @@ if (isset($_POST['submit'])) {
    $cpf = filter_var($cpf, FILTER_SANITIZE_STRING);
 
    $pass = $_POST['pass'] ?? '';
-   // $pass = hash('sha256', $pass); - comentada temporariamente para testes
+   //$pass = hash('sha256', $pass); //- comentada temporariamente para testes
 // Depois (sem hash - compara com o texto puro do banco)
    $pass = $_POST['pass'];
    $pass = filter_var($pass, FILTER_SANITIZE_STRING);

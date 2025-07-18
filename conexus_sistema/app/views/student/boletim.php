@@ -3,14 +3,30 @@ session_start();
 require_once(__DIR__ . '/../../config/conexao.php');
 
 if (!isset($_SESSION['idusuario']) || $_SESSION['papel'] !== 'aluno') {
-   header('Location: /conexus_sistema/app/views/login.php');
-   exit;
+    header('Location: /conexus_sistema/app/views/login.php');
+    exit;
 }
 
 $idusuario = $_SESSION['idusuario'];
 $conn = Conexao::conectar();
 
+$cursoSelecionado = isset($_POST['curso']) ? $_POST['curso'] : null;
+
+$atividades = [];
+
+if ($cursoSelecionado && $cursoSelecionado !== 'default') {
+    // Buscar as notas no banco com base no idusuario e cursoSelecionado
+    $stmt = $conn->prepare("SELECT a.nome, n.nota
+                            FROM avaliacao a
+                            INNER JOIN nota n ON a.idavaliacao = n.idavaliacao
+                            INNER JOIN turma t ON a.idturma = t.idturma
+                            WHERE n.idaluno = ? AND t.idioma = ?");
+    $stmt->execute([$idusuario, $cursoSelecionado]);
+    $avaliacoes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
+
+
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8" />
@@ -21,10 +37,8 @@ $conn = Conexao::conectar();
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 
 <!-- Bootstrap Icons -->
-<link
-rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-/>
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
 
 <!-- css file link -->
 <link rel="stylesheet" href="../../../public/css/style.css">
@@ -39,22 +53,24 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.c
         <div class="row">
             <form method="post">
                 <label for="curso" class="heading"> Escolha um curso: </label>
-                <select name="curso" id="curso" class="row" style="font-size: medium;" required>
+                    <select name="curso" id="curso" class="row" style="font-size: medium;" required>
                     <option value="default" >-- Selecione um Curso --</option>
-                    <option value="ingles" <?= $cursoSelecionado === 'ingles' ? 'selected' : '' ?> Inglês</option>
-                    <option value="espanhol" <?= $cursoSelecionado === 'espanhol' ? 'selected' : '' ?> Espanhol</option>
-                    <option value="frances" <?= $cursoSelecionado === 'frances' ? 'selected' : '' ?> Francês</option>
+                    <option value="ingles" <?= $cursoSelecionado === 'ingles' ? 'selected' : '' ?>>Inglês</option>
+                    <option value="espanhol" <?= $cursoSelecionado === 'espanhol' ? 'selected' : '' ?>>Espanhol</option>
+                    <option value="frances" <?= $cursoSelecionado === 'frances' ? 'selected' : '' ?>>Francês</option>
                 </select>
+
                 <button type="submit" class="inline-btn">Ver Notas</button>
             </form>
         </div>
     </section>
 
+
 <?php
 
-$atividades = []; 
+$atividades = [];
 
-$cursoSelecionado = isset($_GET['curso']) ? htmlspecialchars($_GET['curso']) : 'Nenhum Curso Selecionado'; 
+$cursoSelecionado = isset($_POST['curso']) ? htmlspecialchars($_POST['curso']) : 'Nenhum Curso Selecionado'; 
 
 ?>
 <script src="/public/js/script.js"></script>

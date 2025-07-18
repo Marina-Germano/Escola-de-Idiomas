@@ -1,5 +1,6 @@
 <?php
-require_once "../config/conexao.php";
+require_once __DIR__ . '/../config/conexao.php';
+
 
 class Aluno {
     private $pdo;
@@ -30,9 +31,9 @@ class Aluno {
         return $result->execute([$cep, $rua, $numero, $bairro, $complemento, $responsavel, $tel_responsavel, $situacao, $idaluno]);
     }
 
-    public function excluir($id) {
+    public function excluir($idaluno) {
         $result = $this->pdo->prepare("DELETE FROM aluno WHERE idaluno = ?");
-        return $result->execute([$id]);
+        return $result->execute([$idaluno]);
     }
 
     public function listarTodos() {
@@ -44,15 +45,13 @@ class Aluno {
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function listarId($id) {
-        $result = $this->pdo->prepare(
-            "SELECT a.*, u.nome, u.cpf, u.email, u.telefone, u.data_nascimento
-            FROM aluno a 
-            JOIN usuario u ON u.idusuario = a.idusuario WHERE a.idaluno = ?"
-        );
-        $result->execute([$id]);
-        return $result->fetch(PDO::FETCH_ASSOC);
+    public function listarId($idaluno) {
+        $sql = "SELECT * FROM aluno WHERE idaluno = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$idaluno]);
+        return $stmt->fetch(PDO::FETCH_ASSOC); // <-- importante!
     }
+
 
     public function buscarIdPorUsuario($idusuario) {
         $result = $this->pdo->prepare("SELECT idaluno FROM aluno WHERE idusuario = ?");

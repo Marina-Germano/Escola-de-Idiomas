@@ -2,7 +2,7 @@
 
    include 'connect.php';
 
-   setcookie('idaluno', '', time() - 1, '/');
+   setcookie('tutor_id', '', time() - 1, '/');
 
    header('location:../login.php');
 
