@@ -7,7 +7,7 @@ require_once "../model/Funcionario.php";
 
 $usuario = new Usuario();
 $aluno = new Aluno();
-$professor = new Professor();
+// $professor = new Professor();
 $funcionario = new Funcionario();
 
 function estaLogado() {

@@ -17,32 +17,43 @@ $itens = $turmaModel->listarTodos();
 
 <?php include '../components/admin_header.php'; ?>
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h3">Turmas</h1>
-        <a href="register_class.php" class="btn btn-primary"><i class="fas fa-plus"></i> Nova Turma</a>
+
+<div class="box-container-list">
+    <div class="flex-between heading-bar">
+        <h1 class="heading">Turmas</h1>
+        <a href="register_class.php" class="inline-btn"><i class="fas fa-plus"></i> Nova Turma</a>
     </div>
 
     <?php if (!empty($itens)): ?>
-        <div class="table-responsive">
+        <div class="table-responsive custom-table">
             <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
+                <thead class="table-header">
                     <tr>
-                        <th>Descrição</th>
+                        <th>Sala</th>
+                        <th>Idioma</th>
+                        <th>Nível</th>
+                        <th>Dias da semana</th>
+                        <th>Horário</th>
                         <th class="text-end">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($itens as $item): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($item['descricao']); ?></td>
+                            <td><?php echo htmlspecialchars($item['sala'] ?? 'sem sala'); ?></td>
+                            <td><?php echo htmlspecialchars($item['idioma'] ?? 'sem idioma'); ?></td>
+                            <td><?php echo htmlspecialchars($item['nivel'] ?? 'sem nível'); ?></td>
+                            <td><?php echo htmlspecialchars($item['dias_semana'] ?? 'sem dias'); ?></td>
+                            <td><?php echo htmlspecialchars($item['hora_inicio'] ?? 'sem horário'); ?></td></td>
                             <td class="text-end">
-                                <a href="register_class.php?acao=editar&id=<?= $item['idturma'] ?>" class="btn btn-sm btn-warning">Editar</a>
-                                    <i class="fas fa-edit"></i> Editar</a>
 
-                                <a href="register_class.php?acao=excluir&id=<?= $item['idturma'] ?>" class="delete-btn"
+                                <a href="register_class.php?acao=editar&id=<?= $item['idturma'] ?>" class="inline-option-btn">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a href="register_class.php?acao=excluir&id=<?= $item['idturma'] ?>" class="inline-delete-btn"
                                 onclick="return confirm('Tem certeza que deseja excluir esta turma?');">
-                                    <i class="fas fa-trash-alt"></i> Excluir</a>
+                                    <i class="fas fa-trash-alt"></i> Excluir
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -50,8 +61,11 @@ $itens = $turmaModel->listarTodos();
             </table>
         </div>
     <?php else: ?>
-        <div class="alert alert-info">
-            Nenhuma turma cadastrada.
-        </div>
+        <div class="empty">Nenhuma turma cadastrada.</div>
     <?php endif; ?>
 </div>
+
+
+<script src="../../../public/js/admin_script.js"></script>
+</body>
+</html>

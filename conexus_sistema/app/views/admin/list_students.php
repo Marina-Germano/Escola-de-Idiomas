@@ -18,16 +18,16 @@ $itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu métod
 
 <?php include '../components/admin_header.php'; ?>
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h3">Estudantes</h1>
-        <a href="register_student.php" class="btn btn-primary"><i class="fas fa-plus"></i> Novo Estudante</a>
+<div class="box-container-list">
+    <div class="flex-between heading-bar">
+        <h1 class="heading">Estudantes</h1>
+        <a href="register_student.php" class="inline-btn"><i class="fas fa-plus"></i> Novo Estudante</a>
     </div>
 
     <?php if (!empty($itens)): ?>
-        <div class="table-responsive">
+        <div class="table-responsive custom-table">
             <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
+                <thead class="table-header">
                     <tr>
                         <th>Nome</th>
                         <th>CPF</th>
@@ -37,15 +37,16 @@ $itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu métod
                 <tbody>
                     <?php foreach ($itens as $item): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($item['nome']); ?></td>
-                            <td><?php echo htmlspecialchars($item['cpf']); ?></td>
+                            <td><?= htmlspecialchars($item['nome']) ?></td>
+                            <td><?= htmlspecialchars($item['cpf']) ?></td>
                             <td class="text-end">
-                                <a href="register_student.php?acao=editar&id=<?= $item['idaluno'] ?>" class="btn btn-sm btn-warning">Editar</a>
-                                    <i class="fas fa-edit"></i> Editar</a>
-
-                                <a href="register_student.php?acao=excluir&id=<?= $item['idaluno'] ?>" class="delete-btn"
+                                <a href="register_student.php?acao=editar&id=<?= $item['idaluno'] ?>" class="inline-option-btn">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a href="register_student.php?acao=excluir&id=<?= $item['idaluno'] ?>" class="inline-delete-btn"
                                 onclick="return confirm('Tem certeza que deseja excluir este estudante?');">
-                                    <i class="fas fa-trash-alt"></i> Excluir</a>
+                                <i class="fas fa-trash-alt"></i> Excluir
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -53,8 +54,10 @@ $itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu métod
             </table>
         </div>
     <?php else: ?>
-        <div class="alert alert-info">
-            Nenhum estudante cadastrado.
-        </div>
+        <div class="empty">Nenhum estudante cadastrado.</div>
     <?php endif; ?>
 </div>
+
+<script src="../../../public/js/admin_script.js"></script>
+</body>
+</html>

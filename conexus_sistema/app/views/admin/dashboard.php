@@ -42,14 +42,14 @@ $nome = $usuario['nome'] ?? 'Administrador';
 
       <div class="box">
          <h3>Relatório Financeiro</h3>
-         <p>Visualize receitas e despesas</p>
-         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/financial_report.php" class="btn">Gerar Relatório</a>
+         <p>Acompanhe ganhos</p>
+         <a href="../../controllers/relatorioFinanceiroController.php" target="_blank" class="btn">Ver Relatório</a>
       </div>
 
       <div class="box">
          <h3>Relatório de Materiais</h3>
          <p>Acompanhe o uso de materiais</p>
-         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/material_report.php" class="btn">Ver Relatório</a>
+         <a href="../../controllers/relatorioMateriaisController.php" target="_blank" class="btn">Ver Relatório</a>
       </div>
 
       <div class="box">
