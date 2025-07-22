@@ -1,7 +1,7 @@
 <?php
 require_once "../../models/turma.php";
 $turmaModel = new Turma();
-$itens = $turmaModel->listarTodos();
+$itens = $turmaModel->listarTurma();
 ?>
 
 <!DOCTYPE html>

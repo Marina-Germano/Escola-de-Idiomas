@@ -24,13 +24,18 @@ class Turma {
         return $result->execute([$id]);
     }
 
-public function listarTodos() {
+public function listarTurma() {
     $sql = "SELECT t.*, n.descricao AS nivel, i.descricao AS idioma FROM turma t
             LEFT JOIN nivel n ON t.idnivel = n.idnivel
             LEFT JOIN idioma i ON t.ididioma = i.ididioma";
     $result = $this->pdo->query($sql);
     return $result->fetchAll(PDO::FETCH_ASSOC);
 }
+
+    public function listarTodos() {
+        $result = $this->pdo->query("SELECT * FROM turma");
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
     public function listarId($id) {

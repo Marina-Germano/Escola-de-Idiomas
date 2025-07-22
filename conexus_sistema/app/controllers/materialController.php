@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once "../model/Idioma.php";
-require_once "../model/Nivel.php";
-require_once "../model/TipoMaterial.php";
-require_once "../model/Turma.php";
-require_once "../model/Material.php";
+require_once "../models/idioma.php";
+require_once "../models/nivel.php";
+require_once "../models/tipo_material.php";
+require_once "../models/turma.php";
+require_once "../models/material.php";
 
 function estaLogado() {
     return isset($_SESSION['idusuario']);
@@ -144,9 +144,8 @@ switch ($acao) {
         }
         break;
 
-    case 'listar':
-        $materiais = $materialModel->listarTodos();
-        include "../views/admin/listar.php";
+    case 'listarTodos':
+        echo json_encode($material->listarTodos());
         break;
 
     case 'listar_por_turma':

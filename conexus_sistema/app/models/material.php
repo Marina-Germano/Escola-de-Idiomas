@@ -29,7 +29,7 @@
         }
 
         public function listarTodos() {
-            $result = $this->pdo->query("SELECT * FROM material");
+            $result = $this->pdo->query("SELECT *  FROM material");
             return $result->fetchAll(PDO::FETCH_ASSOC);
         }
 

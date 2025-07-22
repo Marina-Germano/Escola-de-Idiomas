@@ -10,7 +10,40 @@
 </head>
 <body>
 
-<?php include '../components/admin_header.php'; ?>
+<?php include '../components/admin_header.php';?>
+
+<?php
+require_once(__DIR__ . '/../../config/conexao.php');
+require_once(__DIR__ . '/../../models/idioma.php');
+require_once(__DIR__ . '/../../models/nivel.php');
+require_once(__DIR__ . '/../../models/tipo_material.php');
+require_once(__DIR__ . '/../../models/material.php');
+require_once(__DIR__ . '/../../models/turma.php');
+
+$conn = Conexao::conectar();
+$materialModel = new Material();
+
+$idiomaModel = new Idioma();
+$itens = $idiomaModel->listarTodos();
+
+$nivelModel = new Nivel();
+$niveis = $nivelModel->listarTodos();
+
+$tipoMaterialModel = new TipoMaterial();
+$tiposMateriais = $tipoMaterialModel->listarTodos();
+
+$turmaModel = new Turma();
+$turmas = $turmaModel->listarTodos();
+
+$modoEdicao = false;
+$item = [];
+
+if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
+    $modoEdicao = true;
+    $item = $funcionarioModel->listarId($_GET['id']);
+}
+?>
+
 
 <section class="form-container">
 
@@ -26,36 +59,36 @@
 
                 <p><strong>Tipo de Material</strong></p>
                 <select name="idtipo_material" class="box">
-                    <option value="" selected>Selecione existente (ou preencha abaixo)</option>
-                    <option value="1">Livro</option>
-                    <option value="2">PDF</option>
-                    <option value="3">Vídeo</option>
+                    <option value="" selected>Selecionar Tipo de Material</option>
+                    <?php foreach ($tiposMateriais as $tipo): ?>
+                        <option value="<?= $tipo['idtipo_material'] ?>"><?= htmlspecialchars($tipo['descricao']) ?></option>
+                    <?php endforeach; ?>
                 </select>
-                <input type="text" name="descricao_tipo_material" class="box" placeholder="Cadastrar novo tipo de material">
 
                 <p><strong>Idioma</strong></p>
                 <select name="ididioma" class="box">
-                    <option value="" selected>Selecione existente (ou preencha abaixo)</option>
-                    <option value="1">Inglês</option>
-                    <option value="2">Espanhol</option>
-                    <option value="3">Francês</option>
-                </select>
-                <input type="text" name="descricao_idioma" class="box" placeholder="Cadastrar novo idioma">
+                    <option value="" selected>Selecionar Idioma</option>
+                    <?php foreach ($itens as $idioma): ?>
+                        <option value="<?= $idioma['ididioma'] ?>"><?= htmlspecialchars($idioma['descricao']) ?></option>
+                    <?php endforeach; ?></select>
+
 
                 <p><strong>Nível</strong></p>
                 <select name="idnivel" class="box">
-                    <option value="" selected>Selecione existente (ou preencha abaixo)</option>
-                    <option value="1">Básico</option>
-                    <option value="2">Intermediário</option>
-                    <option value="3">Avançado</option>
+                    <option value="" selected>Selecionar Nível</option>
+                    <?php foreach ($niveis as $nivel): ?>
+                        <option value="<?= $nivel['idnivel'] ?>"><?= htmlspecialchars($nivel['descricao']) ?></option>
+                    <?php endforeach; ?>
                 </select>
-                <input type="text" name="descricao_nivel" class="box" placeholder="Cadastrar novo nível">
-
-                <p><strong>Arquivo <span>*</span></strong></p>
+            
+                <p><strong>Arquivo</strong></p>
                 <input type="file" name="arquivo" accept=".pdf,.doc,.docx,.mp4,.jpg,.png" required class="box">
 
                 <p><strong>ID do Professor <span>*</span></strong></p>
-                <input type="number" name="idprofessor" required placeholder="ID do professor responsável" class="box">
+                <input type="number" name="idprofessor" placeholder="ID do professor responsável" class="box">
+
+                <p><strong>Descrição do Material</strong></p>
+                <input type="text" name="descricao_material" class="box" placeholder="Descrição do material">
 
             </div>
 
@@ -63,11 +96,10 @@
 
                 <p><strong>Turma</strong></p>
                 <select name="idturma" class="box">
-                    <option value="" selected>Selecione existente (ou preencha abaixo)</option>
-                    <option value="1">Turma A</option>
-                    <option value="2">Turma B</option>
-                    <option value="3">Turma C</option>
-                </select>
+                    <option value="" selected>Selecionar Turma</option>
+                    <?php foreach ($turmas as $turma): ?>
+                        <option value="<?= $turma['idturma'] ?>"><?= htmlspecialchars($turma['descricao']) ?></option>
+                    <?php endforeach; ?></select>
 
                 <input type="text" name="descricao_turma" class="box" placeholder="Descrição da nova turma">
                 <input type="text" name="dias_semana" class="box" placeholder="Dias da semana (ex: Seg, Qua)">
@@ -75,10 +107,7 @@
                 <input type="number" name="capacidade_maxima" class="box" placeholder="Capacidade máxima">
                 <input type="text" name="sala" class="box" placeholder="Sala da turma">
                 <input type="text" name="tipo_recorrencia" class="box" placeholder="Tipo de recorrência (ex: semanal)">
-
-                <p><strong>Descrição do Material</strong></p>
-                <textarea name="descricao_material" class="box" rows="5" placeholder="Descrição do material"></textarea>
-
+            
                 <p><strong>Quantidade <span>*</span></strong></p>
                 <input type="number" name="quantidade" min="1" required class="box">
 

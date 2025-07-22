@@ -109,7 +109,7 @@ CREATE TABLE turma(
 	ididioma INT NOT NULL,
 	idnivel INT NOT NULL,
     idfuncionario INT NOT NULL,
-    descricao VARCHAR(100), -- nome da turma
+    descricao VARCHAR(100) NOT NULL, -- nome da turma
     dias_semana VARCHAR(255),
 	hora_inicio TIME NOT NULL, -- ex: seg e qua 14h-15h
 	capacidade_maxima INT NOT NULL,
@@ -292,6 +292,20 @@ INSERT INTO idioma (descricao) VALUES
 INSERT INTO turma (ididioma, idnivel, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, idfuncionario, tipo_recorrencia) 
 VALUES
 (1, 1, 'Segunda e Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 2, 'semanal');
+INSERT INTO turma (
+    ididioma,
+    idnivel,
+    idfuncionario,
+    descricao,
+    dias_semana,
+    hora_inicio,
+    capacidade_maxima,
+    sala,
+    imagem,
+    tipo_recorrencia
+) VALUES (
+    1, 2, 3, 'Turma de Inglês Intermediário - Tarde', 'Segunda, Quarta', '14:00:00', 20, 'Sala 102', 'turma_ingles_tarde.jpg','semanal');
+
 
 INSERT INTO tipo_material (descricao) VALUES
 ('Livro'),
