@@ -50,7 +50,7 @@ $itens = $turmaModel->listarTurma();
                                 <a href="register_class.php?acao=editar&id=<?= $item['idturma'] ?>" class="inline-option-btn">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
-                                <a href="register_class.php?acao=excluir&id=<?= $item['idturma'] ?>" class="inline-delete-btn"
+                                <a href="../../controllers/turmaController.php?acao=excluir&id=<?= $item['idturma'] ?>" class="inline-delete-btn"
                                 onclick="return confirm('Tem certeza que deseja excluir esta turma?');">
                                     <i class="fas fa-trash-alt"></i> Excluir
                                 </a>

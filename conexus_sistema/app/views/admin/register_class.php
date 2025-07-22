@@ -76,7 +76,7 @@ method="post" enctype="multipart/form-data">
             $stmt = $conn->prepare("
                 SELECT f.idfuncionario, u.nome
                 FROM funcionario f
-                INNER JOIN usuario u ON f.idusuario = u.idusuario
+                INNER JOIN usuario u ON f.idusuario = u.idusuario where f.cargo = 'professor'
                 ORDER BY u.nome ASC");
             //quero que seja apenas funcionarios com papel de professor, como eu faço?
             $stmt->execute();
@@ -84,7 +84,11 @@ method="post" enctype="multipart/form-data">
 
             if ($result && count($result) > 0) {
                 foreach ($result as $row) {
+                  if ($row['idfuncionario'] == $item['idfuncionario']) {
+                      echo '<option value="' . $row['idfuncionario'] . '" selected>' . htmlspecialchars($row['nome']) . '</option>';
+                  } else {
                     echo '<option value="' . $row['idfuncionario'] . '">' . htmlspecialchars($row['nome']) . '</option>';
+                  }
                 }
             }
             else {
@@ -93,7 +97,7 @@ method="post" enctype="multipart/form-data">
         </select>
 
       <p>Nome da Turma (Descrição) <span>*</span></p>
-      <input type="text" name="descricao" placeholder="Digite o nome da turma" maxlength="100" required class="box">
+      <input type="text" name="descricao" placeholder="Digite o nome da turma" value="<?= $item['descricao'] ?>" maxlength="100" required class="box">
 
       <p>Dias da Semana <span>*</span></p>
       <div class="box">
@@ -110,24 +114,20 @@ method="post" enctype="multipart/form-data">
     <div class="col">
 
       <p>Hora de Início da Aula<span>*</span></p>
-      <input type="time" name="hora_inicio" required class="box">
+      <input type="time" name="hora_inicio" value="<?= $item['hora_inicio'] ?>" required class="box">
 
       <p>Capacidade Máxima <span>*</span></p>
-      <input type="number" name="capacidade_maxima" min="1" required class="box" placeholder="Ex: 20">
+      <input type="number" name="capacidade_maxima" min="1" required class="box" value="<?= $item['capacidade_maxima'] ?>" placeholder="Ex: 20">
 
       <p>Sala da Turma <span>*</span></p>
-      <input type="text" name="sala" maxlength="100" required class="box" placeholder="Ex: Sala 5, Bloco B">
+      <input type="text" name="sala" maxlength="100" required class="box" value="<?= $item['sala'] ?>" placeholder="Ex: Sala 5, Bloco B">
 
       <p>Tipo de Recorrência <span>*</span></p>
       <select name="tipo_recorrencia" class="box" required>
-          <option value="" disabled selected>-- selecione --</option>
-              <!-- ?//php foreach ($turmas as $turma): ?>
-                        <option value="?= //$turma['idturma'] ?>">?=// htmlspecialchars($turma['tipo_recorrencia']) ?></option>
-                    ?//php endforeach; ?></select> -->
-
-          <option value="diaria">Diária</option>
-          <option value="semanal">Semanal</option>
-          <option value="mensal">Mensal</option>
+          <option value="" disabled <?= !isset($item) ? 'selected' : ''?> >-- selecione --</option>
+          <option value="diaria" <?= isset($item) && $item['tipo_recorrencia']== 'diaria' ? 'selected' : ""?>>Diária</option>
+          <option value="semanal"<?= isset($item) && $item['tipo_recorrencia']== 'semanal' ? 'selected' : ""?>>Semanal</option>
+          <option value="mensal" <?= isset($item) && $item['tipo_recorrencia']== 'mensal' ? 'selected' : ""?>>Mensal</option>
       </select>
 
       <p>Imagem da Turma (opcional)</p>

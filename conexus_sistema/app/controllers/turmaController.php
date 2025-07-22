@@ -12,7 +12,7 @@ function estaLogado() {
 }
 
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
 }
 
 // Roteamento da ação
@@ -29,7 +29,7 @@ switch ($acao) {
         $imagem = $_FILES['imagem']['name'] ?? null;
         $caminhoImagem = null;
         if ($imagem) {
-            $caminhoImagem = "../uploads/" . basename($imagem);
+            $caminhoImagem = "../uploads/" . $imagem;
             move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoImagem);
         }
 
@@ -64,7 +64,7 @@ switch ($acao) {
             $_POST['tipo_recorrencia'] ?? null
         );
 
-        header("Location: ../views/turma/sucesso.php");
+        header("Location: ../views/admin/sucesso.php");
         exit;
 
     case 'alterar':
@@ -77,7 +77,7 @@ switch ($acao) {
         $imagem = $_FILES['imagem']['name'] ?? null;
         $caminhoImagem = $_POST['imagem_atual'] ?? null;
         if ($imagem) {
-            $caminhoImagem = "../uploads/" . basename($imagem);
+            $caminhoImagem = "../uploads/" . $imagem;
             move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoImagem);
         }
 
@@ -95,7 +95,7 @@ switch ($acao) {
             $_POST['tipo_recorrencia'] ?? null
         );
 
-        header("Location: ../views/turma/sucesso.php");
+        header("Location: ../views/admin/sucesso.php");
         exit;
 
     case 'excluir':
@@ -106,7 +106,7 @@ switch ($acao) {
         }
 
         $turma->excluir($_GET['id']);
-        header("Location: ../views/turma/listar.php");
+        header("Location: ../views/admin/list_class.php");
         exit;
 
     case 'listarTodos':

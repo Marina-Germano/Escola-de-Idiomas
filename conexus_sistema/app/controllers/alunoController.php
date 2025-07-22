@@ -14,7 +14,7 @@ function estaLogado() {
 
 // Apenas admin e funcionário podem cadastrar alunos
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
 }
 
 if (!estaLogado()) {
@@ -111,8 +111,8 @@ switch ($acao) {
             $situacao
         );
 
-        echo "Aluno cadastrado com sucesso!";
-        break;
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -132,8 +132,8 @@ switch ($acao) {
             $_POST['tel_responsavel'],
             $_POST['situacao']
         );
-        echo "Aluno alterado com sucesso!";
-        break;
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -142,9 +142,8 @@ switch ($acao) {
             exit;
         }
 
-        $aluno->excluir($_GET['idaluno']);
-        echo "Aluno excluído com sucesso!";
-        break;
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
         case 'listarTodos':
             echo json_encode($aluno->listarTodos());

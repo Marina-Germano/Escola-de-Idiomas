@@ -60,15 +60,14 @@ if(isset($message)){
    <div class="close-side-bar">
       <i class="fas fa-times"></i>
    </div>
-
-
-   <nav class="navbar">
-      <a href="home.php"><i class="fas fa-home"></i><span>Home</span></a>
-      <a href="about.php"><i class="fas fa-question"></i><span>about us</span></a>
-      <a href="courses.php"><i class="fas fa-graduation-cap"></i><span>Turmas</span></a>
-      <a href="teachers.php"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
-      <a href="contact.php"><i class="fas fa-headset"></i><span>contact us</span></a>
-   </nav>
+   
+      <nav class="navbar">
+         <a href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a>
+         <a href="../admin/list_class.php"><i class="fa-solid fa-bars-staggered"></i><span>Listar Turmas</span></a>
+         <a href="../admin/list_students.php"><i class="fas fa-graduation-cap"></i><span>Listar Estudantes</span></a>
+         <a href="../admin/list_materials.php"><i class="fas fa-comment"></i><span>Listar Materiais</span></a>
+         <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>Sair</span></a>
+      </nav>
 
 </div>
 

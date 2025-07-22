@@ -43,9 +43,10 @@ if (isset($_POST['submit'])) {
          echo '<pre>';
 var_dump($func);
 echo '</pre>';
-exit;
+//exit;
 
-         if ($func && strtolower(trim($func['cargo'])) === 'professor') {
+         if ($func!=false && strtolower(trim($func['cargo'])) === 'professor') {
+            $_SESSION['papel'] = "professor";
             header('location:teacher/home.php');
             exit;
          }

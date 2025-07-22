@@ -43,8 +43,8 @@ switch ($acao) {
             $_POST['observacao'] ?? null
         );
 
-        echo $ok ? "Avaliação cadastrada com sucesso!" : "Erro ao cadastrar avaliação.";
-        break;
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -64,8 +64,8 @@ switch ($acao) {
             $_POST['observacao'] ?? null
         );
 
-        echo $ok ? "Avaliação alterada com sucesso!" : "Erro ao alterar avaliação.";
-        break;
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -81,8 +81,11 @@ switch ($acao) {
         }
 
         $ok = $avaliacao->excluir($_GET['idavaliacao']);
-        echo $ok ? "Avaliação excluída com sucesso!" : "Erro ao excluir avaliação.";
-        break;
+
+        //echo $ok ? "Avaliação excluída com sucesso!" : "Erro ao excluir avaliação.";
+        //break;
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'listarTodos':
         echo json_encode($avaliacao->listarTodos());

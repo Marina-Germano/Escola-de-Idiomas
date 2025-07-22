@@ -58,7 +58,11 @@ if (isset($_GET['cadastro']) && $_GET['cadastro'] === 'ok') {
 <body>
     <div class="container">
         <h1><?= htmlspecialchars($mensagem) ?></h1>
+        <?php if ($_SESSION['papel'] === 'admin' ): ?>
         <a href="dashboard.php">Home</a>
+        <?php else : ?>
+        <a href="../teacher/home.php">Home</a>
+        <?php endif; ?>
     </div>
 </body>
 </html>

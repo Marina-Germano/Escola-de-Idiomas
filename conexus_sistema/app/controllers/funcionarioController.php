@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "../models/Funcionario.php";
-require_once "../models/Usuario.php";
+require_once "../models/funcionario.php";
+require_once "../models/usuario.php";
 
 $funcionario = new Funcionario();
 $usuarioModel = new Usuario();
@@ -94,8 +94,8 @@ switch ($acao) {
         // 3. Cadastra o funcionário
         $funcionario->cadastrar($idusuario, $cargo);
 
-        echo "Funcionário cadastrado com sucesso!";
-        break;
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -105,8 +105,10 @@ switch ($acao) {
         }
 
         $funcionario->alterar($_POST['idfuncionario'], $_POST['cargo']);
-        echo "Funcionário alterado com sucesso!";
-        break;
+        
+        header("Location: ../views/admin/sucesso.php");
+        exit;
+
 
     case 'excluir':
         if (!temPermissao()) {
@@ -116,8 +118,9 @@ switch ($acao) {
         }
 
         $funcionario->excluir($_GET['idfuncionario']);
-        echo "Funcionário excluído com sucesso!";
-        break;
+
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'listarTodos':
         echo json_encode($funcionario->listarTodos());

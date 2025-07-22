@@ -43,8 +43,9 @@ switch ($acao) {
         }
 
         $alunoTurma->cadastrar($idaluno, $idturma, $data_matricula);
-        echo "Aluno matriculado na turma com sucesso!";
-        break;
+
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -64,12 +65,14 @@ switch ($acao) {
         }
 
         $alunoTurma->alterar($idaluno_turma, $idaluno, $idturma, $data_matricula);
-        echo "Matrícula alterada com sucesso!";
-        break;
+
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'excluir':
         if (!temPermissao()) {
             http_response_code(403);
+            
             echo "Acesso negado. Apenas usuários autorizados podem excluir matrícula.";
             exit;
         }
@@ -82,8 +85,9 @@ switch ($acao) {
         }
 
         $alunoTurma->excluir($idaluno_turma);
-        echo "Matrícula excluída com sucesso!";
-        break;
+
+        header("Location: ../views/admin/sucesso.php");
+        exit;
 
     case 'listarTodos':
         echo json_encode($alunoTurma->listarTodos());
