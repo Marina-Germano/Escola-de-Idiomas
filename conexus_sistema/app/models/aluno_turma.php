@@ -28,12 +28,19 @@ class AlunoTurma {
         return $result->execute([$idaluno_turma]);
     }
 
-    public function listarTodos() {
-        $result = $this->pdo->query(
-            "SELECT at.*, a.nome AS nome_aluno, t.descricao AS nome_turma
-            FROM aluno_turma at JOIN aluno a ON a.idaluno = at.idaluno JOIN turma t ON t.idturma = at.idturma");
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
+    public function listarTodos($idturma) {
+    $sql = "SELECT at.*, a.nome AS nome_aluno, t.descricao AS nome_turma
+            FROM aluno_turma at
+            JOIN aluno a ON a.idaluno = at.idaluno
+            JOIN turma t ON t.idturma = at.idturma
+            WHERE at.idturma = :idturma";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':idturma', $idturma, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function listarId($idaluno_turma) {
         $result = $this->pdo->prepare("SELECT * FROM aluno_turma WHERE idaluno_turma = ?");

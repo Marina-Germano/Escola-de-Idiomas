@@ -69,7 +69,7 @@ method="post" enctype="multipart/form-data">
               </option>
           <?php endforeach; ?></select>
 
-      <p>Funcionário Responsável <span>*</span></p>
+      <p>Professor Responsável <span>*</span></p>
         <select name="idfuncionario" class="box" required>
             <option value="" disabled selected>-- selecione o funcionário --</option>
             <?php

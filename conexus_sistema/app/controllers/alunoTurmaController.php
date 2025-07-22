@@ -90,7 +90,7 @@ switch ($acao) {
         exit;
 
     case 'listarTodos':
-        echo json_encode($alunoTurma->listarTodos());
+        echo json_encode($alunoTurma->listarTodos($idturma));
         break;
 
     case 'listarId':
