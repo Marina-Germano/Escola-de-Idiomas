@@ -1,8 +1,11 @@
 <?php
 session_start();
 require_once "../models/turma.php";
+require_once "../models/funcionario.php";
 
 $turma = new Turma();
+$funcionario = new Funcionario();
+
 
 function estaLogado() {
     return isset($_SESSION['idusuario']);
@@ -30,16 +33,34 @@ switch ($acao) {
             move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoImagem);
         }
 
+        $idfuncionario = $_POST['idfuncionario'];
+        $dadosFuncionario = $funcionario->listarId($idfuncionario);
+
+        if (!$dadosFuncionario) {
+            echo "Funcionário não encontrado.";
+            exit;
+        }
+
+        if (strtolower($dadosFuncionario['cargo']) !== 'professor') {
+            echo "Apenas funcionários com cargo de professor podem ser responsáveis por turmas.";
+            exit;
+        }
+
+        $diasSemana = is_array($_POST['dias_semana'])
+    ? implode(', ', $_POST['dias_semana'])
+    : $_POST['dias_semana'];
+
+
         $sucesso = $turma->cadastrar(
             $_POST['ididioma'],
             $_POST['idnivel'],
             $_POST['descricao'],
-            $_POST['dias_semana'],
+            $diasSemana,
             $_POST['hora_inicio'],
             $_POST['capacidade_maxima'],
             $_POST['sala'],
             $caminhoImagem,
-            $_POST['idprofessor'],
+            $_POST['idfuncionario'],
             $_POST['tipo_recorrencia'] ?? null
         );
 

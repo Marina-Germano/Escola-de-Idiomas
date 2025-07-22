@@ -36,10 +36,19 @@ switch ($acao) {
                 $pdo = $materialModel->getPDO(); // Recupera a conexão para iniciar transação
                 $pdo->beginTransaction();
 
-                // Coleta os dados do formulário
-                $descricao_idioma = $_POST['descricao_idioma'];
-                $descricao_nivel = $_POST['descricao_nivel'];
-                $descricao_tipo = $_POST['descricao_tipo_material'];
+                $descricao_idioma = $_POST['descricao_idioma'] ?? null;
+                $descricao_nivel = $_POST['descricao_nivel'] ?? null;
+                $descricao_tipo = $_POST['descricao_tipo_material'] ?? null;
+
+                if (!$descricao_idioma || !$descricao_nivel || !$descricao_tipo) {
+                    throw new Exception("Campos obrigatórios não foram preenchidos.");
+                }
+
+                $ididioma = $idiomaModel->buscarOuCriar($descricao_idioma);
+                $idnivel = $nivelModel->buscarOuCriar($descricao_nivel);
+                $idtipo_material = $tipoMaterialModel->buscarOuCriar($descricao_tipo);
+
+
                 $descricao_turma = $_POST['descricao_turma'];
                 $dias_semana = $_POST['dias_semana'];
                 $hora_inicio = $_POST['hora_inicio'];

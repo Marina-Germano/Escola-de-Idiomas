@@ -9,14 +9,23 @@ class Turma {
     }
 
     
-    public function cadastrar($ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idprofessor, $tipo_recorrencia = null) {
-    $result = $this->pdo->prepare("INSERT INTO turma VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    return $result->execute([$ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idprofessor, $tipo_recorrencia]);
+//     public function cadastrar($ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia = null) {
+//     $result = $this->pdo->prepare("INSERT INTO turma VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+//     return $result->execute([$ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia]);
+// }
+
+public function cadastrar($ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia = null) {
+    $sql = "INSERT INTO turma (ididioma, idnivel, descricao, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, idfuncionario, tipo_recorrencia)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $this->pdo->prepare($sql);
+    return $stmt->execute([$ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia]);
 }
 
-    public function alterar($idturma, $ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idprofessor, $tipo_recorrencia = null) {
-    $result = $this->pdo->prepare("UPDATE turma SET ididioma = ?, idnivel = ?, descricao = ?, dias_semana = ?, hora_inicio = ?, capacidade_maxima = ?, sala = ?, imagem = ?, idprofessor = ?, tipo_recorrencia = ? WHERE idturma = ?");
-    return $result->execute([$ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idprofessor, $tipo_recorrencia, $idturma]);
+
+
+    public function alterar($idturma, $ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia = null) {
+    $result = $this->pdo->prepare("UPDATE turma SET ididioma = ?, idnivel = ?, descricao = ?, dias_semana = ?, hora_inicio = ?, capacidade_maxima = ?, sala = ?, imagem = ?, idfuncionario = ?, tipo_recorrencia = ? WHERE idturma = ?");
+    return $result->execute([$ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia, $idturma]);
 }
 
     public function excluir($id) {

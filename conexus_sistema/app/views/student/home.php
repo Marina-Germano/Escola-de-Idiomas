@@ -2,18 +2,26 @@
 session_start();
 require_once(__DIR__ . '/../../config/conexao.php');
 
-if (!isset($_SESSION['idusuario']) || $_SESSION['papel'] !== 'aluno') {
-    header('Location: ../login.php');
+if (!isset($_SESSION['idusuario'])) {
+    header('Location: /conexus_sistema/app/views/login.php');
     exit;
 }
 
 $idusuario = $_SESSION['idusuario'];
 $conn = Conexao::conectar();
 
-// Buscar dados do aluno com base no idusuario
-$stmt = $conn->prepare("SELECT a.idaluno, u.nome FROM aluno a JOIN usuario u ON a.idusuario = u.idusuario WHERE a.idusuario = ?");
+// Busca o nome e o cargo do funcionário
+$stmt = $conn->prepare("SELECT u.nome, f.cargo FROM usuario u JOIN funcionario f ON f.idusuario = u.idusuario WHERE u.idusuario = ?");
 $stmt->execute([$idusuario]);
-$fetch_user = $stmt->fetch(PDO::FETCH_ASSOC);
+$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Verifica se o cargo é 'professor'
+if (!$usuario || strtolower(trim($usuario['cargo'])) !== 'professor') {
+    header('Location: /conexus_sistema/app/views/login.php');
+    exit;
+}
+
+$nome = $usuario['nome'] ?? 'Professor';
 ?>
 
 

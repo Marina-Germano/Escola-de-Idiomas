@@ -38,9 +38,11 @@ class Aluno {
 
     public function listarTodos() {
         $result = $this->pdo->query(
-            "SELECT a.*, u.nome, u.cpf, u.email, u.telefone, u.data_nascimento
-            FROM aluno a 
-            JOIN usuario u ON u.idusuario = a.idusuario"
+            "SELECT a.idaluno, u.nome AS nome, u.cpf, u.email, u.telefone, u.data_nascimento, t.descricao AS turma
+            FROM aluno a
+            JOIN usuario u ON u.idusuario = a.idusuario
+            LEFT JOIN aluno_turma at ON at.idaluno = a.idaluno
+            LEFT JOIN turma t ON t.idturma = at.idturma"
         );
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }

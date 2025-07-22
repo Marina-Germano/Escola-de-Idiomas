@@ -34,9 +34,25 @@ if (isset($_POST['submit'])) {
          header('location: student/home.php');
          exit;
       }
-      elseif ($user['papel'] === 'professor') {
-         header('location: teacher/home.php');
-         exit;
+      elseif ($user['papel'] === 'funcionario') {
+         // Consulta o cargo na tabela funcionario
+         $stmtCargo = $conn->prepare("SELECT cargo FROM funcionario WHERE idusuario = ?");
+         $stmtCargo->execute([$user['idusuario']]);
+         $func = $stmtCargo->fetch(PDO::FETCH_ASSOC);
+
+         echo '<pre>';
+var_dump($func);
+echo '</pre>';
+exit;
+
+         if ($func && strtolower(trim($func['cargo'])) === 'professor') {
+            header('location:teacher/home.php');
+            exit;
+         }
+         else {
+            echo "Acesso negado: cargo de funcionário não autorizado.";
+            exit;
+         }
       }
 
       else {

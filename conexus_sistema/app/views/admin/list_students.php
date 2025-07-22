@@ -1,5 +1,6 @@
 <?php
 require_once "../../models/aluno.php";
+
 $alunoModel = new Aluno();
 $itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu método
 ?>
@@ -31,6 +32,7 @@ $itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu métod
                     <tr>
                         <th>Nome</th>
                         <th>CPF</th>
+                        <th>Turma</th>
                         <th class="text-end">Ações</th>
                     </tr>
                 </thead>
@@ -39,6 +41,7 @@ $itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu métod
                         <tr>
                             <td><?= htmlspecialchars($item['nome']) ?></td>
                             <td><?= htmlspecialchars($item['cpf']) ?></td>
+                            <td><?= htmlspecialchars($item['turma'] ?? 'sem turma') ?></td>
                             <td class="text-end">
                                 <a href="register_student.php?acao=editar&id=<?= $item['idaluno'] ?>" class="inline-option-btn">
                                     <i class="fas fa-edit"></i> Editar

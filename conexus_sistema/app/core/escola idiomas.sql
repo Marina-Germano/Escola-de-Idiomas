@@ -7,13 +7,12 @@ CREATE TABLE usuario (
     telefone CHAR(11) NOT NULL,
     email VARCHAR(255) NOT NULL,
     data_nascimento DATE NOT NULL,
-    cpf CHAR(11) NOT NULL UNIQUE,         -- usado como login
+    cpf CHAR(11) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,        -- senha criptografada (ex: bcrypt ou SHA-256)
-    papel VARCHAR(255) NOT NULL, -- aluno, professor, funcionário, admin...
+    papel VARCHAR(255) NOT NULL, 
     ativo BOOLEAN DEFAULT TRUE,
     foto VARCHAR(255),
     
-	-- bloquear o usuario depois de algumas tentativas (definidas no php)
 	tentativas_login INT DEFAULT 0,
 	bloqueado BOOLEAN DEFAULT FALSE
 );
@@ -28,7 +27,7 @@ CREATE TABLE aluno(
     complemento VARCHAR(100),
     responsavel VARCHAR(200),
     tel_responsavel VARCHAR(11),
-    situacao ENUM('ativo', 'trancado', 'cancelado') DEFAULT 'ativo' NOT NULL, -- só vai ter esses
+    situacao ENUM('ativo', 'trancado', 'cancelado') DEFAULT 'ativo' NOT NULL,
     
 	FOREIGN KEY (idusuario) REFERENCES usuario(idusuario)
 );
@@ -36,7 +35,7 @@ CREATE TABLE aluno(
 CREATE TABLE funcionario(
 	idfuncionario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	idusuario INT NOT NULL,
-    cargo VARCHAR(100), -- ex: recepcionista, professor
+    cargo VARCHAR(100),
     especialidade VARCHAR(100),
     
     FOREIGN KEY (idusuario) REFERENCES usuario(idusuario)
@@ -289,23 +288,9 @@ INSERT INTO idioma (descricao) VALUES
 ('Espanhol'),
 ('Francês');
 
-INSERT INTO turma (ididioma, idnivel, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, idfuncionario, tipo_recorrencia) 
+INSERT INTO turma (ididioma, idnivel, idfuncionario, descricao, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, tipo_recorrencia) 
 VALUES
-(1, 1, 'Segunda e Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 2, 'semanal');
-INSERT INTO turma (
-    ididioma,
-    idnivel,
-    idfuncionario,
-    descricao,
-    dias_semana,
-    hora_inicio,
-    capacidade_maxima,
-    sala,
-    imagem,
-    tipo_recorrencia
-) VALUES (
-    1, 2, 3, 'Turma de Inglês Intermediário - Tarde', 'Segunda, Quarta', '14:00:00', 20, 'Sala 102', 'turma_ingles_tarde.jpg','semanal');
-
+(1, 1, 2,'Turma de Inglês Básico - Tarde', 'Segunda e Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 'semanal');
 
 INSERT INTO tipo_material (descricao) VALUES
 ('Livro'),

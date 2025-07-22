@@ -30,7 +30,7 @@ class Usuario {
             "UPDATE usuario SET 
                 nome = ?, telefone = ?, email = ?, data_nascimento = ?, cpf = ?, senha = ?, 
                 papel = ?, ativo = ?, foto = ?, tentativas_login = ?, bloqueado = ? 
-             WHERE idusuario = ?"
+            WHERE idusuario = ?"
         );
         return $result->execute([
             $nome, $telefone, $email, $data_nascimento, $cpf, $senha_criptografada,

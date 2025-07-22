@@ -40,7 +40,7 @@ $item = [];
 
 if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
     $modoEdicao = true;
-    $item = $funcionarioModel->listarId($_GET['id']);
+    $item = $funcionarioModel->listarId($_GET['id']); // fica funcionarioModel mesmo?
 }
 ?>
 
@@ -62,8 +62,7 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                     <option value="" selected>Selecionar Tipo de Material</option>
                     <?php foreach ($tiposMateriais as $tipo): ?>
                         <option value="<?= $tipo['idtipo_material'] ?>"><?= htmlspecialchars($tipo['descricao']) ?></option>
-                    <?php endforeach; ?>
-                </select>
+                    <?php endforeach; ?></select>
 
                 <p><strong>Idioma</strong></p>
                 <select name="ididioma" class="box">

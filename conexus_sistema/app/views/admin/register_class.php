@@ -18,31 +18,56 @@ $conn = Conexao::conectar();
 <body>
 <?php include '../components/admin_header.php'; ?>
 
+<?php
+require_once(__DIR__ . '/../../models/turma.php');
+require_once(__DIR__ . '/../../models/idioma.php');
+require_once(__DIR__ . '/../../models/nivel.php');
+
+
+$conn = Conexao::conectar();
+$turmaModel = new Turma();
+
+$idiomaModel = new Idioma();
+$idiomas = $idiomaModel->listarTodos();
+
+$nivelModel = new Nivel();
+$niveis = $nivelModel->listarTodos();
+
+
+$modoEdicao = false;
+$item = [];
+
+if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
+    $modoEdicao = true;
+    $item = $turmaModel->listarId($_GET['id']); // fica turmaModel mesmo?
+}
+?>
+
 <section class="form-container">
   <!-- <form class="register" action="/conexus_sistema/app/controllers/TurmaController.php?acao=cadastrar" method="post" enctype="multipart/form-data"> -->
 
-<form class="register" action="" method="post" enctype="multipart/form-data">
+<form class="register" action="../../controllers/turmaController.php?acao=<?= $modoEdicao ? 'alterar' : 'cadastrar' ?>" 
+method="post" enctype="multipart/form-data">
   <div class="flex">
     <div class="col">
 
       <p>Idioma <span>*</span></p>
       <select name="ididioma" class="box" required>
           <option value="" disabled selected>-- selecione o idioma --</option>
-          <option value="1">Inglês</option>
-          <option value="2">Espanhol</option>
-          <option value="3">Francês</option>
-          <option value="4">Libras</option>
-          <option value="5">Alemão</option>
-          <option value="6">Tailandês</option>
-      </select>
+          <?php foreach ($idiomas as $idioma): ?>
+              <option value="<?= $idioma['ididioma'] ?>" <?= isset($item['ididioma']) && $item['ididioma'] == $idioma['ididioma'] ? 'selected' : '' ?>>
+                  <?= htmlspecialchars($idioma['descricao']) ?>
+              </option>
+          <?php endforeach; ?></select>
 
       <p>Nível da Turma <span>*</span></p>
       <select name="idnivel" class="box" required>
           <option value="" disabled selected>-- selecione o nível --</option>
-          <option value="1">Básico</option>
-          <option value="2">Intermediário</option>
-          <option value="3">Avançado</option>
-      </select>
+          <?php foreach ($niveis as $nivel): ?>
+              <option value="<?= $nivel['idnivel'] ?>" <?= isset($item['idnivel']) && $item['idnivel'] == $nivel['idnivel'] ? 'selected' : '' ?>>
+                  <?= htmlspecialchars($nivel['descricao']) ?>
+              </option>
+          <?php endforeach; ?></select>
 
       <p>Funcionário Responsável <span>*</span></p>
         <select name="idfuncionario" class="box" required>
@@ -53,7 +78,7 @@ $conn = Conexao::conectar();
                 FROM funcionario f
                 INNER JOIN usuario u ON f.idusuario = u.idusuario
                 ORDER BY u.nome ASC");
-
+            //quero que seja apenas funcionarios com papel de professor, como eu faço?
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -84,7 +109,7 @@ $conn = Conexao::conectar();
 
     <div class="col">
 
-      <p>Hora de Início da Turma <span>*</span></p>
+      <p>Hora de Início da Aula<span>*</span></p>
       <input type="time" name="hora_inicio" required class="box">
 
       <p>Capacidade Máxima <span>*</span></p>
@@ -96,6 +121,10 @@ $conn = Conexao::conectar();
       <p>Tipo de Recorrência <span>*</span></p>
       <select name="tipo_recorrencia" class="box" required>
           <option value="" disabled selected>-- selecione --</option>
+              <!-- ?//php foreach ($turmas as $turma): ?>
+                        <option value="?= //$turma['idturma'] ?>">?=// htmlspecialchars($turma['tipo_recorrencia']) ?></option>
+                    ?//php endforeach; ?></select> -->
+
           <option value="diaria">Diária</option>
           <option value="semanal">Semanal</option>
           <option value="mensal">Mensal</option>

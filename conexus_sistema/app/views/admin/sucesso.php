@@ -58,7 +58,7 @@ if (isset($_GET['cadastro']) && $_GET['cadastro'] === 'ok') {
 <body>
     <div class="container">
         <h1><?= htmlspecialchars($mensagem) ?></h1>
-        <a href="listar.php">Voltar para a lista de materiais</a>
+        <a href="dashboard.php">Home</a>
     </div>
 </body>
 </html>

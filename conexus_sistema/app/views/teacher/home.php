@@ -17,6 +17,16 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 $nome = $usuario['nome'] ?? 'Professor';
 ?>
 
+$idusuario = $_SESSION['idusuario'];
+$conn = Conexao::conectar();
+
+// Busca nome do admin
+$stmt = $conn->prepare("SELECT nome FROM usuario WHERE idusuario = ?");
+$stmt->execute([$idusuario]);
+$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+$nome = $usuario['nome'] ?? 'Professor';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
