@@ -8,16 +8,16 @@ class Presenca {
         $this->pdo = Conexao::conectar();
     }
 
-    public function registrarPresenca($idaluno, $presente, $data) {
-        $stmt = $this->pdo->prepare("SELECT * FROM presenca WHERE idaluno = ? AND data = ?");
-        $stmt->execute([$idaluno, $data]);
+    public function registrarPresenca($idaluno_turma, $presente) {
+        $stmt = $this->pdo->prepare("SELECT * FROM presenca WHERE idaluno_turma = ?");
+        $stmt->execute([$idaluno_turma]);
 
         if ($stmt->rowCount() > 0) {
-            $update = $this->pdo->prepare("UPDATE presenca SET presente = ? WHERE idaluno = ? AND data = ?");
-            $update->execute([$presente, $idaluno, $data]);
+            $update = $this->pdo->prepare("UPDATE presenca SET presente = ? WHERE idaluno_turma = ?");
+            $update->execute([$presente, $idaluno_turma]);
         } else {
-            $insert = $this->pdo->prepare("INSERT INTO presenca (idaluno, data, presente) VALUES (?, ?, ?)");
-            $insert->execute([$idaluno, $data, $presente]);
+            $insert = $this->pdo->prepare("INSERT INTO presenca (idaluno_turm, presente) VALUES (?, ?, ?)");
+            $insert->execute([$idaluno_turma, $presente]);
         }
     }
 }
