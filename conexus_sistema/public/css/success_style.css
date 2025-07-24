@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700&display=swap');
+
+:root{
+    --cyan:#2C9FA3;
+    --yellow:#FFB914;
+    --orange:#FF8826;
+    --dark-orange:#F03813;
+    --wine: #B31237;
+    --gray:#D9D9D9;
+    --light-bg:#D9D9D9;
+    --black:#2c3e50;
+    --white:#fff;
+    --border:.1rem solid rgba(0,0,0,.2);
+}
+
+*{
+    font-family: 'Nunito', sans-serif;
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    outline: none; border: none;
+    text-decoration: none;
+}
+
+*::selection{
+    background-color: var(--cyan);
+    color:#fff;
+}
+
+html{
+    font-size: 70.5%;
+    overflow-x: hidden;
+}
+
+html::-webkit-scrollbar{
+    width: 1rem;
+    height: .5rem;
+}
+
+html::-webkit-scrollbar-track{
+    background-color: transparent;
+}
+
+html::-webkit-scrollbar-thumb{
+    background-color: var(--cyan);
+}
+
+.message.form {
+    background-color: var(--white);
+    border: 2px solid var(--cyan);
+    border-left: 1rem solid var(--cyan);
+    border-radius: 1rem;
+    padding: 3rem 4rem;
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.message.form a {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background-color: var(--cyan);
+    color: white;
+    text-decoration: none;
+    border-radius: .5rem;
+    font-size: 1.6rem;
+}
+
+.message.form a:hover {
+    background-color: var(--orange);
+}

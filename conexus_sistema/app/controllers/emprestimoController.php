@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/EmprestimoMaterial.php";
+require_once "../models/emprestimo_material.php";
 
 $emprestimoMaterial = new EmprestimoMaterial();
 
@@ -45,8 +45,8 @@ switch ($acao) {
             $_POST['valor_multa'] ?? 0.00
         );
 
-        echo $ok ? "Empréstimo cadastrado com sucesso!" : "Erro ao cadastrar empréstimo.";
-        break;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -67,8 +67,8 @@ switch ($acao) {
             $_POST['valor_multa'] ?? 0.00
         );
 
-        echo $ok ? "Empréstimo alterado com sucesso!" : "Erro ao alterar empréstimo.";
-        break;
+        header("Location: ../views/components/sucesso.php?alterar=ok");
+            exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -82,8 +82,8 @@ switch ($acao) {
             exit;
         }
         $ok = $emprestimoMaterial->excluir($_GET['idemprestimo']);
-        echo $ok ? "Empréstimo excluído com sucesso!" : "Erro ao excluir empréstimo.";
-        break;
+        header("Location: ../views/components/sucesso.php?excluir=ok");
+            exit;
 
     case 'listarTodos':
         if (!temPermissao()) {

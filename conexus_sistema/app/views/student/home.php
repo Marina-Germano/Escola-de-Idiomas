@@ -1,31 +1,3 @@
-<?php
-session_start();
-require_once(__DIR__ . '/../../config/conexao.php');
-
-if (!isset($_SESSION['idusuario'])) {
-    header('Location: /conexus_sistema/app/views/login.php');
-    exit;
-}
-
-$idusuario = $_SESSION['idusuario'];
-$conn = Conexao::conectar();
-
-// Busca o nome e o cargo do funcionário
-$stmt = $conn->prepare("SELECT u.nome, f.cargo FROM usuario u JOIN funcionario f ON f.idusuario = u.idusuario WHERE u.idusuario = ?");
-$stmt->execute([$idusuario]);
-$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Verifica se o cargo é 'professor'
-if (!$usuario || strtolower(trim($usuario['cargo'])) !== 'professor') {
-    header('Location: /conexus_sistema/app/views/login.php');
-    exit;
-}
-
-$nome = $usuario['nome'] ?? 'Professor';
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -34,101 +6,86 @@ $nome = $usuario['nome'] ?? 'Professor';
     <title>Home - Conexus</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
-    
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-    />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
     <link rel="stylesheet" href="../../../public/css/style.css">
 
 </head>
 <body>
-<?php include '../components/student_header.php'; ?>
-    
+<?php include __DIR__ . '/../components/student_header.php'; // Caminho absoluto para o include ?>
+<?php require_once(__DIR__ . '/../app/controllers/homeController.php'); ?>
+
+
+
 <section class="home-grid">
-    <h1 class="heading">Bem Vindo!</h1>
-    <div class="box-container">
-        <div class="box">
-            <h3 class="title">Atualizações</h3>
-            <p class="likes">materiais novos: <span>25</span></p>
-            <a href="#" class="inline-btn">veja aqui</a>
-            <p class="likes">notas novas: </p>
-            <a href="#" class="inline-btn">veja aqui</a>
-            <p class="likes">próximas aulas: </p>
-            <a href="aulas.php" class="inline-btn">veja aqui</a>
-        </div>
-        <div class="box">
-            <h3 class="title">Próximas Aulas</h3>
-            <div class="flex">
-                <a href="aulas.php"><i class="bi bi-calendar-check-fill"></i><span>Espanhol - Sala 15</span></a>
-                <a href="aulas.php"><i class="bi bi-calendar-check-fill"></i><span>Inglês - Sala Online</span></a>
-                <a href="aulas.php"><i class="bi bi-calendar-check-fill"></i><span>Espanhol - Sala 15</span></a>
-                <a href="aulas.php"><i class="bi bi-calendar-check-fill"></i><span>Inglês - Sala Online</span></a>
-            </div>
-        </div>
-        <div class="box">
-            <h3 class="title">Ultimas Notas</h3>
-            <div class="flex">
-                <a href="boletim.html"><i class="bi bi-award-fill"></i><span>Atividade Avaliativa 01</span></a>
-                <a href="boletim.html"><i class="bi bi-award-fill"></i><span>Atividade Avaliativa 02</span></a>
-                <a href="boletim.html"><i class="bi bi-award-fill"></i><span>Atividade Avaliativa 03</span></a>
-                <a href="boletim.html"><i class="bi bi-award-fill"></i><span>Atividade Avaliativa 04</span></a>
-            </div>
-        </div>
-    </div>
+    <h1 class="heading">Bem Vindo, <?= htmlspecialchars($nomeAluno ?? 'Aluno') ?>!</h1>
 </section>
 
+<!-- Próxima Aula -->
 <section class="courses">
-    <h1 class="heading">Seus Materiais</h1>
+    <h2 class="heading">Próxima Aula</h2>
     <div class="box-container">
-        <?php
-        if (!empty($all_materials)) {
-            foreach ($all_materials as $material) {
-                $tutor_name = $material['professor'] ?? 'Professor Desconhecido';
-                $tutor_image = $material['foto_professor'] ?? 'pic-7.jpg';
-                
-                // coluna do material
-                $material_title = $material['titulo'];
-                $material_files_count = $material['quantidade'] ?? 'N/A';
-                $material_id = $material['idmaterial'];
-                $material_date = date('d/m/Y');
-                if (isset($material['arquivo']) && !empty($material['arquivo'])) {
-                    $file_ext = pathinfo($material['arquivo'], PATHINFO_EXTENSION);
-                    if (in_array($file_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
-                        $material_thumb = $material['arquivo'];
-                    }
-                }
-        ?>
-        <div class="box">
-            <div class="tutor">
-                <img src="/conexus_sistema/public/img/<?= $tutor_image; ?>" alt="">
-                <div class="info">
-                    <h3><?= $tutor_name; ?></h3>
-                    <h4>Professor(a)</h4>
-                    <span><?= $material_date; ?></span>
-                </div>
+        <?php if (isset($proximaAula) && $proximaAula): ?>
+            <div class="box">
+                <p><strong>Curso:</strong> <?= htmlspecialchars($proximaAula['nome_idioma'] . ' - ' . $proximaAula['nome_turma']) ?></p>
+                <p><strong>Data:</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($proximaAula['data_aula']))) ?></p>
+                <p><strong>Hora:</strong> <?= htmlspecialchars(substr($proximaAula['hora_inicio'], 0, 5)) ?> - <?= htmlspecialchars(substr($proximaAula['hora_fim'], 0, 5)) ?></p>
+                <p><strong>Tópico:</strong> <?= htmlspecialchars($proximaAula['observacoes']) ?></p>
+                <p><strong>Professor:</strong> <?= htmlspecialchars($proximaAula['professor_nome'] ?? 'N/A') ?></p>
+                <p><strong>Sala:</strong> <?= htmlspecialchars($proximaAula['sala'] ?? 'Online') ?></p>
+                <?php if (!empty($proximaAula['link_reuniao'])): ?>
+                    <a href="<?= htmlspecialchars($proximaAula['link_reuniao']) ?>" class="inline-btn">Entrar na Aula Online</a>
+                <?php endif; ?>
             </div>
-            <div class="thumb">
-                <img src="/conexus_sistema/public/img/<?= $material_thumb; ?>" alt="">
-                <span><?= $material_files_count; ?> arquivos</span>
-            </div>
-            <h3 class="title"><?= $material_title; ?></h3>
-            <a href="/conexus_sistema/app/views/student/playlist.php?get_id=<?= $material_id; ?>" class="inline-btn">veja o módulo</a>
-        </div>
-        <?php
-            }
-        } else {
-            echo '<p class="empty">Nenhum material adicionado ainda!</p>';
-        }
-        ?>
-    </div>
-    <div class="more-btn">
-        <a href="materiais.php" class="inline-option-btn">Veja todos Materiais</a>
+        <?php else: ?>
+            <p class="empty">Nenhuma aula futura agendada. 🎉</p>
+        <?php endif; ?>
     </div>
 </section>
 
-<script src="../../../public/js/script.js"></script>
+<!-- Últimos Materiais -->
+<section class="courses">
+    <h1 class="heading">Últimos Materiais Cadastrados</h1>
+    <div class="box-container">
+        <?php if (!empty($ultimosMateriais)): ?>
+            <?php foreach ($ultimosMateriais as $material): ?>
+                <div class="box">
+                    <div class="tutor">
+                        <img src="<?= htmlspecialchars($material['professor_foto'] ?? '/escola-de-idiomas/conexus_sistema/public/img/pic-6.jpg') ?>" alt="Foto do Professor">
+                        <div class="info">
+                            <h3><?= htmlspecialchars($material['professor_nome'] ?? 'Professor Desconhecido') ?></h3>
+                            <span><?= htmlspecialchars($material['data_cadastro'] ?? '') ?></span>
+                        </div>
+                    </div>
+                    <div class="thumb">
+                        <?php
+                        $materialImagemSrc = '/escola-de-idiomas/conexus_sistema/public/img/default-material.jpg';
+                        if (isset($material['turma_ididioma']) && $material['turma_ididioma'] == 1) {
+                            $materialImagemSrc = '/escola-de-idiomas/conexus_sistema/public/img/english-course-1024x576.jpg';
+                        } elseif (!empty($material['turma_imagem'])) {
+                            $materialImagemSrc = htmlspecialchars($material['turma_imagem']);
+                        }
+                        ?>
+                        <img src="<?= $materialImagemSrc ?>" alt="Thumbnail do Material">
+                        <span><?= htmlspecialchars($material['quantidade'] ?? '0') ?> arquivos</span>
+                    </div>
+                    <h3 class="title"><?= htmlspecialchars($material['titulo'] ?? 'Material Desconhecido') ?></h3>
+                    <a href="/escola-de-idiomas/conexus_sistema/app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="empty">Nenhum material encontrado para seus cursos. 📚</p>
+        <?php endif; ?>
+    </div>
+</section>
+
+<?php if (isset($erroHome)): ?>
+    <div class="message form" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 1rem; margin: 1rem auto; border-radius: 0.5rem; text-align: center;">
+        <span><?= htmlspecialchars($erroHome) ?></span>
+    </div>
+<?php endif; ?>
+
+
+<script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
 
 </body>
 </html>

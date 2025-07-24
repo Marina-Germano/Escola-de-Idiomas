@@ -1,13 +1,11 @@
 <?php
 session_start();
-require_once "../model/Usuario.php";
-require_once "../model/Aluno.php";
-require_once "../model/Professor.php";
-require_once "../model/Funcionario.php";
+require_once "../models/usuario.php";
+require_once "../models/aluno.php";
+require_once "../models/funcionario.php";
 
 $usuario = new Usuario();
 $aluno = new Aluno();
-// $professor = new Professor();
 $funcionario = new Funcionario();
 
 function estaLogado() {
@@ -98,8 +96,8 @@ if (isset($_GET['acao'])) {
                 $foto_nome
             );
 
-            echo "Usuário cadastrado com sucesso!";
-            break;
+            header("Location: ../views/components/sucesso.php?cadastrar=ok");
+        exit;
 
         case 'alterar':
             if (!temPermissao()) {
@@ -133,8 +131,8 @@ if (isset($_GET['acao'])) {
                 $_POST['bloqueado'] ?? false
             );
 
-            echo "Usuário alterado com sucesso!";
-            break;
+            header("Location: ../views/components/sucesso.php?alterar=ok");
+        exit;
 
         case 'excluir':
             if (!temPermissao()) {
@@ -144,8 +142,8 @@ if (isset($_GET['acao'])) {
             }
 
             $usuario->excluir($_GET['idusuario']);
-            echo "Usuário excluído com sucesso!";
-            break;
+            header("Location: ../views/components/sucesso.php?excluir=ok");
+        exit;
 
         case 'listarTodos':
             echo json_encode($usuario->listarTodos());

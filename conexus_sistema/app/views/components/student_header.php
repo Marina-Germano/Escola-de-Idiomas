@@ -30,11 +30,11 @@
         </div>
 
         <nav class="navbar">
-            <a href="home.php"><i class="fas fa-home"></i><span>Home</span></a>
-            <a href="aulas.php"><i class="bi bi-calendar-week"></i><span>Aulas</span></a>
-            <a href="materiais.php"><i class="bi bi-folder-check"></i><span>Materiais</span></a>
-            <a href="boletim.php"><i class="bi bi-reception-4"></i><span>Boletim</span></a>
-            <a href="financeiro.php"><i class="bi bi-piggy-bank-fill"></i><span>Financeiro</span></a>
-            <a href="contact.php"><i class="fas fa-headset"></i><span>nos contate</span></a>
-        </nav>
+        <a href="../../controllers/homeController.php"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/escola-de-idiomas/conexus_sistema/app/controllers/calendarioController.php"><i class="bi bi-calendar-week"></i><span>Aulas</span></a>
+        <a href="/escola-de-idiomas/conexus_sistema/app/controllers/materialController.php?acao=listar_aluno"><i class="bi bi-folder-check"></i><span>Materiais</span></a> 
+        <a href="/escola-de-idiomas/conexus_sistema/app/controllers/avaliacaoController.php"><i class="bi bi-reception-4"></i><span>Boletim</span></a>
+        <a href="/escola-de-idiomas/conexus_sistema/app/controllers/pagamentoController.php"><i class="bi bi-piggy-bank-fill"></i><span>Financeiro</span></a>
+        <a href="/escola-de-idiomas/conexus_sistema/app/controllers/contatoController.php"><i class="fas fa-headset"></i><span>Nos contate</span></a>
+    </nav>
     </div>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/TipoDocumento.php";
+require_once "../models/tipo_documento.php";
 
 $tipoDocumento = new TipoDocumento();
 
@@ -41,8 +41,8 @@ switch ($acao) {
         }
 
         $tipoDocumento->cadastrar($descricao);
-        echo "Tipo de documento cadastrado com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+        exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -60,8 +60,8 @@ switch ($acao) {
         }
 
         $tipoDocumento->alterar($id, $descricao);
-        echo "Tipo de documento alterado com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?alterar=ok");
+        exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -78,8 +78,8 @@ switch ($acao) {
         }
 
         $tipoDocumento->excluir($id);
-        echo "Tipo de documento excluído com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?excluir=ok");
+        exit;
 
     case 'listarTodos':
         echo json_encode($tipoDocumento->listarTodos());

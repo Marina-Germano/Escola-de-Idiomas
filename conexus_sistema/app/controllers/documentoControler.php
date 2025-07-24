@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/DocumentoAluno.php";
+require_once "../models/documento.php";
 
 $documentoAluno = new DocumentoAluno();
 
@@ -59,8 +59,8 @@ switch ($acao) {
         }
 
         $documentoAluno->cadastrar($idaluno, $idtipo_documento, $caminho_arquivo, $observacoes, $status_documento);
-        echo "Documento enviado com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -92,8 +92,8 @@ switch ($acao) {
         }
 
         $documentoAluno->alterar($iddocumento, $caminho_arquivo, $observacoes, $status_documento);
-        echo "Documento alterado com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?alterar=ok");
+            exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -109,8 +109,8 @@ switch ($acao) {
         }
 
         $documentoAluno->excluir($id);
-        echo "Documento excluído com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?excluir=ok");
+        exit;
 
     case 'listarTodos':
         echo json_encode($documentoAluno->listarTodos());

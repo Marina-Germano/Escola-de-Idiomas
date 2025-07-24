@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/Presenca.php";
+require_once "../models/presenca.php";
 
 $presenca = new Presenca();
 
@@ -9,7 +9,7 @@ function estaLogado() {
 }
 
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
 }
 
 if (!estaLogado()) {
@@ -26,52 +26,50 @@ if (!isset($_GET['acao'])) {
 $acao = $_GET['acao'];
 
 switch ($acao) {
-    case 'cadastrar':
+    case 'registrarPresenca':
         if (!temPermissao()) {
             http_response_code(403);
-            echo "Acesso negado. Apenas usuários autorizados podem cadastrar presença.";
+            echo "Acesso negado. Apenas usuários autorizados podem registrar presença.";
             exit;
         }
 
-        if (!isset($_POST['idaula'], $_POST['idaluno_turma'], $_POST['presente'])) {
+        if (!isset($_POST['idaluno_turma'], $_POST['presente'])) {
             http_response_code(400);
             echo "Campos obrigatórios não informados.";
             exit;
         }
 
-        $ok = $presenca->cadastrar(
-            $_POST['idaula'],
+        $ok = $presenca->registrarPresenca(
             $_POST['idaluno_turma'],
             $_POST['presente'],
-            $_POST['observacao'] ?? null
         );
 
-        echo $ok ? "Presença cadastrada com sucesso!" : "Erro ao cadastrar presença.";
-        break;
-
-    case 'alterar':
-        if (!temPermissao()) {
-            http_response_code(403);
-            echo "Acesso negado. Apenas usuários autorizados podem alterar presença.";
+        header("Location: ../views/components/sucesso.php?registrarPresenca=ok");
             exit;
-        }
 
-        if (!isset($_POST['idpresenca'], $_POST['idaula'], $_POST['idaluno_turma'], $_POST['presente'])) {
-            http_response_code(400);
-            echo "Campos obrigatórios não informados.";
-            exit;
-        }
+    // case 'alterar':
+    //     if (!temPermissao()) {
+    //         http_response_code(403);
+    //         echo "Acesso negado. Apenas usuários autorizados podem alterar presença.";
+    //         exit;
+    //     }
 
-        $ok = $presenca->alterar(
-            $_POST['idpresenca'],
-            $_POST['idaula'],
-            $_POST['idaluno_turma'],
-            $_POST['presente'],
-            $_POST['observacao'] ?? null
-        );
+    //     if (!isset($_POST['idpresenca'], $_POST['idaula'], $_POST['idaluno_turma'], $_POST['presente'])) {
+    //         http_response_code(400);
+    //         echo "Campos obrigatórios não informados.";
+    //         exit;
+    //     }
 
-        echo $ok ? "Presença alterada com sucesso!" : "Erro ao alterar presença.";
-        break;
+    //     $ok = $presenca->alterar(
+    //         $_POST['idpresenca'],
+    //         $_POST['idaula'],
+    //         $_POST['idaluno_turma'],
+    //         $_POST['presente'],
+    //         $_POST['observacao'] ?? null
+    //     );
+
+    //     echo $ok ? "Presença alterada com sucesso!" : "Erro ao alterar presença.";
+    //     break;
 
     case 'excluir':
         if (!temPermissao()) {

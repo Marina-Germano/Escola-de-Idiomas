@@ -1,30 +1,3 @@
-<?php
-// views/student/contact.php
-
-// Fofoca: Inicia a sessão APENAS se ainda não estiver iniciada.
-if (session_status() == PHP_SESSION_NONE){
-    session_start();
-}
-
-// Fofoca: Puxando as informações do usuário da sessão para deixar o cabeçalho e sidebar dinâmicos!
-// Garante que as variáveis existam, mesmo que a sessão não tenha tudo setado.
-$idUsuario = $_SESSION['idusuario'] ?? null;
-$nomeUsuario = $_SESSION['nome_usuario'] ?? 'Usuário Desconhecido';
-$matriculaUsuario = $_SESSION['matricula'] ?? 'N/A';
-$fotoPerfil = $_SESSION['foto_perfil'] ?? '/conexus_sistema/public/img/default-profile.png';
-
-// Fofoca: Pré-popula os campos do formulário se o usuário estiver logado
-$nomeCampo = ($nomeUsuario !== 'Usuário Desconhecido') ? htmlspecialchars($nomeUsuario) : '';
-$matriculaCampo = ($matriculaUsuario !== 'N/A') ? htmlspecialchars($matriculaUsuario) : '';
-
-// Fofoca: Mensagens de feedback da sessão
-$mensagemFeedback = '';
-if (isset($_SESSION['mensagem_contato'])) {
-    $mensagemFeedback = $_SESSION['mensagem_contato'];
-    unset($_SESSION['mensagem_contato']); // Limpa a mensagem depois de usar
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -43,29 +16,33 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.c
 
 </head>
 <body>
-<?php include '../components/student_header.php'; ?>
+<?php 
+include __DIR__ . '/../components/student_header.php';
+?>
 
     <section class="contact">
 
     <div class="row">
 
         <div class="image">
-            <img src="../../../public/img/contact_img.png" alt="Imagem de Contato">
+            <img src="../public/img/contact_img.png" alt="Imagem de Contato">
         </div>
 
-        <form action="/conexus_sistema/app/controllers/contatoController.php" method="post" enctype="multipart/form-data">
+    <form action="../controllers/contatoController.php" method="post" enctype="multipart/form-data">
             <h3>Entre em Contato:</h3>
-            <?php if (!empty($mensagemFeedback)): ?>
+            <?php 
+            if (!empty($mensagemFeedback)): 
+            ?>
                 <div class="message form">
                     <span><?= htmlspecialchars($mensagemFeedback) ?></span>
                     <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
                 </div>
             <?php endif; ?>
 
-            <input type="text" placeholder=" digite seu nome: " name="name" required maxlength="50" class="box" value="<?= $nomeCampo ?>">
+            <input type="text" placeholder=" digite seu nome: " name="name" required maxlength="50" class="box" value="<?= $nomeCampo ?? '' ?>">
             <input type="email" placeholder=" digite seu e-mail: " name="email" required maxlength="50" class="box">
             <input type="number" placeholder=" digite seu telefone: " name="number" required maxlength="50" class="box">
-            <input type="number" placeholder=" digite seu numero de matricula" name="matricula" required maxlength="50" class="box" value="<?= $matriculaCampo ?>">
+            <input type="number" placeholder=" digite seu numero de matricula" name="matricula" required maxlength="50" class="box" value="<?= $matriculaCampo ?? '' ?>">
             <select id="reason" name="razao" class="box" required>
                 <option value="">escolha a razão de contato:</option>
                 <option value="Mudar informações cadastro">Mudar informações cadastro</option>

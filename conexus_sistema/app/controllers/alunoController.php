@@ -111,8 +111,8 @@ switch ($acao) {
             $situacao
         );
 
-        header("Location: ../views/admin/sucesso.php");
-        exit;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -132,8 +132,8 @@ switch ($acao) {
             $_POST['tel_responsavel'],
             $_POST['situacao']
         );
-        header("Location: ../views/admin/sucesso.php");
-        exit;
+        header("Location: ../views/components/sucesso.php?alterar=ok");
+            exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -142,8 +142,8 @@ switch ($acao) {
             exit;
         }
 
-        header("Location: ../views/admin/sucesso.php");
-        exit;
+        header("Location: ../views/components/sucesso.php?excluir=ok");
+            exit;
 
         case 'listarTodos':
             echo json_encode($aluno->listarTodos());

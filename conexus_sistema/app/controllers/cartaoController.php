@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/Cartao.php";
+require_once "../models/cartao.php";
 
 $cartao = new Cartao();
 
@@ -33,10 +33,7 @@ switch ($acao) {
             exit;
         }
 
-        if (
-            !isset($_POST['idaluno'], $_POST['nome_titular'], $_POST['bandeira'], $_POST['ultimos_digitos'],
-                     $_POST['numero_cartao'], $_POST['validade_mes'], $_POST['validade_ano'])
-        ) {
+        if (!isset($_POST['idaluno'], $_POST['nome_titular'], $_POST['bandeira'], $_POST['ultimos_digitos'], $_POST['numero_cartao'], $_POST['validade_mes'], $_POST['validade_ano'])) {
             http_response_code(400);
             echo "Campos obrigatórios não informados.";
             exit;
@@ -52,8 +49,8 @@ switch ($acao) {
             $_POST['validade_ano']
         );
 
-        echo $ok ? "Cartão cadastrado com sucesso!" : "Erro ao cadastrar cartão.";
-        break;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -62,10 +59,7 @@ switch ($acao) {
             exit;
         }
 
-        if (
-            !isset($_POST['idcartao'], $_POST['idaluno'], $_POST['nome_titular'], $_POST['bandeira'],
-                     $_POST['ultimos_digitos'], $_POST['numero_cartao'], $_POST['validade_mes'], $_POST['validade_ano'])
-        ) {
+        if (!isset($_POST['idcartao'], $_POST['idaluno'], $_POST['nome_titular'], $_POST['bandeira'], $_POST['ultimos_digitos'], $_POST['numero_cartao'], $_POST['validade_mes'], $_POST['validade_ano'])) {
             http_response_code(400);
             echo "Campos obrigatórios não informados.";
             exit;
@@ -82,8 +76,8 @@ switch ($acao) {
             $_POST['validade_ano']
         );
 
-        echo $ok ? "Cartão alterado com sucesso!" : "Erro ao alterar cartão.";
-        break;
+        header("Location: ../views/components/sucesso.php?alterar=ok");
+            exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -99,8 +93,9 @@ switch ($acao) {
         }
 
         $ok = $cartao->excluir($_GET['idcartao']);
-        echo $ok ? "Cartão excluído com sucesso!" : "Erro ao excluir cartão.";
-        break;
+
+        header("Location: ../views/components/sucesso.php?excluir=ok");
+            exit;
 
     case 'listarTodos':
         echo json_encode($cartao->listarTodos());

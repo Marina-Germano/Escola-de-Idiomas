@@ -27,9 +27,9 @@ class Usuario {
     public function alterar($idusuario, $nome, $telefone, $email, $data_nascimento, $cpf, $senha, $papel, $foto, $ativo = true, $tentativas_login = 0, $bloqueado = false) {
         $senha_criptografada = password_hash($senha, PASSWORD_DEFAULT);
         $result = $this->pdo->prepare(
-            "UPDATE usuario SET 
-                nome = ?, telefone = ?, email = ?, data_nascimento = ?, cpf = ?, senha = ?, 
-                papel = ?, ativo = ?, foto = ?, tentativas_login = ?, bloqueado = ? 
+            "UPDATE usuario SET
+                nome = ?, telefone = ?, email = ?, data_nascimento = ?, cpf = ?, senha = ?,
+                papel = ?, ativo = ?, foto = ?, tentativas_login = ?, bloqueado = ?
             WHERE idusuario = ?"
         );
         return $result->execute([
@@ -46,31 +46,26 @@ class Usuario {
 
     // Listar todos os usuários com identificação do tipo
     public function listarTodos() {
-        $sql = "
-            SELECT
-                u.idusuario,
-                u.nome,
-                u.email,
-                u.telefone,
-                u.cpf,
-                u.papel,
-                u.foto,
-                CASE
-                    WHEN a.idaluno IS NOT NULL THEN 'aluno'
-                    WHEN p.idprofessor IS NOT NULL THEN 'professor'
-                    WHEN f.idfuncionario IS NOT NULL THEN 'funcionario'
-                    ELSE u.papel
-                END AS tipo_usuario
-            FROM usuario u
-            LEFT JOIN aluno a ON u.idusuario = a.idusuario
-            LEFT JOIN professor p ON u.idusuario = p.idusuario
-            LEFT JOIN funcionario f ON u.idusuario = f.idusuario
-        ";
-        
-        $result = $this->pdo->query($sql);
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $this->pdo->query("SELECT * FROM usuario");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao listar todos os usuários: " . $e->getMessage());
+            return [];
+        }
     }
 
+    public function buscarAlunoPorIdUsuario($idusuario) {
+        try {
+            $sql = "SELECT idaluno FROM aluno WHERE idusuario = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$idusuario]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao buscar idaluno por idusuario: " . $e->getMessage());
+            return null;
+        }
+    }
     // Buscar usuário por CPF
     public function buscarPorCpf($cpf) {
         $stmt = $this->pdo->prepare("SELECT * FROM usuario WHERE cpf = ?");
@@ -83,6 +78,18 @@ class Usuario {
         $result = $this->pdo->prepare("SELECT * FROM usuario WHERE idusuario = ?");
         $result->execute([$id]);
         return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function listarFuncionariosPorCargo($cargo) {
+        try {
+            $sql = "SELECT u.idusuario, u.nome, f.cargo, f.especialidade FROM usuario u JOIN funcionario f ON u.idusuario = f.idusuario WHERE u.papel = 'funcionario' AND f.cargo = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$cargo]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao listar funcionários por cargo: " . $e->getMessage());
+            return [];
+        }
     }
 }
 ?>

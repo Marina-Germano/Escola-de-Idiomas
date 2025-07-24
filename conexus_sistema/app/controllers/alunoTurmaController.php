@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/AlunoTurma.php";
+require_once "../models/aluno_turma.php";
 
 $alunoTurma = new AlunoTurma();
 
@@ -9,7 +9,7 @@ function estaLogado() {
 }
 
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
 }
 
 if (!estaLogado()) {
@@ -44,8 +44,8 @@ switch ($acao) {
 
         $alunoTurma->cadastrar($idaluno, $idturma, $data_matricula);
 
-        header("Location: ../views/admin/sucesso.php");
-        exit;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -66,8 +66,8 @@ switch ($acao) {
 
         $alunoTurma->alterar($idaluno_turma, $idaluno, $idturma, $data_matricula);
 
-        header("Location: ../views/admin/sucesso.php");
-        exit;
+        header("Location: ../views/components/sucesso.php?alterar=ok");
+            exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -86,8 +86,8 @@ switch ($acao) {
 
         $alunoTurma->excluir($idaluno_turma);
 
-        header("Location: ../views/admin/sucesso.php");
-        exit;
+        header("Location: ../views/components/sucesso.php?excluir=ok");
+            exit;
 
     case 'listarTodos':
         echo json_encode($alunoTurma->listarTodos($idturma));

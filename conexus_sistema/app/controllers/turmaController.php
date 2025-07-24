@@ -64,8 +64,8 @@ switch ($acao) {
             $_POST['tipo_recorrencia'] ?? null
         );
 
-        header("Location: ../views/admin/sucesso.php");
-        exit;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -95,7 +95,7 @@ switch ($acao) {
             $_POST['tipo_recorrencia'] ?? null
         );
 
-        header("Location: ../views/admin/sucesso.php");
+        header("Location: ../views/components/sucesso.php?alterar=ok");
         exit;
 
     case 'excluir':
@@ -106,7 +106,7 @@ switch ($acao) {
         }
 
         $turma->excluir($_GET['id']);
-        header("Location: ../views/admin/list_class.php");
+        header("Location: ../views/components/sucesso.php?excluir=ok");
         exit;
 
     case 'listarTodos':

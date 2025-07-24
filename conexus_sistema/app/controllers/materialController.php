@@ -11,7 +11,7 @@ function estaLogado() {
 }
 
 function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario']);
+    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
 }
 
 if (!estaLogado() || !temPermissao()) {
@@ -94,8 +94,8 @@ switch ($acao) {
                 );
 
                 $pdo->commit();
-                header("Location: ../views/admin/sucesso.php?cadastro=ok");
-                exit;
+                header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
             } catch (Exception $e) {
                 $pdo->rollBack();
                 die("Erro ao cadastrar material: " . $e->getMessage());
@@ -139,7 +139,7 @@ switch ($acao) {
                 $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor
             );
 
-            header("Location: ../views/admin/sucesso.php?editar=ok");
+            header("Location: ../views/components/sucesso.php?alterar=ok");
             exit;
         }
         break;
@@ -148,13 +148,15 @@ switch ($acao) {
         if (isset($_GET['idmaterial'])) {
             $idmaterial = $_GET['idmaterial'];
             $materialModel->excluir($idmaterial);
-            header("Location: ../views/admin/listar.php?excluir=ok");
+            header("Location: ../views/components/sucesso.php?excluir=ok");
             exit;
         }
         break;
 
-    case 'listarTodos':
-        echo json_encode($material->listarTodos());
+    case 'listar':
+        $materiais = $materialModel->listarTodos();
+        include __DIR__ . "/../views/admin/listar_materiais.php";
+        // exit;
         break;
 
     case 'listar_por_turma':
@@ -165,6 +167,38 @@ switch ($acao) {
         }
         break;
 
+    case 'listar_aluno':
+        $idusuario = $_SESSION['idusuario'];
+        $materiaisDoAluno = [];
+        $erroMateriais = null;
+
+        try {
+            $aluno = $usuarioModel->buscarAlunoPorIdUsuario($idusuario);
+
+            if ($aluno && isset($aluno['idaluno'])) {
+                $idaluno = $aluno['idaluno'];
+                $materiaisDoAluno = $materialModel->listarMateriaisPorAluno($idaluno);
+                if (isset($materiaisDoAluno['error'])) {
+                    $erroMateriais = $materiaisDoAluno['error'];
+                    $materiaisDoAluno = [];
+                }
+            } else {
+                $erroMateriais = "ID do aluno não encontrado para este usuário. Verifique se o usuário está associado a um aluno.";
+            }
+
+        } catch (Exception $e) {
+            error_log("Erro no controlador de materiais (listar_aluno): " . $e->getMessage());
+            $erroMateriais = "Ocorreu um erro ao carregar seus materiais. Tente novamente mais tarde.";
+        }
+        break;
+
     default:
-        echo "Ação inválida.";
+        if ($papelUsuario === 'aluno') {
+            header("Location: materialController.php?acao=listar_aluno");
+        } else {
+            header("Location: ../views/admin/dashboard.php");
+        }
+        exit;
 }
+
+include __DIR__ . '/../views/student/materiais.php';

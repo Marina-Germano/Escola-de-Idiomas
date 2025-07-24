@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/Contato.php";
+require_once "../models/contato.php";
 
 $contato = new Contato();
 
@@ -48,12 +48,15 @@ if (isset($_GET['acao'])) {
             }
 
             if ($contato->cadastrar($idusuario, $nome, $email, $telefone, $arquivo, $motivo_contato, $mensagem)) {
-                echo "Contato cadastrado com sucesso!";
+                header("Location: ../views/admin/sucesso.php?cadastrar=ok");
+            exit;
+
             } else {
                 http_response_code(500);
                 echo "Erro ao cadastrar contato.";
             }
-            break;
+            header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
         case 'alterar':
             if (!temPermissao()) {
@@ -71,12 +74,15 @@ if (isset($_GET['acao'])) {
             $mensagem = $_POST['mensagem'];
 
             if ($contato->alterar($idcontato, $idusuario, $nome, $email, $telefone, $arquivo, $motivo_contato, $mensagem)) {
-                echo "Contato alterado com sucesso!";
+                header("Location: ../views/admin/sucesso.php?alterar=ok");
+            exit;
+
             } else {
                 http_response_code(500);
                 echo "Erro ao alterar contato.";
             }
-            break;
+            header("Location: ../views/components/sucesso.php?alterar=ok");
+            exit;
 
         case 'excluir':
             if (!temPermissao()) {
@@ -91,7 +97,8 @@ if (isset($_GET['acao'])) {
                 http_response_code(500);
                 echo "Erro ao excluir contato.";
             }
-            break;
+            header("Location: ../views/components/sucesso.php?excluir=ok");
+            exit;
 
         case 'listarTodos':
             if (!temPermissao()) {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model/FormaPagamento.php";
+require_once "../models/forma_pagamento.php";
 
 $formaPagamento = new FormaPagamento();
 
@@ -41,8 +41,8 @@ switch ($acao) {
         }
 
         $formaPagamento->cadastrar($descricao);
-        echo "Forma de pagamento cadastrada com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            exit;
 
     case 'alterar':
         if (!temPermissao()) {
@@ -60,8 +60,8 @@ switch ($acao) {
         }
 
         $formaPagamento->alterar($id, $descricao);
-        echo "Forma de pagamento alterada com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?alterar=ok");
+            exit;
 
     case 'excluir':
         if (!temPermissao()) {
@@ -78,8 +78,8 @@ switch ($acao) {
         }
 
         $formaPagamento->excluir($id);
-        echo "Forma de pagamento excluída com sucesso!";
-        break;
+        header("Location: ../views/components/sucesso.php?excluir=ok");
+        exit;
 
     case 'listarTodos':
         echo json_encode($formaPagamento->listarTodos());
