@@ -44,9 +44,9 @@ $itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu métod
                             <td><?= htmlspecialchars($item['turma'] ?? 'sem turma') ?></td>
                             <td class="text-end">
                                 <a href="register_student.php?acao=editar&id=<?= $item['idaluno'] ?>" class="inline-option-btn">
-                                    <i class="fas fa-edit"></i> Editar
-                                </a>
-                                <a href="register_student.php?acao=excluir&id=<?= $item['idaluno'] ?>" class="inline-delete-btn"
+                                    <i class="fas fa-edit"></i> Editar</a>
+
+                                <a href="../../controllers/alunoController.php?acao=excluir&id=<?= $item['idaluno'] ?>" class="inline-delete-btn"
                                 onclick="return confirm('Tem certeza que deseja excluir este estudante?');">
                                 <i class="fas fa-trash-alt"></i> Excluir
                                 </a>

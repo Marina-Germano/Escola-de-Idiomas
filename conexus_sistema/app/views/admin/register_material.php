@@ -55,7 +55,8 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
             <div class="col">
 
                 <p><strong>Título <span>*</span></strong></p>
-                <input type="text" name="titulo" maxlength="255" required value="<?= $item['titulo'] ?>" placeholder="Título do material" class="box">
+                <input type="text" name="titulo" maxlength="255" required
+                value="<?= $modoEdicao && isset($item['titulo']) ? htmlspecialchars($item['titulo']) : '' ?>" placeholder="Título do material" class="box">
 
                 <p><strong>Tipo de Material</strong></p>
                 <select name="idtipo_material" class="box">
@@ -67,7 +68,7 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                 <p><strong>Idioma</strong></p>
                 <select name="ididioma" class="box">
                     <option value="" selected>Selecionar Idioma</option>
-                    <?php foreach ($idiomas as $idioma): ?>
+                    <?php foreach ($itens as $idioma): ?>
               <option value="<?= $idioma['ididioma'] ?>" <?= isset($idioma['descricao']) && $idioma['descricao'] == $idioma['descricao'] ? 'selected' : '' ?>>
                   <?= htmlspecialchars($idioma['descricao']) ?>
               </option>
@@ -111,10 +112,6 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                 echo '<option disabled>Nenhum funcionário encontrado</option>';}
             ?>
         </select>
-
-                <p><strong>Descrição do Material</strong></p>
-                <input type="text" name="descricao_material" class="box" value="<?= $item['descricao'] ?>" placeholder="Descrição do material">
-
             </div>
 
             <div class="col">
@@ -126,14 +123,9 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                         <option value="<?= $turma['idturma'] ?>"><?= htmlspecialchars($turma['descricao']) ?></option>
                     <?php endforeach; ?></select>
 
-                <input type="text" name="descricao_turma" class="box" value="<?= $turma['descricao'] ?>" placeholder="Descrição da nova turma">
+                <p><strong>Descrição do Material</strong></p>
+                <input type="text" name="descricao_material" class="box" value="<?= isset($item['descricao']) ? htmlspecialchars($item['descricao']) : '' ?>" placeholder="Descrição">
 
-                <input type="text" name="dias_semana" class="box" value="<?= $turma['dias_semana'] ?>" placeholder="Dias da semana (ex: Seg, Qua)">
-                <input type="time" name="hora_inicio" class="box" value="<?= $turma['hora_inicio'] ?>" placeholder="Hora de início">
-                <input type="number" name="capacidade_maxima" class="box" value="<?= $turma['capacidade_maxima'] ?>" placeholder="Capacidade máxima">
-                <input type="text" name="sala" class="box" value="<?= $turma['sala'] ?>" placeholder="Sala da turma">
-                <input type="text" name="tipo_recorrencia" class="box" value="<?= $turma['tipo_recorrencia'] ?>" placeholder="Tipo de recorrência (ex: semanal)">
-            
                 <p><strong>Quantidade <span>*</span></strong></p>
                 <input type="number" name="quantidade" min="1" required class="box">
 

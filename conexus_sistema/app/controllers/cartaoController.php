@@ -49,7 +49,7 @@ switch ($acao) {
             $_POST['validade_ano']
         );
 
-        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+        header("Location: ../views/components/sucess.php?cadastrar=ok");
             exit;
 
     case 'alterar':
@@ -76,7 +76,7 @@ switch ($acao) {
             $_POST['validade_ano']
         );
 
-        header("Location: ../views/components/sucesso.php?alterar=ok");
+        header("Location: ../views/components/sucess.php?alterar=ok");
             exit;
 
     case 'excluir':
@@ -94,7 +94,7 @@ switch ($acao) {
 
         $ok = $cartao->excluir($_GET['idcartao']);
 
-        header("Location: ../views/components/sucesso.php?excluir=ok");
+        header("Location: ../views/components/sucess.php?excluir=ok");
             exit;
 
     case 'listarTodos':

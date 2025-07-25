@@ -44,7 +44,7 @@ switch ($acao) {
 
         $alunoTurma->cadastrar($idaluno, $idturma, $data_matricula);
 
-        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+        header("Location: ../views/components/sucess.php?cadastrar=ok");
             exit;
 
     case 'alterar':
@@ -66,28 +66,15 @@ switch ($acao) {
 
         $alunoTurma->alterar($idaluno_turma, $idaluno, $idturma, $data_matricula);
 
-        header("Location: ../views/components/sucesso.php?alterar=ok");
+        header("Location: ../views/components/sucess.php?alterar=ok");
             exit;
 
-    case 'excluir':
+        case 'excluir':
         if (!temPermissao()) {
             http_response_code(403);
-            
-            echo "Acesso negado. Apenas usuários autorizados podem excluir matrícula.";
+            echo "Acesso negado.";
             exit;
         }
-
-        $idaluno_turma = $_GET['idaluno_turma'] ?? null;
-
-        if (!$idaluno_turma) {
-            echo "Erro: ID da matrícula não informado.";
-            exit;
-        }
-
-        $alunoTurma->excluir($idaluno_turma);
-
-        header("Location: ../views/components/sucesso.php?excluir=ok");
-            exit;
 
     case 'listarTodos':
         echo json_encode($alunoTurma->listarTodos($idturma));

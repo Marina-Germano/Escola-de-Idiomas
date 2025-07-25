@@ -45,23 +45,23 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
             <div class="col">
                 <p>Nome do Aluno: <span>*</span></p>
                 <input type="text" name="nome" required class="box"
-                    value="<?= $modoEdicao ? htmlspecialchars($item['nome']) : '' ?>">
+                    value="<?= $modoEdicao && isset($item['nome']) ? htmlspecialchars($item['nome']) : '' ?>" placeholder="Nome Completo">
 
                 <p>CPF do Aluno: <span>*</span></p>
                 <input type="text" name="cpf" maxlength="11" required class="box"
-                    value="<?= $modoEdicao ? htmlspecialchars($item['cpf']) : '' ?>">
+                    value="<?= $modoEdicao && isset($item['cpf']) ? htmlspecialchars($item['cpf']) : '' ?>">
 
                 <p>Data de Nascimento: <span>*</span></p>
                 <input type="date" name="data_nascimento" required class="box"
-                    value="<?= $modoEdicao ? $item['data_nascimento'] : '' ?>">
+                    value="<?= $modoEdicao && isset($item['data']) ? htmlspecialchars($item['data']) : '' ?>">
 
                 <p>Email do Aluno: <span>*</span></p>
                 <input type="email" name="email" required class="box"
-                    value="<?= $modoEdicao ? htmlspecialchars($item['email']) : '' ?>">
+                    value="<?= $modoEdicao && isset($item['email']) ? htmlspecialchars($item['email']) : '' ?>">
 
                 <p>Telefone do Aluno: <span>*</span></p>
                 <input type="tel" name="telefone" maxlength="15" required class="box"
-                    value="<?= $modoEdicao ? htmlspecialchars($item['telefone']) : '' ?>">
+                    value="<?= $modoEdicao && isset($item['telefone']) ? htmlspecialchars($item['telefone']) : '' ?>">
 
                 <p>CEP: <span>*</span></p>
                 <input type="text" name="cep" maxlength="9" required class="box"
@@ -70,13 +70,14 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                 <p>Rua: <span>*</span></p>
                 <input type="text" name="rua" required class="box"
                     value="<?= $modoEdicao ? htmlspecialchars($item['rua']) : '' ?>">
+            </div>
+
+            <div class="col">
 
                 <p>Número: <span>*</span></p>
                 <input type="text" name="numero" required class="box"
                     value="<?= $modoEdicao ? htmlspecialchars($item['numero']) : '' ?>">
-            </div>
 
-            <div class="col">
                 <p>Bairro: <span>*</span></p>
                 <input type="text" name="bairro" required class="box"
                     value="<?= $modoEdicao ? htmlspecialchars($item['bairro']) : '' ?>">
@@ -97,9 +98,6 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                     <p>Senha: <span>*</span></p>
                     <input type="password" name="senha" maxlength="20" required class="box">
                 <?php endif; ?>
-
-                <p>Foto de Perfil: </p>
-                <input type="file" name="foto" accept="image/*" class="box" />
 
                 <p>Situação do Aluno:</p>
                 <select name="situacao" class="box">

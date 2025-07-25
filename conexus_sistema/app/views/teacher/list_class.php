@@ -24,7 +24,7 @@ if ($acao === 'listar' && $idturma) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estudante</title>
+    <title>Turmas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="../../../public/css/admin_style.css">
 </head>
@@ -61,8 +61,9 @@ if ($acao === 'listar' && $idturma) {
                             <td><?php echo htmlspecialchars($item['hora_inicio'] ?? 'sem horário'); ?></td></td>
                             <td class="text-end">
 
-                                <a href="list_students.php?acao=listar&id=<?= $item['idturma'] ?>" class="inline-option-btn">
+                                <a href="presenca.php?acao=listarAlunos&idturma=<?=$item['idturma'] ?>" class="btn btn-secondary">
                                     <i class="fas fa-edit"></i>Marcar Presença</a>
+
                             </td>
                         </tr>
                     <?php endforeach; ?>

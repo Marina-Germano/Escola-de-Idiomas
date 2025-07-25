@@ -1,108 +1,101 @@
 <?php
 session_start();
-require_once "../models/presenca.php";
+require_once __DIR__ . '/../models/presenca.php';
 
 $presenca = new Presenca();
+$acao = $_GET['acao'] ?? '';
 
-function estaLogado() {
-    return isset($_SESSION['idusuario']);
-}
-
-function temPermissao() {
-    return isset($_SESSION['papel']) && in_array($_SESSION['papel'], ['admin', 'funcionario', 'professor']);
-}
-
-if (!estaLogado()) {
-    http_response_code(401);
-    echo "Acesso negado. Faça login para continuar.";
-    exit;
-}
-
-if (!isset($_GET['acao'])) {
-    echo "Nenhuma ação definida.";
-    exit;
-}
-
-$acao = $_GET['acao'];
 
 switch ($acao) {
-    case 'registrarPresenca':
-        if (!temPermissao()) {
-            http_response_code(403);
-            echo "Acesso negado. Apenas usuários autorizados podem registrar presença.";
-            exit;
+    case 'registrar':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idfuncionario = $_SESSION['idusuario'] ?? null;
+            $idturma = $_POST['idturma'] ?? null;
+            $faltas = $_POST['faltas'] ?? []; // array com idaluno_turma dos faltantes
+
+            if ($idfuncionario && $idturma) {
+                require_once __DIR__ . '/../models/aluno_turma.php';
+                $alunoTurmaModel = new AlunoTurma();
+                $alunos = $alunoTurmaModel->listarTodos($idturma);
+
+                foreach ($alunos as $aluno) {
+                    $idaluno_turma = $aluno['idaluno_turma'];
+                    $presente = in_array($idaluno_turma, $faltas) ? 0 : 1;
+                    $presenca->registrarPresenca($idaluno_turma, $idfuncionario, $presente);
+                }
+
+                header('Location: ../views/teacher/listar_students.php?mensagem=Presenças registradas');
+                exit;
+            } else {
+                echo "Dados incompletos para registrar presença.";
+            }
         }
+        break;
 
-        if (!isset($_POST['idaluno_turma'], $_POST['presente'])) {
-            http_response_code(400);
-            echo "Campos obrigatórios não informados.";
-            exit;
+    case 'alterar':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idpresenca = $_POST['idpresenca'] ?? null;
+            $presente = isset($_POST['presente']) ? 1 : 0;
+
+            if ($idpresenca) {
+                $presenca->alterar($idpresenca, $presente);
+                header('Location: ../views/teacher/list_student.php?mensagem=Presença alterada');
+                exit;
+            } else {
+                echo "ID da presença não informado.";
+            }
         }
-
-        $ok = $presenca->registrarPresenca(
-            $_POST['idaluno_turma'],
-            $_POST['presente'],
-        );
-
-        header("Location: ../views/components/sucesso.php?registrarPresenca=ok");
-            exit;
-
-    // case 'alterar':
-    //     if (!temPermissao()) {
-    //         http_response_code(403);
-    //         echo "Acesso negado. Apenas usuários autorizados podem alterar presença.";
-    //         exit;
-    //     }
-
-    //     if (!isset($_POST['idpresenca'], $_POST['idaula'], $_POST['idaluno_turma'], $_POST['presente'])) {
-    //         http_response_code(400);
-    //         echo "Campos obrigatórios não informados.";
-    //         exit;
-    //     }
-
-    //     $ok = $presenca->alterar(
-    //         $_POST['idpresenca'],
-    //         $_POST['idaula'],
-    //         $_POST['idaluno_turma'],
-    //         $_POST['presente'],
-    //         $_POST['observacao'] ?? null
-    //     );
-
-    //     echo $ok ? "Presença alterada com sucesso!" : "Erro ao alterar presença.";
-    //     break;
+        break;
 
     case 'excluir':
-        if (!temPermissao()) {
-            http_response_code(403);
-            echo "Apenas usuários autorizados podem excluir presença.";
+        $idpresenca = $_GET['idpresenca'] ?? null;
+        if ($idpresenca) {
+            $presenca->excluir($idpresenca);
+            header('Location: ../views/teacher/list_students.php?mensagem=Presença excluída');
             exit;
+        } else {
+            echo "ID da presença não informado para exclusão.";
         }
-
-        if (!isset($_GET['idpresenca'])) {
-            http_response_code(400);
-            echo "ID da presença não informado.";
-            exit;
-        }
-
-        $ok = $presenca->excluir($_GET['idpresenca']);
-        echo $ok ? "Presença excluída com sucesso!" : "Erro ao excluir presença.";
         break;
 
-    case 'listarTodos':
-        echo json_encode($presenca->listarTodos());
-        break;
-
-    case 'listarId':
-        if (!isset($_GET['idpresenca'])) {
-            http_response_code(400);
-            echo "ID da presença não informado.";
-            exit;
+    case 'listarTurma':
+        $idturma = $_GET['idturma'] ?? null;
+        if ($idturma) {
+            $lista = $presenca->listarPresencasPorTurma($idturma);
+            include '../views/teacher/list_class.php';
+        } else {
+            echo "Turma não especificada.";
         }
-
-        echo json_encode($presenca->listarId($_GET['idpresenca']));
         break;
 
+    case 'chamada':
+        $idturma = $_GET['idturma'] ?? null;
+        if ($idturma) {
+            require_once __DIR__ . '/../models/aluno_turma.php';
+            $alunoTurmaModel = new AlunoTurma();
+            $alunos = $alunoTurmaModel->listarTodos($idturma);
+            include '../views/teacher/list_students.php';
+        } else {
+            echo "Turma não especificada para chamada.";
+        }
+        break;
+
+    case 'listar_todos':
     default:
-        echo "Ação inválida.";
+        $lista = $presenca->listarTodos();
+        include '../views/teacher/list_students.php';
         break;
+
+    case 'listarAlunos':
+    $idturma = $_GET['idturma'] ?? null;
+    if ($idturma) {
+        require_once __DIR__ . '/../models/aluno_turma.php';
+        $alunoTurmaModel = new AlunoTurma();
+        $alunos = $alunoTurmaModel->listarTodos($idturma);
+        include '../views/teacher/list_students.php';
+    } else {
+        echo "Turma não especificada para chamada.";
+    }
+    break;
+
 }

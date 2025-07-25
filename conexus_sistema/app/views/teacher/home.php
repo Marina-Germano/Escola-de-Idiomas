@@ -45,14 +45,14 @@ $nome = $usuario['nome'] ?? 'Professor';
       <div class="box">
          <h3>Cadastrar Material</h3>
          <p>Gerencie os materiais da escola</p>
-         <a href="../admin/register_material.php" class="btn">Cadastrar Materiais</a>
+         <a href="register_material.php" class="btn">Cadastrar Materiais</a>
       </div>
 
 
       <div class="box">
          <h3>Relatório de Materiais</h3>
          <p>Acompanhe o uso de materiais</p>
-         <a href="escola-de-idiomas/conexus_sistema/app/views/admin/material_report.php" class="btn">Ver Relatório</a>
+         <a href="../../controllers/relatorioMateriaisController.php" class="btn">Ver Relatório</a>
       </div>
 
    </div>

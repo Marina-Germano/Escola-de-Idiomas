@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if (!isset($_SESSION['idusuario'])) {
     header("Location: ../login.php");
@@ -36,7 +35,7 @@ if (isset($_GET['presenca']) && $_GET['presenca'] === 'ok') {
         <div class="message form">
             <?= htmlspecialchars($mensagem) ?><br>
             <?php if ($_SESSION['papel'] === 'admin'): ?>
-                <a href="dashboard.php">Ir para a Home</a>
+                <a href="../admin/dashboard.php">Ir para a Home</a>
             <?php else: ?>
                 <a href="../teacher/home.php">Ir para a Home</a>
             <?php endif; ?>

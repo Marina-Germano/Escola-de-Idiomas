@@ -42,6 +42,7 @@ class AlunoTurma {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+
     public function listarId($idaluno_turma) {
         $result = $this->pdo->prepare("SELECT * FROM aluno_turma WHERE idaluno_turma = ?");
         $result->execute([$idaluno_turma]);

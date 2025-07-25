@@ -1,12 +1,28 @@
 <?php
-if(isset($message)){
-   foreach($message as $message){
-      echo '
-      <div class="message">
-         <span>'.$message.'</span>
-         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-      </div>
-      ';
+// Iniciar sessão se ainda não estiver iniciada
+if (session_status() === PHP_SESSION_NONE) {
+   session_start();
+}
+
+// Incluir a conexão com o banco
+require_once(__DIR__ . '/../../config/conexao.php');
+
+
+// Verificar se há um usuário logado
+$idusuario = $_SESSION['idusuario'] ?? null;
+$fetch_profile = null;
+
+if ($idusuario !== null) {
+   try {
+      $conn = Conexao::conectar();
+      $select_profile = $conn->prepare("SELECT * FROM usuario WHERE idusuario = ?");
+      $select_profile->execute([$idusuario]);
+      if ($select_profile->rowCount() > 0) {
+            $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
+      }
+   } catch (PDOException $e) {
+        // Em produção, use log ao invés de exibir erros
+      echo "Erro ao buscar perfil: " . $e->getMessage();
    }
 }
 ?>
@@ -35,15 +51,12 @@ if(isset($message)){
          if ($idusuario !== null) {
             $select_profile = $conn->prepare("SELECT * FROM `usuario` WHERE idusuario = ?");
             $select_profile->execute([$idusuario]);
-            if($select_profile->rowCount() > 0){
-               $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
          ?>
                <img src="../../../public/img/pic-1.jpg<?= $fetch_profile['foto']; ?>" alt="">
                <h3><?= $fetch_profile['nome']; ?></h3>
                <span><?= $fetch_profile['papel']; ?></span>
          <?php
             }
-         }
          ?>
       </div>
 

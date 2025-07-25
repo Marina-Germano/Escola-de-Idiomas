@@ -94,7 +94,7 @@ switch ($acao) {
                 );
 
                 $pdo->commit();
-                header("Location: ../views/components/sucesso.php?cadastrar=ok");
+                header("Location: ../views/components/sucess.php?cadastrar=ok");
             exit;
             } catch (Exception $e) {
                 $pdo->rollBack();
@@ -139,7 +139,7 @@ switch ($acao) {
                 $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idprofessor
             );
 
-            header("Location: ../views/components/sucesso.php?alterar=ok");
+            header("Location: ../views/components/sucess.php?alterar=ok");
             exit;
         }
         break;
@@ -148,7 +148,7 @@ switch ($acao) {
         if (isset($_GET['idmaterial'])) {
             $idmaterial = $_GET['idmaterial'];
             $materialModel->excluir($idmaterial);
-            header("Location: ../views/components/sucesso.php?excluir=ok");
+            header("Location: ../views/components/sucess.php?excluir=ok");
             exit;
         }
         break;

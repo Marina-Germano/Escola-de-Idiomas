@@ -94,7 +94,7 @@ switch ($acao) {
         // 3. Cadastra o funcionário
         $funcionario->cadastrar($idusuario, $cargo);
 
-        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+        header("Location: ../views/components/sucess.php");
             exit;
 
     case 'alterar':
@@ -106,7 +106,7 @@ switch ($acao) {
 
         $funcionario->alterar($_POST['idfuncionario'], $_POST['cargo']);
 
-        header("Location: ../views/components/sucesso.php?alterar=ok");
+        header("Location: ../views/components/sucess.php");
             exit;
 
 
@@ -119,7 +119,7 @@ switch ($acao) {
 
         $funcionario->excluir($_GET['idfuncionario']);
 
-        header("Location: ../views/components/sucesso.php?excluir=ok");
+        header("Location: ../views/list_employer.php");
         exit;
 
     case 'listarTodos':

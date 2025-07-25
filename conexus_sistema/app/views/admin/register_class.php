@@ -33,6 +33,9 @@ $idiomas = $idiomaModel->listarTodos();
 $nivelModel = new Nivel();
 $niveis = $nivelModel->listarTodos();
 
+$stmt = $conn->prepare("SELECT tipo_recorrencia FROM turma");
+$stmt->execute();
+$tiposRecorrencia = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $modoEdicao = false;
 $item = [];
@@ -41,12 +44,14 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
     $modoEdicao = true;
     $item = $turmaModel->listarId($_GET['id']); // fica turmaModel mesmo?
 }
+
 ?>
+
 
 <section class="form-container">
   <!-- <form class="register" action="/conexus_sistema/app/controllers/TurmaController.php?acao=cadastrar" method="post" enctype="multipart/form-data"> -->
 
-<form class="register" action="../../controllers/turmaController.php?acao=<?= $modoEdicao ? 'alterar' : 'cadastrar' ?>" 
+<form class="register" action="../../controllers/turmaController.php?acao=<?= $modoEdicao ? 'alterar' : 'cadastrar' ?>"
 method="post" enctype="multipart/form-data">
   <div class="flex">
     <div class="col">
@@ -97,7 +102,7 @@ method="post" enctype="multipart/form-data">
         </select>
 
       <p>Nome da Turma (Descrição) <span>*</span></p>
-      <input type="text" name="descricao" placeholder="Digite o nome da turma" value="<?= $item['descricao'] ?>" maxlength="100" required class="box">
+      <input type="text" name="descricao" placeholder="Digite o nome da turma"  value="<?= $modoEdicao && isset($item['descricao']) ? htmlspecialchars($item['descricao']) : '' ?>" maxlength="100" required class="box">
 
       <p>Dias da Semana <span>*</span></p>
       <div class="box">
@@ -114,21 +119,23 @@ method="post" enctype="multipart/form-data">
     <div class="col">
 
       <p>Hora de Início da Aula<span>*</span></p>
-      <input type="time" name="hora_inicio" value="<?= $item['hora_inicio'] ?>" required class="box">
+      <input type="time" name="hora_inicio"  value="<?= $modoEdicao && isset($item['hora_inicio']) ? htmlspecialchars($item['hora_inicio']) : '' ?>" required class="box">
 
       <p>Capacidade Máxima <span>*</span></p>
-      <input type="number" name="capacidade_maxima" min="1" required class="box" value="<?= $item['capacidade_maxima'] ?>" placeholder="Ex: 20">
+      <input type="number" name="capacidade_maxima" min="1" required class="box"  value="<?= $modoEdicao && isset($item['capacidade_maxima']) ? htmlspecialchars($item['capacidade_maxima']) : '' ?>" placeholder="Ex: 20">
 
       <p>Sala da Turma <span>*</span></p>
-      <input type="text" name="sala" maxlength="100" required class="box" value="<?= $item['sala'] ?>" placeholder="Ex: Sala 5, Bloco B">
+      <input type="text" name="sala" maxlength="100" required class="box"  value="<?= $modoEdicao && isset($item['sala']) ? htmlspecialchars($item['sala']) : '' ?>" placeholder="Ex: Sala 5, Bloco B">
 
       <p>Tipo de Recorrência <span>*</span></p>
       <select name="tipo_recorrencia" class="box" required>
-          <option value="" disabled <?= !isset($item) ? 'selected' : ''?> >-- selecione --</option>
-          <option value="diaria" <?= isset($item) && $item['tipo_recorrencia']== 'diaria' ? 'selected' : ""?>>Diária</option>
-          <option value="semanal"<?= isset($item) && $item['tipo_recorrencia']== 'semanal' ? 'selected' : ""?>>Semanal</option>
-          <option value="mensal" <?= isset($item) && $item['tipo_recorrencia']== 'mensal' ? 'selected' : ""?>>Mensal</option>
-      </select>
+      <option value="" disabled <?= empty($item['tipo_recorrencia']) ? 'selected' : '' ?>>-- selecione --</option>
+        <?php foreach ($tiposRecorrencia as $rec): ?>
+          <option value="<?= $rec['tipo_recorrencia'] ?>" <?= isset($item['tipo_recorrencia']) && $item['tipo_recorrencia'] === $rec['tipo_recorrencia'] ? 'selected' : '' ?>>
+            <?= ucfirst($rec['tipo_recorrencia']) ?>
+          </option>
+        <?php endforeach; ?>
+    </select>
 
       <p>Imagem da Turma (opcional)</p>
       <input type="file" name="imagem" accept="image/*" class="box">

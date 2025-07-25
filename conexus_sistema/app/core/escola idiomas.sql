@@ -210,13 +210,11 @@ CREATE TABLE calendario_aula(
 
 CREATE TABLE presenca (
     idpresenca INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idaula INT NOT NULL,
     idaluno_turma INT NOT NULL,
     idfuncionario INT NOT NULL,
     presente BOOLEAN NOT NULL DEFAULT FALSE,
-    observacao TEXT,
+    data DATE NOT NULL,
     
-    FOREIGN KEY (idaula) REFERENCES calendario_aula(idaula),
     FOREIGN KEY (idaluno_turma) REFERENCES aluno_turma(idaluno_turma),
     FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario)
 );
@@ -322,8 +320,8 @@ VALUES
 ('2025-07-03', '14:00:00', '15:00:00', 2, 1, 1, 'Sala 101', 'Revisão dos verbos', NULL, FALSE),
 ('2025-07-05', '10:00:00', '11:30:00', 2, 1, 1, 'Sala 101', 'Aula extra para dúvidas', NULL, TRUE);
 
-INSERT INTO presenca (idaula, idaluno_turma, idfuncionario, presente, observacao) VALUES
-(1, 1, 2, TRUE, 'Participou bem da aula extra.');
+INSERT INTO presenca (idaluno_turma, idfuncionario, presente, data) VALUES
+(1, 2, TRUE, CURDATE());
 
 INSERT INTO contato (idusuario, nome, email, telefone, arquivo, motivo_contato, mensagem) VALUES
 (1, 'Ana Souza', 'ana@example.com', '11999999999', NULL, 'Solicitação de material', 'Preciso da apostila do curso para estudar em casa.');

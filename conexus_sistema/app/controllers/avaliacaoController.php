@@ -67,7 +67,7 @@ if (!isset($_GET['acao'])) {
         $atividades = []; // Inicializa para garantir que sempre seja um array.
         try {
             $atividades = $avaliacaoModel->getAvaliacoesByAlunoAndIdioma($idusuarioLogado, $idiomaParaModelo);
-            error_log("DEBUG: getAvaliacoesByAlunoAndIdioma executado com sucesso. " . count($atividades) . " atividades encontradas.");
+            error_log("DEBUG: getAvaliacoesByAlunoAndIdioma executado com sucess. " . count($atividades) . " atividades encontradas.");
         } catch (PDOException $e) {
             error_log("ERRO PDO em avaliacaoController ao buscar avaliações: " . $e->getMessage());
             // Em caso de erro, pode-se decidir exibir uma mensagem ou redirecionar.
@@ -130,7 +130,7 @@ switch ($acao) {
             $observacao
         );
 
-        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+        header("Location: ../views/components/sucess.php?cadastrar=ok");
             exit;
 
     case 'alterar':
@@ -169,7 +169,7 @@ switch ($acao) {
             $observacao
         );
 
-        header("Location: ../views/components/sucesso.php?alterar=ok");
+        header("Location: ../views/components/sucess.php?alterar=ok");
             exit;
 
     case 'excluir':
@@ -186,7 +186,7 @@ switch ($acao) {
         }
 
         $ok = $avaliacaoModel->excluir($_GET['idavaliacao']);
-        header("Location: ../views/components/sucesso.php?excluir=ok");
+        header("Location: ../views/components/sucess.php?excluir=ok");
             exit;
 
     case 'listarTodos':

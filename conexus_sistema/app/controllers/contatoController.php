@@ -48,14 +48,14 @@ if (isset($_GET['acao'])) {
             }
 
             if ($contato->cadastrar($idusuario, $nome, $email, $telefone, $arquivo, $motivo_contato, $mensagem)) {
-                header("Location: ../views/admin/sucesso.php?cadastrar=ok");
+                header("Location: ../views/admin/sucess.php?cadastrar=ok");
             exit;
 
             } else {
                 http_response_code(500);
                 echo "Erro ao cadastrar contato.";
             }
-            header("Location: ../views/components/sucesso.php?cadastrar=ok");
+            header("Location: ../views/components/sucess.php?cadastrar=ok");
             exit;
 
         case 'alterar':
@@ -74,14 +74,14 @@ if (isset($_GET['acao'])) {
             $mensagem = $_POST['mensagem'];
 
             if ($contato->alterar($idcontato, $idusuario, $nome, $email, $telefone, $arquivo, $motivo_contato, $mensagem)) {
-                header("Location: ../views/admin/sucesso.php?alterar=ok");
+                header("Location: ../views/admin/sucess.php?alterar=ok");
             exit;
 
             } else {
                 http_response_code(500);
                 echo "Erro ao alterar contato.";
             }
-            header("Location: ../views/components/sucesso.php?alterar=ok");
+            header("Location: ../views/components/sucess.php?alterar=ok");
             exit;
 
         case 'excluir':
@@ -92,12 +92,12 @@ if (isset($_GET['acao'])) {
             }
             $idcontato = $_GET['idcontato'];
             if ($contato->excluir($idcontato)) {
-                echo "Contato excluído com sucesso!";
+                echo "Contato excluído com sucess!";
             } else {
                 http_response_code(500);
                 echo "Erro ao excluir contato.";
             }
-            header("Location: ../views/components/sucesso.php?excluir=ok");
+            header("Location: ../views/components/sucess.php?excluir=ok");
             exit;
 
         case 'listarTodos':

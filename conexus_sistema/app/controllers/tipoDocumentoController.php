@@ -41,7 +41,7 @@ switch ($acao) {
         }
 
         $tipoDocumento->cadastrar($descricao);
-        header("Location: ../views/components/sucesso.php?cadastrar=ok");
+        header("Location: ../views/components/sucess.php?cadastrar=ok");
         exit;
 
     case 'alterar':
@@ -60,7 +60,7 @@ switch ($acao) {
         }
 
         $tipoDocumento->alterar($id, $descricao);
-        header("Location: ../views/components/sucesso.php?alterar=ok");
+        header("Location: ../views/components/sucess.php?alterar=ok");
         exit;
 
     case 'excluir':
@@ -78,7 +78,7 @@ switch ($acao) {
         }
 
         $tipoDocumento->excluir($id);
-        header("Location: ../views/components/sucesso.php?excluir=ok");
+        header("Location: ../views/components/sucess.php?excluir=ok");
         exit;
 
     case 'listarTodos':

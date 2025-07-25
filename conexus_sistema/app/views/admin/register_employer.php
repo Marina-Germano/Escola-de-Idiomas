@@ -37,6 +37,7 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
         enctype="multipart/form-data"
     >
         <input type="hidden" name="papel" value="funcionario" />
+        
         <?php if ($modoEdicao): ?>
             <input type="hidden" name="idfuncionario" value="<?= $item['idfuncionario'] ?>">
         <?php endif; ?>
@@ -44,30 +45,35 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
         <div class="flex">
             <div class="col">
                 <p>Nome: <span>*</span></p>
-                <input type="text" name="nome" required class="box" value="<?= $modoEdicao ? htmlspecialchars($item['nome']) : '' ?>">
+                <input type="text" name="nome" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['nome']) : '' ?>">
 
                 <p>CPF: <span>*</span></p>
-                <input type="text" name="cpf" maxlength="11" required class="box" value="<?= $modoEdicao ? htmlspecialchars($item['cpf']) : '' ?>">
+                <input type="text" name="cpf" maxlength="11" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['cpf']) : '' ?>">
 
                 <p>Data de Nascimento: <span>*</span></p>
-                <input type="date" name="data_nascimento" required class="box" value="<?= $modoEdicao ? $item['data_nascimento'] : '' ?>">
+                <input type="date" name="data_nascimento" required class="box"
+                    value="<?= $modoEdicao && isset($item['data_nascimento']) ? htmlspecialchars($item['data_nascimento']) : '' ?>">
 
                 <p>Cargo: <span>*</span></p>
-                <input type="text" name="cargo" required class="box" value="<?= $modoEdicao ? htmlspecialchars($item['cargo']) : '' ?>">
+                <input type="text" name="cargo" required class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['cargo']) : '' ?>">
 
                 <p>Especialidade do Professor:</p>
-                <input type="text" name="especialidade" class="box" value="<?= $modoEdicao ? htmlspecialchars($item['especialidade']) : '' ?>">
+                <input type="text" name="especialidade" class="box"
+                    value="<?= $modoEdicao ? htmlspecialchars($item['especialidade']) : '' ?>">
+
             </div>
 
             <div class="col">
+                
                 <?php if (!$modoEdicao): ?>
                     <p>Senha: <span>*</span></p>
                     <input type="password" name="senha" maxlength="20" required class="box">
-                <?php endif; ?>
 
-                <?php if (!$modoEdicao): ?>
                     <p>Confirme sua Senha: <span>*</span></p>
-                    <input type="password" name="senha" maxlength="20" required class="box">
+                    <input type="password" name="confirma_senha" maxlength="20" required class="box">
                 <?php endif; ?>
 
                 <p>Email: <span>*</span></p>
@@ -78,18 +84,16 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                 <input type="tel" name="telefone" maxlength="15" required class="box"
                     value="<?= $modoEdicao ? htmlspecialchars($item['telefone']) : '' ?>">
 
-                <p>Foto de Perfil: </p>
-                <input type="file" name="foto" accept="image/*" class="box" />
-
-
                 <br /><br />
                 <p style="font-size: 14px;">
-                    <?= $modoEdicao ? 'Edite os item do funcionario conforme necessário.' : 'Ao clicar em "Registrar", o funcionario será vinculado ao CPF informado e seu cadastro completo será salvo.' ?>
+                    <?= $modoEdicao
+                        ? 'Edite os dados do funcionário conforme necessário.'
+                        : 'Ao clicar em "Registrar", o funcionário será vinculado ao CPF informado e seu cadastro será salvo.' ?>
                 </p>
             </div>
         </div>
 
-        <input type="submit" name="submit" value="<?= $modoEdicao ? 'Salvar Alterações' : 'Registrar' ?>" class="btn"/>
+        <input type="submit" name="submit" value="Cadastrar" class="btn"/>
     </form>
 </section>
 

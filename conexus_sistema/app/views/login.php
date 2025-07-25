@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
       }
       
       elseif ($user['papel'] === 'aluno') {
-         header('location: ../../controllers/homeController.php');
+         header('location: student/home.php');
          exit;
       }
       elseif ($user['papel'] === 'funcionario') {
