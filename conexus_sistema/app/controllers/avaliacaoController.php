@@ -3,9 +3,9 @@
 session_start();
 
 // Verifica se o usuário está logado e se possui o papel de 'aluno' ou 'admin'.
-if (!isset($_SESSION['idusuario']) || ($_SESSION['papel'] !== 'aluno' && $_SESSION['papel'] !== 'admin'  && $_SESSION['papel'] !== 'professor')) {
+if (!isset($_SESSION['idusuario']) || ($_SESSION['papel'] !== 'aluno' && $_SESSION['papel'] !== 'admin')) {
     error_log("DEBUG: Redirecionando para login. Usuário não logado ou papel incorreto.");
-    header('Location: ../views/login.php');
+    header('Location: /escola-de-idiomas/conexus_sistema/app/views/login.php');
     exit();
 }
 
@@ -15,10 +15,10 @@ $papelUsuarioLogado = $_SESSION['papel'];
 error_log("DEBUG: idusuario logado: " . $idusuarioLogado . ", Papel: " . $papelUsuarioLogado);
 
 // Inclui os arquivos de conexão com o banco de dados e o modelo de avaliação.
-// require_once __DIR__ . "/../config/conexao.php";
-require_once __DIR__ . "/../models/avaliacao.php";
+require_once __DIR__ . "/../config/conexao.php"; 
+require_once __DIR__ . "/../models/avaliacao.php"; 
 
-
+// Cria uma instância do modelo Avaliacao.
 $avaliacaoModel = new Avaliacao();
 
 // Função para verificar permissão de manipulação (CRUD).
@@ -30,7 +30,7 @@ function temPermissaoManipulacao() {
 // Em uma aplicação real, você buscaria isso do banco de dados através de um modelo apropriado (ex: CursoModel).
 $cursosDoAluno = [];
 $mapIdToNomeCurso = []; // Mapa para armazenar id_curso para nome_curso
-if ($papelUsuarioLogado === 'aluno' || $papelUsuarioLogado === 'admin' || $papelUsuarioLogado === 'professor') { // Assume que admins também podem ver todos os cursos simulados
+if ($papelUsuarioLogado === 'aluno' || $papelUsuarioLogado === 'admin') { // Assume que admins também podem ver todos os cursos simulados
     // A simulação anterior era para idusuario == 1, mantendo a consistência.
     // Em um cenário real, você buscaria os cursos específicos do $idusuarioLogado.
     $cursosDoAluno = [
@@ -48,11 +48,11 @@ if ($papelUsuarioLogado === 'aluno' || $papelUsuarioLogado === 'admin' || $papel
 // Se não houver uma 'acao' específica na URL, significa que é uma requisição para carregar a página do boletim.
 if (!isset($_GET['acao'])) {
     // Verifica se o usuário é um aluno ou admin para visualizar o próprio boletim.
-    if ($papelUsuarioLogado === 'aluno' || $papelUsuarioLogado === 'admin' || $papelUsuarioLogado === 'professor') {
+    if ($papelUsuarioLogado === 'aluno' || $papelUsuarioLogado === 'admin') {
         // Pega o curso selecionado pelo formulário POST ou da URL GET.
         $cursoSelecionadoId = ''; 
         if (isset($_POST['curso']) && $_POST['curso'] !== 'default') {
-            $cursoSelecionadoId = strtolower($_POST['curso']);
+            $cursoSelecionadoId = strtolower($_POST['curso']); 
         } else if (isset($_GET['curso']) && $_GET['curso'] !== 'default') {
             $cursoSelecionadoId = strtolower($_GET['curso']);
         }
@@ -67,7 +67,7 @@ if (!isset($_GET['acao'])) {
         $atividades = []; // Inicializa para garantir que sempre seja um array.
         try {
             $atividades = $avaliacaoModel->getAvaliacoesByAlunoAndIdioma($idusuarioLogado, $idiomaParaModelo);
-            error_log("DEBUG: getAvaliacoesByAlunoAndIdioma executado com sucess. " . count($atividades) . " atividades encontradas.");
+            error_log("DEBUG: getAvaliacoesByAlunoAndIdioma executado com sucesso. " . count($atividades) . " atividades encontradas.");
         } catch (PDOException $e) {
             error_log("ERRO PDO em avaliacaoController ao buscar avaliações: " . $e->getMessage());
             // Em caso de erro, pode-se decidir exibir uma mensagem ou redirecionar.
@@ -80,7 +80,7 @@ if (!isset($_GET['acao'])) {
         $cursoSelecionado = $cursoSelecionadoId; 
 
         // O cabeçalho foi removido daqui, pois a view boletim.php não o inclui mais.
-        include __DIR__ . '/../views/student/boletim.php';
+        include __DIR__ . '/../views/student/notes.php';
         exit; 
     } else {
         // Outros papéis (funcionário/professor) não deveriam acessar diretamente o boletim do aluno assim.
@@ -130,8 +130,8 @@ switch ($acao) {
             $observacao
         );
 
-        header("Location: ../views/components/sucess.php?cadastrar=ok");
-            exit;
+        echo $ok ? "Avaliação cadastrada com sucesso!" : "Erro ao cadastrar avaliação.";
+        break;
 
     case 'alterar':
         if (!temPermissaoManipulacao()) {
@@ -143,15 +143,14 @@ switch ($acao) {
         // Validação e sanitização (adicione mais, se necessário)
         $idavaliacao = $_POST['idavaliacao'] ?? null;
         $idaluno_turma = $_POST['idaluno_turma'] ?? null;
-        $idfuncionario = $_POST['idfuncionario'] ?? null;
         $descricao = $_POST['descricao'] ?? null;
         $titulo = $_POST['titulo'] ?? null;
         $data_avaliacao = $_POST['data_avaliacao'] ?? null;
         $nota = $_POST['nota'] ?? null;
         $peso = $_POST['peso'] ?? 1.0;
         $observacao = $_POST['observacao'] ?? null;
-
-        if (!$idavaliacao || !$idaluno_turma || !$idfuncionario || !$descricao || !$titulo || !$data_avaliacao || !isset($nota)) {
+        
+        if (!$idavaliacao || !$idaluno_turma || !$descricao || !$titulo || !$data_avaliacao || !isset($nota)) {
             http_response_code(400);
             echo "Dados insuficientes para alterar avaliação.";
             exit;
@@ -160,7 +159,6 @@ switch ($acao) {
         $ok = $avaliacaoModel->alterar(
             $idavaliacao,
             $idaluno_turma,
-            $idfuncionario,
             $descricao,
             $titulo,
             $data_avaliacao,
@@ -169,8 +167,8 @@ switch ($acao) {
             $observacao
         );
 
-        header("Location: ../views/components/sucess.php?alterar=ok");
-            exit;
+        echo $ok ? "Avaliação alterada com sucesso!" : "Erro ao alterar avaliação.";
+        break;
 
     case 'excluir':
         if (!temPermissaoManipulacao()) {
@@ -186,8 +184,8 @@ switch ($acao) {
         }
 
         $ok = $avaliacaoModel->excluir($_GET['idavaliacao']);
-        header("Location: ../views/components/sucess.php?excluir=ok");
-            exit;
+        echo $ok ? "Avaliação excluída com sucesso!" : "Erro ao excluir avaliação.";
+        break;
 
     case 'listarTodos':
         header('Content-Type: application/json');

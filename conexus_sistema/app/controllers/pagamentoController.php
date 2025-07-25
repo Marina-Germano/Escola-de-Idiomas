@@ -2,12 +2,12 @@
 
 session_start();
 
-// require_once(__DIR__ . '/../config/conexao.php');
+require_once(__DIR__ . '/../config/conexao.php');
 require_once(__DIR__ . '/../models/pagamento.php');
 
 
 if (!isset($_SESSION['idusuario']) || ($_SESSION['papel'] !== 'aluno' && $_SESSION['papel'] !== 'admin')) {
-    header('Location: ../views/login.php');
+    header('Location: /escola-de-idiomas/conexus_sistema/app/views/login.php');
     exit();
 }
 
@@ -24,12 +24,12 @@ try {
         $idalunoLogado = $resultadoAluno['idaluno'];
     } else {
         error_log("ERRO: idusuario " . $idusuario . " não encontrado na tabela aluno.");
-        header('Location: ../views/login.php');
+        header('Location: /escola-de-idiomasonexus_sistema/app/views/login.php'); 
         exit;
     }
 } catch (PDOException $e) {
     error_log("ERRO PDO ao buscar idaluno: " . $e->getMessage());
-    header('Location: ../views/erro.php');
+    header('Location: /escola-de-idiomasonexus_sistema/app/views/erro.php'); 
     exit;
 }
 
@@ -86,4 +86,4 @@ if (isset($_POST['curso'])) {
     }
 }
 
-include __DIR__ . '/../views/student/financeiro.php';
+include __DIR__ . '/../views/student/financial.php';

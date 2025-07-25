@@ -6,11 +6,11 @@
     <title>Materiais - Conexus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
-    <link rel="stylesheet" href="../../../public/css/style.css">
+    <link rel="stylesheet" href="/escola-de-idiomas/conexus_sistema/public/css/style.css">
 </head>
 <body>
     <?php
-    include __DIR__ . '/../components/student_header.php';
+    include __DIR__ . '/../components/student_header.php'; //cabeçalho
 
     $materiaisDoAluno = $materiaisDoAluno ?? [];
     ?>
@@ -21,7 +21,7 @@
                 <?php foreach ($materiaisDoAluno as $material): ?>
                     <div class="box">
                         <div class="tutor">
-                            <img src="<?= htmlspecialchars($material['professor_foto'] ?? '/escola-de-idiomas/conexus_sistema/public/img/pic-1.jpg') ?>" alt="Foto do Professor">
+                            <img src="<?= htmlspecialchars($material['professor_foto'] ?? '/Escola-de-Idiomas-1/conexus_sistema/public/img/pic-1.jpg') ?>" alt="Foto do Professor">
                             <div class="info">
                                 <h3><?= htmlspecialchars($material['professor_nome'] ?? 'Professor Desconhecido') ?></h3>
                                 <h4>Professor(a)</h4>
@@ -29,11 +29,11 @@
                             </div>
                         </div>
                         <div class="thumb">
-                            <img src="<?= htmlspecialchars($material['turma_imagem'] ?? '/escola-de-idiomas/conexus_sistema/public/img/english.png') ?>" alt="Thumbnail do Material">
+                            <img src="<?= htmlspecialchars($material['turma_imagem'] ?? '/Escola-de-Idiomas-1/conexus_sistema/public/img/english.png') ?>" alt="Thumbnail do Material">
                             <span><?= htmlspecialchars($material['quantidade'] ?? '0') ?> arquivos</span>
                         </div>
                         <h3 class="title"><?= htmlspecialchars($material['titulo'] ?? 'Material Desconhecido') ?></h3>
-                        <a href="/escola-de-idiomas/conexus_sistema/app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
+                        <a href="/Escola-de-Idiomas-1/conexus_sistema/app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -42,6 +42,6 @@
         </div>
     </section>
 
-<script src="../../../public/js/script.js"></script>
+    <script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
 </body>
 </html>

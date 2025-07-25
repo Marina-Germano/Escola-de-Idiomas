@@ -75,7 +75,8 @@ if ($idusuario !== null) {
          <a href="list_class.php"><i class="fa-solid fa-bars-staggered"></i><span>Listar Turmas</span></a>
          <a href="list_students.php"><i class="fas fa-graduation-cap"></i><span>Listar Estudantes</span></a>
          <a href="list_employer.php"><i class="fas fa-comment"></i><span>Listar Funcionários</span></a>
-         <a href="list_materials.php"><i class="fas fa-comment"></i><span>Listar Materiais</span></a>
+         <a href="list_material.php"><i class="fas fa-comment"></i><span>Listar Materiais</span></a>
+         <a href="material_loan.php"><i class="fas fa-comment"></i><span>Gerenciar Emprestimos</span></a>
          <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>Sair</span></a>
       </nav>
 </div>

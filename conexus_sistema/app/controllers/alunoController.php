@@ -110,8 +110,8 @@ switch ($acao) {
             $tel_responsavel,
             $situacao
         );
-
-        header("Location: ../views/components/sucess.php");
+        
+        header("Location: ../views/admin/dashboard.php");
             exit;
 
     case 'alterar':
@@ -132,7 +132,7 @@ switch ($acao) {
             $_POST['tel_responsavel'],
             $_POST['situacao']
         );
-        header("Location: ../views/components/sucess.php");
+        header("Location: ../views/admin/dashboard.php");
             exit;
 
     case 'excluir':
@@ -164,7 +164,7 @@ switch ($acao) {
         }
         
         $materiais = $material->buscarPorAluno($idaluno);
-        include '../view/aluno/materiais.php';
+        include '../view/student/material.php';
         break;
         
         default:

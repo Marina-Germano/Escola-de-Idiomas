@@ -48,14 +48,14 @@ if (isset($_GET['acao'])) {
             }
 
             if ($contato->cadastrar($idusuario, $nome, $email, $telefone, $arquivo, $motivo_contato, $mensagem)) {
-                header("Location: ../views/admin/sucess.php?cadastrar=ok");
+                header("Location: ../views/student/home.php");
             exit;
 
             } else {
                 http_response_code(500);
                 echo "Erro ao cadastrar contato.";
             }
-            header("Location: ../views/components/sucess.php?cadastrar=ok");
+            header("Location: ../views/student/home.php");
             exit;
 
         case 'alterar':
@@ -74,14 +74,14 @@ if (isset($_GET['acao'])) {
             $mensagem = $_POST['mensagem'];
 
             if ($contato->alterar($idcontato, $idusuario, $nome, $email, $telefone, $arquivo, $motivo_contato, $mensagem)) {
-                header("Location: ../views/admin/sucess.php?alterar=ok");
+                header("Location: ../views/student/home.php");
             exit;
 
             } else {
                 http_response_code(500);
                 echo "Erro ao alterar contato.";
             }
-            header("Location: ../views/components/sucess.php?alterar=ok");
+            header("Location: ../views/student/home.php");
             exit;
 
         case 'excluir':
@@ -97,7 +97,7 @@ if (isset($_GET['acao'])) {
                 http_response_code(500);
                 echo "Erro ao excluir contato.";
             }
-            header("Location: ../views/components/sucess.php?excluir=ok");
+            header("Location: ../views/student/home.php");
             exit;
 
         case 'listarTodos':

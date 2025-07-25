@@ -45,7 +45,7 @@ if (isset($_GET['presenca']) && $_GET['presenca'] === 'ok') {
     <div class="container">
         <h1><?= htmlspecialchars($mensagem) ?></h1>
         <?php if ($_SESSION['papel'] === 'admin' ): ?>
-        <a href="dashboard.php">Home</a>
+        <a href="../admin/dashboard.php">Home</a>
         <?php else : ?>
         <a href="../teacher/home.php">Home</a>
         <?php endif; ?>

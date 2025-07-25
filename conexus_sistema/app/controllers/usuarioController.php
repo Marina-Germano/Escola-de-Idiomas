@@ -57,16 +57,10 @@ if (isset($_GET['acao'])) {
 
             // Verificações adicionais por tipo de papel
             $idaluno = $aluno->buscarIdPorCpf($cpf);
-            $idprofessor = $professor->buscarIdPorCpf($cpf);
             $idfuncionario = $funcionario->buscarIdPorCpf($cpf);
 
             if ($papel === 'aluno' && !$idaluno) {
                 echo "Erro: CPF informado não pertence a nenhum aluno cadastrado.";
-                exit;
-            }
-
-            if ($papel === 'professor' && !$idprofessor) {
-                echo "Erro: CPF informado não pertence a nenhum professor cadastrado.";
                 exit;
             }
 

@@ -43,7 +43,7 @@ $nome = $usuario['nome'] ?? 'Administrador';
       <div class="box">
          <h3>Relatório Financeiro</h3>
          <p>Acompanhe ganhos</p>
-         <a href="../../controllers/relatorioFinanceiroController.php" target="_blank" class="btn">Ver Relatório</a>
+         <a href="../../controllers/relatorioFincanceiroController.php" target="_blank" class="btn">Ver Relatório</a>
       </div>
 
       <div class="box">

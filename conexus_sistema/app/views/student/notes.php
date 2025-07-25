@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
-<link rel="stylesheet" href="../../../public/css/style.css">
+<link rel="stylesheet" href="/escola-de-idiomas/conexus_sistema/public/css/style.css">
 
 </head>
 <body>
@@ -18,7 +18,7 @@
 <!-- ... cabeçalho mantido ... -->
 
 <section class="courses">
-    <h1 class="heading">Meu Boletim</h1>
+    <h1 class="heading">Meu Boletim</h1> 
     
     <div class="row">
         <form method="post">
@@ -47,7 +47,7 @@
     </thead>
     <tbody>
         <?php
-            $soma = 0;
+            $soma = 0; 
             foreach ($atividades as $atividade):
             $soma += (float)$atividade['nota'];
         ?>
@@ -75,7 +75,8 @@
     </p>
 <?php endif; ?>
 
-<script src="../../../public/js/script.js"></script>
+    
+<script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,147 @@
+<?php
+require_once __DIR__ . '/../config/conexao.php';
+
+class Material {
+    private $pdo;
+
+    public function __construct() {
+        $this->pdo = Conexao::conectar();
+    }
+
+    public function getPDO() {
+        return $this->pdo;
+    }
+
+    public function cadastrar($idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idfuncionario) {
+        $sql = "INSERT INTO material (idtipo_material, ididioma, idnivel, idturma, titulo, descricao, quantidade, formato_arquivo, arquivo, idfuncionario)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idfuncionario]);
+    }
+
+public function alterar($idmaterial, $idtipo_material, $ididioma, $idnivel, $idturma, $titulo, $descricao, $quantidade, $formato_arquivo, $arquivo, $idfuncionario) {
+    $sql = "UPDATE material 
+            SET idtipo_material = ?, 
+                ididioma = ?, 
+                idnivel = ?, 
+                idturma = ?, 
+                titulo = ?, 
+                descricao = ?, 
+                quantidade = ?, 
+                formato_arquivo = ?, 
+                arquivo = ?, 
+                idfuncionario = ? 
+            WHERE idmaterial = ?";
+
+    // Se o formato do arquivo for array (ex: checkbox múltipla), converte para string
+    if (is_array($formato_arquivo)) {
+        $formato_arquivo = implode(', ', $formato_arquivo);
+    }
+
+    // Executa com os parâmetros na ordem correta
+    $stmt = $this->pdo->prepare($sql);
+    return $stmt->execute([
+        $idtipo_material,
+        $ididioma,
+        $idnivel,
+        $idturma,
+        $titulo,
+        $descricao,
+        $quantidade,
+        $formato_arquivo,
+        $arquivo,
+        $idfuncionario,
+        $idmaterial
+    ]);
+}
+
+
+    public function excluir($id) {
+        $stmt = $this->pdo->prepare("DELETE FROM material WHERE idmaterial = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public function listarTodos() {
+        try {
+            $stmt = $this->pdo->query("SELECT * FROM material");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao listar todos os materiais: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function listarId($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM material WHERE idmaterial = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function listarPorFuncionario($idfuncionario) {
+        try {
+            $stmt = $this->pdo->prepare("SELECT * FROM material WHERE idfuncionario = ?");
+            $stmt->execute([$idfuncionario]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao listar materiais por funcionário: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function buscarMateriais($ididioma, $idnivel = null, $idtipo_material = null) {
+        $query = "SELECT * FROM material WHERE ididioma = ?";
+        $params = [$ididioma];
+
+        if ($idnivel !== null) {
+            $query .= " AND idnivel = ?";
+            $params[] = $idnivel;
+        }
+
+        if ($idtipo_material !== null) {
+            $query .= " AND idtipo_material = ?";
+            $params[] = $idtipo_material;
+        }
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    //  Lista todos os materiais das turmas em que o aluno está cadastrado
+    public function listarMateriaisPorAluno($idaluno) {
+        try {
+            $sql = "SELECT m.*, DATE_FORMAT(m.data_cadastro, '%d/%m/%Y') AS data_cadastro,
+                    u.nome AS professor_nome,
+                    u.foto AS professor_foto,
+                    t.imagem AS turma_imagem,
+                    t.ididioma AS turma_ididioma,
+                    i.descricao AS idioma,
+                    n.descricao AS nivel,
+                    tm.descricao AS tipo_material
+                    FROM material m
+                    JOIN turma t ON m.idturma = t.idturma
+                    JOIN aluno_turma at ON t.idturma = at.idturma
+                    JOIN usuario u ON m.idfuncionario = u.idusuario
+                    JOIN idioma i ON m.ididioma = i.ididioma
+                    JOIN nivel n ON m.idnivel = n.idnivel
+                    JOIN tipo_material tm ON m.idtipo_material = tm.idtipo_material
+                    WHERE at.idaluno = :idaluno
+                    GROUP BY m.idmaterial
+                    ORDER BY m.data_cadastro DESC";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':idaluno', $idaluno, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao listar materiais por aluno: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function listarPorTurma($idturma) {
+        $stmt = $this->pdo->prepare("SELECT * FROM material WHERE idturma = ?");
+        $stmt->execute([$idturma]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+?>

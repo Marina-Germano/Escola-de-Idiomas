@@ -45,7 +45,7 @@ switch ($acao) {
             $_POST['valor_multa'] ?? 0.00
         );
 
-        header("Location: ../views/components/sucess.php?cadastrar=ok");
+        header("Location: ../views/admin/material_loan.php");
             exit;
 
     case 'alterar':
@@ -67,7 +67,7 @@ switch ($acao) {
             $_POST['valor_multa'] ?? 0.00
         );
 
-        header("Location: ../views/components/sucess.php?alterar=ok");
+        header("Location: ../views/admin/material_loan.php");
             exit;
 
     case 'excluir':
@@ -82,7 +82,7 @@ switch ($acao) {
             exit;
         }
         $ok = $emprestimoMaterial->excluir($_GET['idemprestimo']);
-        header("Location: ../views/components/sucess.php?excluir=ok");
+        header("Location: ../views/admin/dashboard");
             exit;
 
     case 'listarTodos':

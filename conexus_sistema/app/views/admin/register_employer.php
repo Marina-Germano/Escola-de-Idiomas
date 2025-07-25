@@ -34,8 +34,7 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
         class="register"
         action="../../controllers/funcionarioController.php?acao=<?= $modoEdicao ? 'alterar' : 'cadastrarCompleto' ?>"
         method="post"
-        enctype="multipart/form-data"
-    >
+        enctype="multipart/form-data">
         <input type="hidden" name="papel" value="funcionario" />
         
         <?php if ($modoEdicao): ?>
@@ -63,7 +62,6 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                 <p>Especialidade do Professor:</p>
                 <input type="text" name="especialidade" class="box"
                     value="<?= $modoEdicao ? htmlspecialchars($item['especialidade']) : '' ?>">
-
             </div>
 
             <div class="col">

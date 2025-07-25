@@ -131,7 +131,7 @@ function load() {
   const date = new Date();
 
   if (nav !== 0) {
-    date.setMonth(new Date().getMonth() + nav);
+    date.setMonth(date.getMonth() + nav);
   }
 
   const day = date.getDate();
@@ -147,7 +147,7 @@ function load() {
     day: 'numeric',
   });
 
-  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+  const paddingDays = weekdays.indexOf(dateString.split(', ')[0].toLowerCase());
 
   document.getElementById('monthDisplay').innerText = 
     `${date.toLocaleDateString('pt-br', { month: 'long' })}, ${year}`;
@@ -197,6 +197,7 @@ function load() {
   calendar.style.gridTemplateColumns = 'repeat(7, 1fr)';
   calendar.style.gap = '0.5rem';
 }
+
 
 // Botões
 function buttons() {

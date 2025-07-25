@@ -9,8 +9,7 @@
 
 <link
 rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-/>
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
 
 <link rel="stylesheet" href="../../../public/css/style.css">
 
@@ -25,7 +24,7 @@ include __DIR__ . '/../components/student_header.php';
     <div class="row">
 
         <div class="image">
-            <img src="../public/img/contact_img.png" alt="Imagem de Contato">
+            <img src="../../../public/img/contact_img.png" alt="Imagem de Contato">
         </div>
 
     <form action="../controllers/contatoController.php" method="post" enctype="multipart/form-data">

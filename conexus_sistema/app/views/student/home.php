@@ -12,8 +12,6 @@
 </head>
 <body>
 <?php include __DIR__ . '/../components/student_header.php'; // Caminho absoluto para o include ?>
-<?php require_once(__DIR__ . '/../app/controllers/homeController.php'); ?>
-
 
 
 <section class="home-grid">
@@ -37,7 +35,7 @@
                 <?php endif; ?>
             </div>
         <?php else: ?>
-            <p class="empty">Nenhuma aula futura agendada. 🎉</p>
+            <p class="empty">Nenhuma aula futura agendada. </p>
         <?php endif; ?>
     </div>
 </section>
@@ -50,7 +48,7 @@
             <?php foreach ($ultimosMateriais as $material): ?>
                 <div class="box">
                     <div class="tutor">
-                        <img src="<?= htmlspecialchars($material['professor_foto'] ?? '/escola-de-idiomas/conexus_sistema/public/img/pic-6.jpg') ?>" alt="Foto do Professor">
+                        <img src="<?= htmlspecialchars($material['professor_foto'] ?? '../../public/img/pic-6.jpg') ?>" alt="Foto do Professor">
                         <div class="info">
                             <h3><?= htmlspecialchars($material['professor_nome'] ?? 'Professor Desconhecido') ?></h3>
                             <span><?= htmlspecialchars($material['data_cadastro'] ?? '') ?></span>
@@ -58,9 +56,9 @@
                     </div>
                     <div class="thumb">
                         <?php
-                        $materialImagemSrc = '/escola-de-idiomas/conexus_sistema/public/img/default-material.jpg';
+                        $materialImagemSrc = '../../public/img/default-material.jpg';
                         if (isset($material['turma_ididioma']) && $material['turma_ididioma'] == 1) {
-                            $materialImagemSrc = '/escola-de-idiomas/conexus_sistema/public/img/english-course-1024x576.jpg';
+                            $materialImagemSrc = '../../public/img/english-course-1024x576.jpg';
                         } elseif (!empty($material['turma_imagem'])) {
                             $materialImagemSrc = htmlspecialchars($material['turma_imagem']);
                         }
@@ -69,11 +67,11 @@
                         <span><?= htmlspecialchars($material['quantidade'] ?? '0') ?> arquivos</span>
                     </div>
                     <h3 class="title"><?= htmlspecialchars($material['titulo'] ?? 'Material Desconhecido') ?></h3>
-                    <a href="/escola-de-idiomas/conexus_sistema/app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
+                    <a href="../../app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p class="empty">Nenhum material encontrado para seus cursos. 📚</p>
+            <p class="empty">Nenhum material encontrado para seus cursos.</p>
         <?php endif; ?>
     </div>
 </section>

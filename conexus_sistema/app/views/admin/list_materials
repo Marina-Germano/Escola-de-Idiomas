@@ -46,8 +46,8 @@ $itens = $materialModel->listarTodos(); // ou outro nome apropriado para seu mé
                                 <a href="register_material.php?acao=editar&id=<?= $item['idmaterial'] ?>" class="inline-option-btn">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
-                                <a href="register_material.php?acao=excluir&idmaterial=<?= $item['idmaterial'] ?>" class="inline-delete-btn"
-                                onclick="return confirm('Tem certeza que deseja excluir este funcionário?');">
+                                <a href="../../controllers/materialController.php?acao=excluir&id=<?= $item['idmaterial'] ?>" class="inline-delete-btn"
+                                onclick="return confirm('Tem certeza que deseja excluir este material?');">
                                 <i class="fas fa-trash-alt"></i> Excluir
                                 </a>
                             </td>

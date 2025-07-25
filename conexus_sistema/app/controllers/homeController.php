@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 require_once(__DIR__ . '/../config/conexao.php');
@@ -10,17 +11,18 @@ require_once(__DIR__ . '/../models/material.php');
 
 if (!isset($_SESSION['idusuario']) || ($_SESSION['papel'] !== 'aluno' && $_SESSION['papel'] !== 'admin')) {
     header('Location: ../views/login.php');
+    // header('Location: /Escola-de-Idiomas-1/conexus_sistema/app/views/login.php');
     exit();
 }
 
 $idusuario = $_SESSION['idusuario'];
-$conn = Conexao::conectar();
+$conn = Conexao::conectar(); 
 
-$nomeAluno = 'Aluno';
-$idaluno = null;
-$proximaAula = null;
-$ultimosMateriais = [];
-$erroHome = null;
+$nomeAluno = 'Aluno'; 
+$idaluno = null; 
+$proximaAula = null; 
+$ultimosMateriais = []; 
+$erroHome = null; 
 
 try {
 
@@ -29,7 +31,7 @@ try {
     $calendarioAulaModel = new CalendarioAula();
     $materialModel = new Material();
 
-    // buscar idaluno usando
+    // buscar idaluno usando 
     $idaluno = $alunoModel->buscarIdPorUsuario($idusuario);
 
     // sse  for encontrado busca o nome do usuário associado a ele
@@ -61,5 +63,6 @@ try {
     $erroHome = "Ocorreu um erro inesperado ao carregar os dados. Por favor, tente novamente mais tarde.";
 }
 
-require_once(__DIR__ . '/../views/student/home.php');
+    include __DIR__ . '/../views/student/home.php';
+
 ?>

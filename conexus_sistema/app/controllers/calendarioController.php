@@ -1,30 +1,25 @@
 <?php
+
 session_start();
-require_once "../models/calendario_aula.php";
 
-$calendario = new CalendarioAula();
-
-function estaLogado() {
-    return isset($_SESSION['idusuario']);
-}
+require_once(__DIR__ . '/../config/conexao.php');
+require_once(__DIR__ . '/../models/calendario_aula.php');
 
 if (!isset($_SESSION['idusuario']) || ($_SESSION['papel'] !== 'aluno' && $_SESSION['papel'] !== 'admin')) {
     header('Location: ../views/login.php');
+    // header('Location: /Escola-de-Idiomas-1/conexus_sistema/app/views/login.php');
     exit();
 }
 
-if (!estaLogado()) {
-    http_response_code(401);
-    echo "Acesso negado. Faça login para continuar.";
-    exit;
-}
+$idusuario = $_SESSION['idusuario'];
+$conn = Conexao::conectar(); 
 
-if (!isset($_GET['acao'])) {
-    echo "Nenhuma ação definida.";
-    exit;
-}
+$nomeAluno = 'Aluno'; 
+$idaluno = null; 
+$proximaAula = null; 
+$ultimosMateriais = []; 
+$erroHome = null; 
 
-$acao = $_GET['acao'];
 // pega o ID do usuário e o papel da sessão.
 $idusuario = $_SESSION['idusuario'];
 $papelUsuario = $_SESSION['papel'];
@@ -93,6 +88,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     exit; // para
 }
 
-require_once '../views/student/aulas.php'; // inclui a view para exibir o HTML completo do calendário.
+include __DIR__ . '/../views/student/class.php';
+    exit;  // inclui a view para exibir o HTML completo do calendário.
 ?>
-
