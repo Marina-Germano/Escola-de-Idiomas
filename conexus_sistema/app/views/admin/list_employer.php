@@ -46,7 +46,7 @@ $itens = $funcionarioModel->listarTodos(); // ou outro nome apropriado para seu 
                                 <a href="register_employer.php?acao=editar&id=<?= $item['idfuncionario'] ?>" class="inline-option-btn">
                                     <i class="fas fa-edit"></i> Editar</a>
                                     
-                                <a href="register_employer.php?acao=excluir&idfuncionario=<?= $item['idfuncionario'] ?>" class="inline-delete-btn"
+                                <a href="../../controllers/funcionarioController.php?acao=excluir&idfuncionario=<?= $item['idfuncionario'] ?>" class="inline-delete-btn"
                                 onclick="return confirm('Tem certeza que deseja excluir este funcionário?');">
                                 <i class="fas fa-trash-alt"></i> Excluir
                                 </a>

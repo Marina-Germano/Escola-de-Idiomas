@@ -47,7 +47,7 @@ class Aluno {
     }
 
     public function listarId($idaluno) {
-        $stmt = $this->pdo->prepare("SELECT * FROM aluno WHERE idaluno = ?");
+        $stmt = $this->pdo->prepare("SELECT * FROM aluno AS a JOIN usuario AS u ON u.idusuario=a.idusuario WHERE idaluno = ?");
         $stmt->execute([$idaluno]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

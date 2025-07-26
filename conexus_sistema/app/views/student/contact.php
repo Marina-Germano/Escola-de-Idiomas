@@ -9,14 +9,15 @@
 
 <link
 rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+/>
 
-<link rel="stylesheet" href="../../../public/css/style.css">
+<link rel="stylesheet" href="/escola-de-idiomas/conexus_sistema/public/css/style.css">
 
 </head>
 <body>
 <?php 
-include __DIR__ . '/../components/student_header.php';
+include __DIR__ . '/../components/student_header.php'; 
 ?>
 
     <section class="contact">
@@ -24,10 +25,10 @@ include __DIR__ . '/../components/student_header.php';
     <div class="row">
 
         <div class="image">
-            <img src="../../../public/img/contact_img.png" alt="Imagem de Contato">
+            <img src="/escola-de-idiomas/conexus_sistema/public/img/contact_img.png" alt="Imagem de Contato">
         </div>
 
-    <form action="../controllers/contatoController.php" method="post" enctype="multipart/form-data">
+    <form action="/escola-de-idiomas/conexus_sistema/app/controllers/contatoController.php" method="post" enctype="multipart/form-data">
             <h3>Entre em Contato:</h3>
             <?php 
             if (!empty($mensagemFeedback)): 
@@ -80,6 +81,6 @@ include __DIR__ . '/../components/student_header.php';
     </div>
 
 </section>
-<script src="../../../public/js/script.js"></script>
+<script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
 </body>
 </html>

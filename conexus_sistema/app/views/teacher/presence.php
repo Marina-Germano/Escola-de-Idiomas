@@ -35,7 +35,7 @@ $alunos = $alunoTurmaModel->listarTodos($idturma); // lista alunos da turma
 
 <h2>Registrar Presença - Turma <?= htmlspecialchars($idturma) ?></h2>
 
-<form method="POST" action="../../controllers/presenca.php?acao=registrar">
+<form method="POST" action="../../controllers/presencaController.php?acao=registrar">
     <input type="hidden" name="idturma" value="<?= htmlspecialchars($idturma) ?>" />
 
     <table>

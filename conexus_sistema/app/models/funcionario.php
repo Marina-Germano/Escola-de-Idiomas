@@ -29,7 +29,7 @@ class Funcionario {
 
     public function listarTodos() {
         $result = $this->pdo->query(
-            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone
+            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone, u.data_nascimento
             FROM funcionario f 
             JOIN usuario u ON u.idusuario = f.idusuario"
         );
@@ -38,7 +38,7 @@ class Funcionario {
 
     public function listarId($id) {
         $result = $this->pdo->prepare(
-            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone 
+            "SELECT f.*, u.nome, u.email, u.cpf, u.telefone, u.data_nascimento
             FROM funcionario f 
             JOIN usuario u ON u.idusuario = f.idusuario 
             WHERE f.idfuncionario = ?"

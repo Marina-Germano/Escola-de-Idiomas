@@ -61,7 +61,7 @@ if ($acao === 'listar' && $idturma) {
                             <td><?php echo htmlspecialchars($item['hora_inicio'] ?? 'sem horário'); ?></td></td>
                             <td class="text-end">
 
-                                <a href="presenca.php?acao=listarAlunos&idturma=<?=$item['idturma'] ?>" class="btn btn-secondary">
+                                <a href="presence.php?acao=listarAlunos&idturma=<?=$item['idturma'] ?>" class="btn btn-secondary">
                                     <i class="fas fa-edit"></i>Marcar Presença</a>
 
                             </td>

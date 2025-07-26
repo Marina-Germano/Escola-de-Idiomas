@@ -29,10 +29,11 @@ class AlunoTurma {
     }
 
     public function listarTodos($idturma) {
-    $sql = "SELECT at.*, a.nome AS nome_aluno, t.descricao AS nome_turma
+    $sql = "SELECT at.*, u.nome AS nome_aluno, t.descricao AS nome_turma
             FROM aluno_turma at
             JOIN aluno a ON a.idaluno = at.idaluno
             JOIN turma t ON t.idturma = at.idturma
+            JOIN usuario u ON u.idusuario=a.idusuario
             WHERE at.idturma = :idturma";
 
     $stmt = $this->pdo->prepare($sql);

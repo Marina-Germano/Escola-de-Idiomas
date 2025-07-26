@@ -1,221 +1,270 @@
-let toggleBtn = document.getElementById('toggle-btn');
-let body = document.body;
+// Variáveis e Funções de UI Geral
+const toggleBtn = document.getElementById('toggle-btn');
+const body = document.body;
 let darkMode = localStorage.getItem('dark-mode');
 
-const enableDarkMode = () =>{
-   toggleBtn.classList.replace('fa-sun', 'fa-moon');
-   body.classList.add('dark');
-   localStorage.setItem('dark-mode', 'enabled');
+const enableDarkMode = () => {
+    if (toggleBtn) toggleBtn.classList.replace('fa-sun', 'fa-moon');
+    body.classList.add('dark');
+    localStorage.setItem('dark-mode', 'enabled');
+};
+
+const disableDarkMode = () => {
+    if (toggleBtn) toggleBtn.classList.replace('fa-moon', 'fa-sun');
+    body.classList.remove('dark');
+    localStorage.setItem('dark-mode', 'disabled');
+};
+
+if (darkMode === 'enabled') {
+    enableDarkMode();
 }
 
-const disableDarkMode = () =>{
-   toggleBtn.classList.replace('fa-moon', 'fa-sun');
-   body.classList.remove('dark');
-   localStorage.setItem('dark-mode', 'disabled');
+if (toggleBtn) {
+    toggleBtn.onclick = () => {
+        darkMode = localStorage.getItem('dark-mode');
+        if (darkMode === 'disabled') {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
+    };
 }
 
-if(darkMode === 'enabled'){
-   enableDarkMode();
+const profile = document.querySelector('.header .flex .profile');
+const search = document.querySelector('.header .flex .search-form');
+const sideBar = document.querySelector('.side-bar');
+
+if (document.querySelector('#user-btn')) {
+    document.querySelector('#user-btn').onclick = () => {
+        if (profile) profile.classList.toggle('active');
+        if (search) search.classList.remove('active');
+    };
 }
 
-toggleBtn.onclick = (e) =>{
-   darkMode = localStorage.getItem('dark-mode');
-   if(darkMode === 'disabled'){
-      enableDarkMode();
-   }else{
-      disableDarkMode();
-   }
+if (document.querySelector('#search-btn')) {
+    document.querySelector('#search-btn').onclick = () => {
+        if (search) search.classList.toggle('active');
+        if (profile) profile.classList.remove('active');
+    };
 }
 
-let profile = document.querySelector('.header .flex .profile');
-
-document.querySelector('#user-btn').onclick = () =>{
-   profile.classList.toggle('active');
-   search.classList.remove('active');
+if (document.querySelector('#menu-btn')) {
+    document.querySelector('#menu-btn').onclick = () => {
+        if (sideBar) sideBar.classList.toggle('active');
+        body.classList.toggle('active');
+    };
 }
 
-let search = document.querySelector('.header .flex .search-form');
-
-document.querySelector('#search-btn').onclick = () =>{
-   search.classList.toggle('active');
-   profile.classList.remove('active');
+if (document.querySelector('#close-btn')) {
+    document.querySelector('#close-btn').onclick = () => {
+        if (sideBar) sideBar.classList.remove('active');
+        body.classList.remove('active');
+    };
 }
 
-let sideBar = document.querySelector('.side-bar');
+window.onscroll = () => {
+    if (profile) profile.classList.remove('active');
+    if (search) search.classList.remove('active');
 
-document.querySelector('#menu-btn').onclick = () =>{
-   sideBar.classList.toggle('active');
-   body.classList.toggle('active');
-}
+    if (window.innerWidth < 1200 && sideBar) {
+        sideBar.classList.remove('active');
+        body.classList.remove('active');
+    }
+};
 
-document.querySelector('#close-btn').onclick = () =>{
-   sideBar.classList.remove('active');
-   body.classList.remove('active');
-}
-
-window.onscroll = () =>{
-   profile.classList.remove('active');
-   search.classList.remove('active');
-
-   if(window.innerWidth < 1200){
-      sideBar.classList.remove('active');
-      body.classList.remove('active');
-   }
-}
-
-// ---------------------------------------------------------------------------------
-
-// Variáveis globais
+// Variáveis e Funções do Calendário
 let nav = 0;
 let clicked = null;
-let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : [];
+let allEvents = [];
 
-// Seletores DOM
-const newEvent = document.getElementById('newEventModal');
+const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
-const eventTitleInput = document.getElementById('eventTitleInput');
 const calendar = document.getElementById('calendar');
-const weekdays = ['domingo','segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+const monthDisplay = document.getElementById('monthDisplay');
+const weekdays = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
 
-// Abrir modal
 function openModal(date) {
-  clicked = date;
-  const eventDay = events.find((event) => event.date === clicked);
+    clicked = date;
+    const eventDay = allEvents.find((event) => event.date === clicked);
 
-  if (eventDay) {
-    document.getElementById('eventText').innerText = eventDay.title;
-    deleteEventModal.style.display = 'block';
-  } else {
-    newEvent.style.display = 'block';
-  }
-
-  backDrop.style.display = 'block';
-}
-
-// Fechar modais
-function closeModal() {
-  eventTitleInput.classList.remove('error');
-  newEvent.style.display = 'none';
-  deleteEventModal.style.display = 'none';
-  backDrop.style.display = 'none';
-  eventTitleInput.value = '';
-  clicked = null;
-  load();
-}
-
-// Salvar evento
-function saveEvent() {
-  if (eventTitleInput.value) {
-    eventTitleInput.classList.remove('error');
-    events.push({
-      date: clicked,
-      title: eventTitleInput.value
-    });
-    localStorage.setItem('events', JSON.stringify(events));
-    closeModal();
-  } else {
-    eventTitleInput.classList.add('error');
-  }
-}
-
-// Deletar evento
-function deleteEvent() {
-  events = events.filter(event => event.date !== clicked);
-  localStorage.setItem('events', JSON.stringify(events));
-  closeModal();
-}
-
-// Carregar calendário
-function load() {
-  const date = new Date();
-
-  if (nav !== 0) {
-    date.setMonth(date.getMonth() + nav);
-  }
-
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-
-  const daysMonth = new Date(year, month + 1, 0).getDate();
-  const firstDayMonth = new Date(year, month, 1);
-  const dateString = firstDayMonth.toLocaleDateString('pt-br', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  });
-
-  const paddingDays = weekdays.indexOf(dateString.split(', ')[0].toLowerCase());
-
-  document.getElementById('monthDisplay').innerText = 
-    `${date.toLocaleDateString('pt-br', { month: 'long' })}, ${year}`;
-
-  calendar.innerHTML = '';
-
-  for (let i = 1; i <= paddingDays + daysMonth; i++) {
-    const dayS = document.createElement('div');
-    dayS.classList.add('day');
-    dayS.style.padding = '1rem';
-    dayS.style.border = '1px solid #ddd';
-    dayS.style.minHeight = '5rem';
-
-    const dayString = `${month + 1}/${i - paddingDays}/${year}`;
-
-    if (i > paddingDays) {
-      dayS.innerText = i - paddingDays;
-
-      const eventDay = events.find(event => event.date === dayString);
-
-      if (i - paddingDays === day && nav === 0) {
-        dayS.style.backgroundColor = '#d1e7dd';
-        dayS.style.fontWeight = 'bold';
-      }
-
-      if (eventDay) {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('event');
-        eventDiv.innerText = eventDay.title;
-        eventDiv.style.marginTop = '0.5rem';
-        eventDiv.style.background = '#84cc16';
-        eventDiv.style.color = '#fff';
-        eventDiv.style.padding = '0.25rem';
-        eventDiv.style.borderRadius = '0.25rem';
-        dayS.appendChild(eventDiv);
-      }
-
-      dayS.addEventListener('click', () => openModal(dayString));
-    } else {
-      dayS.style.backgroundColor = '#f0f0f0';
+    if (!newEventModal || !backDrop) {
+        return;
     }
 
-    calendar.appendChild(dayS);
-  }
-
-  calendar.style.display = 'grid';
-  calendar.style.gridTemplateColumns = 'repeat(7, 1fr)';
-  calendar.style.gap = '0.5rem';
+    if (eventDay) {
+        const eventText = document.getElementById('eventText');
+        if (eventText) eventText.innerText = eventDay.title;
+        newEventModal.style.display = 'block';
+    } else {
+        return;
+    }
+    backDrop.style.display = 'block';
 }
 
+function closeModal() {
+    if (newEventModal) newEventModal.style.display = 'none';
+    if (deleteEventModal) deleteEventModal.style.display = 'none';
+    if (backDrop) backDrop.style.display = 'none';
 
-// Botões
-function buttons() {
-  document.getElementById('backButton').addEventListener('click', () => {
-    nav--;
-    load();
-  });
-
-  document.getElementById('nextButton').addEventListener('click', () => {
-    nav++;
-    load();
-  });
-
-  document.getElementById('saveButton').addEventListener('click', () => saveEvent());
-  document.getElementById('cancelButton').addEventListener('click', () => closeModal());
-  document.getElementById('deleteButton').addEventListener('click', () => deleteEvent());
-  document.getElementById('closeButton').addEventListener('click', () => closeModal());
+    clicked = null;
+    loadCalendar();
 }
 
-buttons();
-load();
+function renderCalendarDays(month, year) {
+    if (!calendar) {
+        console.error("Erro: Elemento 'calendar' não encontrado. O calendário não pode ser renderizado.");
+        return;
+    }
+
+    const dt = new Date(year, month, 1);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDayOfMonth = new Date(year, month, 1);
+
+    const dateString = firstDayOfMonth.toLocaleDateString('pt-br', { weekday: 'long' });
+    const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+
+    if (monthDisplay) {
+        monthDisplay.innerText = `${dt.toLocaleDateString('pt-br', { month: 'long' })}, ${year}`;
+    }
+
+    calendar.innerHTML = '';
+    calendar.style.display = 'grid';
+    calendar.style.gridTemplateColumns = 'repeat(7, 1fr)';
+    calendar.style.gap = '0.5rem';
+
+    for (let i = 1; i <= paddingDays + daysInMonth; i++) {
+        const daySquare = document.createElement('div');
+        daySquare.classList.add('day');
+        daySquare.style.padding = '1rem';
+        daySquare.style.border = '1px solid #ddd';
+        daySquare.style.minHeight = '5rem';
+        daySquare.style.textAlign = 'center';
+        daySquare.style.display = 'flex';
+        daySquare.style.flexDirection = 'column';
+        daySquare.style.alignItems = 'center';
+        daySquare.style.justifyContent = 'flex-start';
+
+        const dayNumber = i - paddingDays;
+        const currentMonthPadded = String(month + 1).padStart(2, '0');
+        const dayNumberPadded = String(dayNumber).padStart(2, '0');
+        const dateFormatted = `${year}-${currentMonthPadded}-${dayNumberPadded}`;
+
+        if (i > paddingDays) {
+            const dayNumberSpan = document.createElement('span');
+            dayNumberSpan.innerText = dayNumber;
+            daySquare.appendChild(dayNumberSpan);
+
+            const today = new Date();
+            const todayFormatted = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+            if (dateFormatted === todayFormatted && nav === 0) {
+                daySquare.style.backgroundColor = '#d1e7dd';
+                daySquare.style.fontWeight = 'bold';
+            }
+
+            const eventsForThisDay = allEvents.filter(event => event.date === dateFormatted);
+
+            if (eventsForThisDay.length > 0) {
+                eventsForThisDay.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.classList.add('event');
+                    eventDiv.innerText = event.title;
+                    eventDiv.style.marginTop = '0.5rem';
+                    eventDiv.style.background = '#84cc16';
+                    eventDiv.style.color = '#fff';
+                    eventDiv.style.padding = '0.25rem';
+                    eventDiv.style.borderRadius = '0.25rem';
+                    eventDiv.style.fontSize = '0.8em';
+                    eventDiv.style.width = 'fit-content';
+                    eventDiv.style.cursor = 'pointer';
+                    eventDiv.style.wordBreak = 'break-word';
+                    eventDiv.onclick = (e) => {
+                        e.stopPropagation();
+                        openModal(dateFormatted);
+                    };
+                    daySquare.appendChild(eventDiv);
+                });
+            } else {
+                daySquare.addEventListener('click', () => openModal(dateFormatted));
+            }
+        } else {
+            daySquare.classList.add('padding');
+            daySquare.style.backgroundColor = '#f0f0f0';
+        }
+        calendar.appendChild(daySquare);
+    }
+}
+
+async function fetchEvents(month, year) {
+    try {
+        const apiUrl = `${window.location.origin}/Escola-de-Idiomas-1/conexus_sistema/app/controllers/calendarioController.php?ajax=1&year=${year}&month=${month + 1}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erro HTTP! Status: ${response.status} - ${response.statusText}. Resposta do servidor: ${errorText}`);
+        }
+
+        const data = await response.json();
+        allEvents = data.events || [];
+        renderCalendarDays(month, year);
+    } catch (error) {
+        console.error("Erro fatal ao carregar eventos:", error);
+        allEvents = [];
+        renderCalendarDays(month, year);
+    }
+}
+
+function loadCalendar() {
+    const dt = new Date();
+
+    if (nav === 0 && typeof phpCurrentYear !== 'undefined' && typeof phpCurrentMonth !== 'undefined') {
+        dt.setFullYear(phpCurrentYear);
+        dt.setMonth(phpCurrentMonth);
+    } else {
+        dt.setMonth(dt.getMonth() + nav);
+    }
+
+    const month = dt.getMonth();
+    const year = dt.getFullYear();
+
+    if (monthDisplay) {
+        monthDisplay.innerText = `${dt.toLocaleDateString('pt-br', { month: 'long' })}, ${year}`;
+    }
+
+    fetchEvents(month, year);
+}
+
+function initButtons() {
+    const backButton = document.getElementById('backButton');
+    const nextButton = document.getElementById('nextButton');
+    const cancelButton = document.getElementById('cancelButton');
+    const closeButtonModal = document.getElementById('closeButtonModal');
+
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            nav--;
+            loadCalendar();
+        });
+    } else {
+        console.error("Erro: Botão 'Voltar' (id='backButton') não encontrado no DOM. Verifique seu HTML.");
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            nav++;
+            loadCalendar();
+        });
+    } else {
+        console.error("Erro: Botão 'Próximo' (id='nextButton') não encontrado no DOM. Verifique seu HTML.");
+    }
+
+    if (cancelButton) cancelButton.addEventListener('click', closeModal);
+    if (closeButtonModal) closeButtonModal.addEventListener('click', closeModal);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initButtons();
+    loadCalendar();
+});

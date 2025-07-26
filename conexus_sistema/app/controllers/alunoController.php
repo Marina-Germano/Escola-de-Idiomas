@@ -141,8 +141,8 @@ switch ($acao) {
             echo "Acesso negado. Apenas usuários autorizados podem excluir alunos.";
             exit;
         }
-
-        header("Location: ../views/admin/list_student.php?");
+        $aluno->excluir($_GET['id']);
+        header("Location: ../views/admin/list_students.php");
             exit;
 
         case 'listarTodos':
@@ -163,7 +163,7 @@ switch ($acao) {
             exit;
         }
         
-        $materiais = $material->buscarPorAluno($idaluno);
+        $materiais = $material->listar($idaluno);
         include '../view/student/material.php';
         break;
         

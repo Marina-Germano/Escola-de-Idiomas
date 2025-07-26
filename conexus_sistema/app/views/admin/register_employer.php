@@ -53,7 +53,7 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
 
                 <p>Data de Nascimento: <span>*</span></p>
                 <input type="date" name="data_nascimento" required class="box"
-                    value="<?= $modoEdicao && isset($item['data_nascimento']) ? htmlspecialchars($item['data_nascimento']) : '' ?>">
+                    value="<?= $modoEdicao && isset($item['data_nascimento']) ? ($item['data_nascimento']) : '' ?>">
 
                 <p>Cargo: <span>*</span></p>
                 <input type="text" name="cargo" required class="box"

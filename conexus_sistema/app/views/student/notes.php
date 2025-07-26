@@ -15,68 +15,73 @@
     include __DIR__ . '/../components/student_header.php'; //cabeçalho
     ?>
 
-<!-- ... cabeçalho mantido ... -->
+    <section class="courses">
+        <h1 class="heading">Meu Boletim</h1> 
+        
+        <div class="row">
+            <form method="post">
+                <label for="curso" class="heading"> Escolha um curso: </label>
+                <select name="curso" id="curso" class="row" style="font-size: medium;" required>
+                    <option value="default" >-- Selecione um Curso --</option>
+                    <?php foreach ($cursosDoAluno as $curso): ?>
+                        <option value="<?= htmlspecialchars($curso['id_curso']) ?>"
+                            <?= $cursoSelecionado === $curso['id_curso'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($curso['nome_curso']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit" class="inline-btn">Ver</button>
+            </form>
+        </div>
+    </section>
 
-<section class="courses">
-    <h1 class="heading">Meu Boletim</h1> 
-    
-    <div class="row">
-        <form method="post">
-            <label for="curso" class="heading">Escolha um curso:</label>
-            <select name="curso" id="curso" class="select-curso" required>
-                <option value="default">-- Selecione um Curso --</option>
-                <?php foreach ($cursosDoAluno as $curso): ?>
-                    <option value="<?= htmlspecialchars($curso['id_curso']) ?>"
-                        <?= $cursoSelecionado === $curso['id_curso'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($curso['nome_curso']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit" class="inline-btn">Ver</button>
-        </form>
-    </div>
-</section>
-
-<?php if (!empty($cursoSelecionado) && $cursoSelecionado !== 'default' && !empty($atividades)): ?>
-<table class="tabela-boletim">
-    <thead>
-        <tr>
-            <th>Atividade</th>
-            <th>Nota</th>
-        </tr>
-    </thead>
-    <tbody>
+<?php
+// Verifica se há um curso 
+if (!empty($cursoSelecionado) && $cursoSelecionado !== 'default' && !empty($atividades)):
+?>
+    <table>
+        <thead>
+            <tr>
+                <th>Atividade</th>
+                <th>Nota</th>
+            </tr>
+        </thead>
+        <tbody>
         <?php
             $soma = 0; 
             foreach ($atividades as $atividade):
             $soma += (float)$atividade['nota'];
         ?>
-        <tr>
-            <td><?= htmlspecialchars($atividade['nome_atividade']) ?></td>
-            <td><?= number_format((float)$atividade['nota'], 1, ',', '.') ?></td> 
-        </tr>
+            <tr>
+                <td><?= htmlspecialchars($atividade['nome_atividade']) ?></td>
+                <td><?= number_format((float)$atividade['nota'], 1, ',', '.') ?></td> 
+            </tr>
         <?php endforeach; ?>
-    </tbody>
-    <tfoot>
-        <tr class="media">
-            <td>Média</td>
-            <td><?= count($atividades) > 0 ? number_format($soma / count($atividades), 2, ',', '.') : 'N/A' ?></td> 
-        </tr>
-    </tfoot>
-</table>
-
-<?php elseif (!empty($cursoSelecionado) && $cursoSelecionado !== 'default' && empty($atividades)): ?>
-    <p class="mensagem-erro">
+        </tbody>
+        <tfoot>
+            <tr class="media">
+                <td>Média</td>
+                <td><?= count($atividades) > 0 ? number_format($soma / count($atividades), 2, ',', '.') : 'N/A' ?></td> 
+            </tr>
+        </tfoot>
+    </table>
+<?php
+// se for selecionado me não e atividades 
+elseif (!empty($cursoSelecionado) && $cursoSelecionado !== 'default' && empty($atividades)):
+?>
+    <p style="text-align:center; color:red; font-size: 16px;">
         Nenhuma atividade encontrada para o curso "<?= htmlspecialchars($cursoSelecionado) ?>".
     </p>
-<?php else: ?>
-    <p class="mensagem-erro">
+<?php
+// se nao selecionar aparae msg
+else:
+?>
+    <p style="text-align:center; color:red; font-size: 16px;">
         Selecione um curso para ver o boletim.
     </p>
 <?php endif; ?>
-
     
-<script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
+<script src="../../public/js/script.js"></script>
 
 </body>
 </html>

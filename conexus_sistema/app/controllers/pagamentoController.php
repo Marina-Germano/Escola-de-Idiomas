@@ -29,7 +29,7 @@ try {
     }
 } catch (PDOException $e) {
     error_log("ERRO PDO ao buscar idaluno: " . $e->getMessage());
-    header('Location: /escola-de-idiomasonexus_sistema/app/views/erro.php'); 
+    header('Location: /escola-de-idiomas/conexus_sistema/app/views/erro.php'); 
     exit;
 }
 

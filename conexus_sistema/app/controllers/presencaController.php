@@ -24,7 +24,7 @@ switch ($acao) {
                     $presenca->registrarPresenca($idaluno_turma, $idfuncionario, $presente);
                 }
 
-                header('Location: ../views/teacher/listar_students.php?mensagem=Presenças registradas');
+                header('Location: ../views/teacher/list_class.php?mensagem=Presenças registradas');
                 exit;
             } else {
                 echo "Dados incompletos para registrar presença.";
@@ -39,7 +39,7 @@ switch ($acao) {
 
             if ($idpresenca) {
                 $presenca->alterar($idpresenca, $presente);
-                header('Location: ../views/teacher/list_student.php?mensagem=Presença alterada');
+                header('Location: ../views/teacher/class.php?mensagem=Presença alterada');
                 exit;
             } else {
                 echo "ID da presença não informado.";
@@ -51,7 +51,7 @@ switch ($acao) {
         $idpresenca = $_GET['idpresenca'] ?? null;
         if ($idpresenca) {
             $presenca->excluir($idpresenca);
-            header('Location: ../views/teacher/list_students.php?mensagem=Presença excluída');
+            header('Location: ../views/teacher/list_class.php?mensagem=Presença excluída');
             exit;
         } else {
             echo "ID da presença não informado para exclusão.";
