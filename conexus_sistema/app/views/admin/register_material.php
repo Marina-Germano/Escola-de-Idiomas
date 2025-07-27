@@ -15,6 +15,17 @@ $idiomas = $idiomaModel->listarTodos();
 $nivels = $nivelModel->listarTodos();
 $tipos = $tipoMaterialModel->listarTodos();
 $turmas = $turmaModel->listarTodos();
+$material = $materialModel ->listar();
+$conn = Conexao::conectar();
+$materialModel = new Material();
+
+$modoEdicao = false;
+$item = [];
+
+if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
+    $modoEdicao = true;
+    $item = $materialModel->buscarPorId($_GET['id']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -41,26 +52,27 @@ $turmas = $turmaModel->listarTodos();
             <div class="col">
 
                 <p><strong>Título <span>*</span></strong></p>
-                <input type="text" name="titulo" maxlength="255" required placeholder="Título do material" class="box">
+                <input type="text" name="titulo" maxlength="255" required placeholder="Título do material" class="box"
+                value="<?= $modoEdicao ? htmlspecialchars($item['titulo']) : '' ?>">
 
                 <p><strong>Tipo de Material</strong></p>
                 <select name="idtipo_material" class="box">
                     <?php foreach ($tipos as $t): ?>
-            <option value="<?= $t['descricao'] ?>"><?= $t['descricao'] ?></option>
+            <option value="<?= $t['idtipo_material'] ?>"><?= $t['descricao'] ?></option>
         <?php endforeach; ?>
                     </select>
 
                 <p><strong>Idioma</strong></p>
                 <select name="ididioma" class="box">
                     <?php foreach ($idiomas as $i): ?>
-            <option value="<?= $i['descricao'] ?>"><?= $i['descricao'] ?></option>
+            <option value="<?= $i['ididioma'] ?>"><?= $i['descricao'] ?></option>
         <?php endforeach; ?>
     </select><br>
 
                 <p><strong>Nível</strong></p>
                 <select name="idnivel" class="box">
                     <?php foreach ($nivels as $n): ?>
-            <option value="<?= $n['descricao'] ?>"><?= $n['descricao'] ?></option>
+            <option value="<?= $n['idnivel'] ?>"><?= $n['descricao'] ?></option>
         <?php endforeach; ?>
                 </select>
             </div>
@@ -70,7 +82,8 @@ $turmas = $turmaModel->listarTodos();
                 <input type="file" name="arquivo" accept=".pdf,.doc,.docx,.mp4,.jpg,.png" class="box">
 
                 <p><strong>Descrição do Material</strong></p>
-                <textarea name="descricao_material" class="box" rows="5" placeholder="Descrição do material"></textarea>
+                <textarea name="descricao" class="box" rows="5" placeholder="Descrição do material"
+                value="<?= $modoEdicao ? htmlspecialchars($item['descricao']) : '' ?>"></textarea>
 
                 <p><strong>Quantidade <span>*</span></strong></p>
                 <input type="number" name="quantidade" min="1" required class="box">

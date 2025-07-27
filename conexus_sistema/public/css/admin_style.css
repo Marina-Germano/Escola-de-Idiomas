@@ -464,6 +464,66 @@ section{
    flex: 1 1 25rem;
 }
 
+.flex.single-col {
+   display: flex;
+   flex-direction: column;
+}
+
+.full-width {
+   width: 100%;
+}
+
+.form-container .box {
+   width: 100%;
+   margin-bottom: 1.5rem;
+}
+
+.form-box {
+   background: var(--white);
+   padding: 2rem;
+   border-radius: 1rem;
+   box-shadow: var(--box-shadow);
+   margin-top: 1rem;
+}
+
+.form-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+   gap: 1.5rem;
+}
+
+.form-group {
+   display: flex;
+   flex-direction: column;
+}
+
+.form-group label {
+   font-size: 1.6rem;
+   color: var(--black);
+   font-weight: 500;
+   margin-bottom: .5rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+   width: 100%;
+   padding: 1rem;
+   border-radius: .5rem;
+   font-size: 1.6rem;
+   color: var(--black);
+   background-color: var(--light-bg);
+}
+
+.full-span {
+   grid-column: 1 / -1;
+}
+
+.form-actions {
+   margin-top: 2rem;
+   text-align: right;
+}
+
+
 .dashboard .box-container{
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
@@ -1166,3 +1226,4 @@ body.dark .table th {
    }
 
 }
+

@@ -131,17 +131,15 @@ CREATE TABLE material(
     idtipo_material INT NOT NULL,
     ididioma INT NOT NULL,
     idnivel INT NOT NULL,
-    idturma INT NOT NULL, -- organizar
+    idturma INT NULL, -- organizar
     titulo VARCHAR(200) NOT NULL,
-    descricao TEXT,
+    descricao TEXT NULL,
     quantidade INT NOT NULL,
-    formato_arquivo VARCHAR(10),
-    arquivo VARCHAR(255), -- para upload e dowloand
+    formato_arquivo VARCHAR(10) NULL,
+    arquivo VARCHAR(255) NULL, -- para upload e dowloand
     data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    idfuncionario INT NOT NULL,
     -- verificar como o aluno vai acessar esses materiais
 
-	FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario),
     FOREIGN KEY (idtipo_material) REFERENCES tipo_material(idtipo_material),
     FOREIGN KEY (ididioma) REFERENCES idioma(ididioma),
 	FOREIGN KEY (idnivel) REFERENCES nivel (idnivel),
@@ -296,11 +294,11 @@ INSERT INTO tipo_material (descricao) VALUES
 ('PDF');
 
 
-INSERT INTO material (idtipo_material, ididioma, idnivel, idturma, titulo, descricao, quantidade, formato_arquivo, arquivo, idfuncionario) 
+INSERT INTO material (idtipo_material, ididioma, idnivel, idturma, titulo, descricao, quantidade, formato_arquivo, arquivo) 
 VALUES
-(1, 1, 1, 1, 'Inglês Básico - Volume 1', 'Livro didático para iniciantes.', 10, 'pdf', '/materiais/ingles_basico_v1.pdf', 2),
-(2, 1, 1, 1, 'Apostila de Verbos', 'Conteúdo complementar focado em verbos.', 20, 'pdf', '/materiais/apostila_verbos.pdf', 2),
-(3, 1, 1, 1, 'Vocabulário Essencial', 'Material digital com vocabulário básico.', 30, 'pdf', '/materiais/vocabulario.pdf', 2);
+(1, 1, 1, 1, 'Inglês Básico - Volume 1', 'Livro didático para iniciantes.', 10, 'pdf', '/materiais/ingles_basico_v1.pdf'),
+(2, 1, 1, 1, 'Apostila de Verbos', 'Conteúdo complementar focado em verbos.', 20, 'pdf', '/materiais/apostila_verbos.pdf'),
+(3, 1, 1, 1, 'Vocabulário Essencial', 'Material digital com vocabulário básico.', 30, 'pdf', '/materiais/vocabulario.pdf');
 
 INSERT INTO emprestimo_material (idaluno, idmaterial, data_emprestimo, data_prevista_devolucao, data_devolvido, status, observacoes, valor_multa) 
 VALUES

@@ -9,7 +9,7 @@ $itens = $turmaModel->listarTurma();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estudante</title>
+    <title>Estudantes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="../../../public/css/admin_style.css">
 </head>
@@ -46,13 +46,15 @@ $itens = $turmaModel->listarTurma();
                             <td><?php echo htmlspecialchars($item['dias_semana'] ?? 'sem dias'); ?></td>
                             <td><?php echo htmlspecialchars($item['hora_inicio'] ?? 'sem horário'); ?></td></td>
                             <td class="text-end">
-
                                 <a href="register_class.php?acao=editar&id=<?= $item['idturma'] ?>" class="inline-option-btn">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
                                 <a href="../../controllers/turmaController.php?acao=excluir&id=<?= $item['idturma'] ?>" class="inline-delete-btn"
                                 onclick="return confirm('Tem certeza que deseja excluir esta turma?');">
                                     <i class="fas fa-trash-alt"></i> Excluir
+                                </a>
+                                <a href="student_class.php" class="inline-btn">
+                                    <i class="fa-solid fa-user-plus"></i> Adicionar Alunos
                                 </a>
                             </td>
                         </tr>
@@ -64,8 +66,7 @@ $itens = $turmaModel->listarTurma();
         <div class="empty">Nenhuma turma cadastrada.</div>
     <?php endif; ?>
 </div>
-
-
 <script src="../../../public/js/admin_script.js"></script>
 </body>
 </html>
+
