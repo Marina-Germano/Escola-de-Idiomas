@@ -77,6 +77,7 @@ if ($idusuario !== null) {
          <a href="list_employer.php"><i class="fas fa-users"></i><span>Listar Funcionários</span></a>
          <a href="list_material.php"><i class="fas fa-book"></i><span>Listar Materiais</span></a>
          <a href="material_loan.php"><i class="fas fa-handshake"></i><span>Gerenciar Emprestimos</span></a>
+         <a href="payment_method.php"><i class="fas fa-handshake"></i><span>Adicionar Pagamento</span></a>
          <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>Sair</span></a>
       </nav>
 </div>

@@ -323,3 +323,79 @@ INSERT INTO presenca (idaluno_turma, idfuncionario, presente, data) VALUES
 
 INSERT INTO contato (idusuario, nome, email, telefone, arquivo, motivo_contato, mensagem) VALUES
 (1, 'Ana Souza', 'ana@example.com', '11999999999', NULL, 'Solicitação de material', 'Preciso da apostila do curso para estudar em casa.');
+
+INSERT INTO material (idtipo_material, ididioma, idnivel, idturma, titulo, descricao, quantidade, formato_arquivo, arquivo) VALUES
+-- 1. Pronomes Essenciais: Guia para Iniciantes (Livro)
+(1, 1, 1, 1, 'Pronomes Essenciais: Guia para Iniciantes', 'Este livro é o ponto de partida ideal para entender os pronomes em inglês. Explora de forma clara e didática os pronomes pessoais, possessivos e demonstrativos, com muitos exemplos e exercícios simples para fixação. Essencial para construir frases básicas corretamente.', 1, 'pdf', '/materiais/pronomes_essenciais_basico.pdf'),
+
+-- 2. Dominando os Pronomes: Casos e Usos Avançados (Apostila)
+(2, 1, 2, 1, 'Dominando os Pronomes: Casos e Usos Avançados', 'Apostila completa para aprofundar o conhecimento sobre pronomes. Aborda pronomes reflexivos, recíprocos, relativos e indefinidos, com foco em seus usos e posições nas frases. Inclui exercícios desafiadores e dicas para evitar erros comuns.', 1, 'pdf', '/materiais/dominando_pronomes_intermediario.pdf', 2),
+
+-- 3. Pronomes em Contexto: Conversação e Escrita (PDF)
+(3, 1, 3, 1, 'Pronomes em Contexto: Conversação e Escrita', 'Material em PDF focado na aplicação prática dos pronomes em inglês, tanto na conversação quanto na escrita formal e informal. Contém exemplos de diálogos, trechos de textos e atividades para aprimorar a fluidez e a precisão no uso dos pronomes em diferentes situações.', 1, 'pdf', '/materiais/pronomes_contexto_avancado.pdf', 2),
+
+-- 4. Quiz de Pronomes: Teste seus Conhecimentos (PDF)
+(3, 1, 1, 1, 'Quiz de Pronomes: Teste seus Conhecimentos', 'Um PDF interativo com uma série de quizzes e jogos rápidos para testar o entendimento dos pronomes básicos. Ideal para revisão e autoavaliação, tornando o aprendizado divertido e eficaz.', 1, 'pdf', '/materiais/quiz_pronomes_basico.pdf', 2),
+
+-- 5. Pronomes Indefinidos: Guia Completo (Apostila)
+(2, 1, 2, 1, 'Pronomes Indefinidos: Guia Completo', 'Apostila dedicada exclusivamente aos pronomes indefinidos (e.g., *some*, *any*, *no*, *every* e seus compostos). Explica as regras de uso, concordância e as exceções, com exercícios práticos para dominar este tópico frequentemente confuso.', 1, 'pdf', '/materiais/pronomes_indefinidos_intermediario.pdf', 2),
+
+-- 6. Pronomes Relativos: Conectando Ideias (Livro)
+(1, 1, 3, 1, 'Pronomes Relativos: Conectando Idéias', 'Este livro detalha o uso dos pronomes relativos (*who*, *whom*, *whose*, *which*, *that*) para construir frases complexas e coesas. Aborda cláusulas relativas restritivas e não restritivas, com exemplos de textos acadêmicos e jornalísticos para prática avançada.', 1, 'pdf', '/materiais/pronomes_relativos_avancado.pdf', 2);
+
+
+-- Eventos para Julho de 2025 (adicionando mais alguns além do que já existe)
+INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) VALUES
+('2025-07-28', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Revisão de Present Perfect', NULL, FALSE),
+('2025-07-30', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Introdução a Future Simple', NULL, FALSE);
+
+-- Eventos para Agosto de 2025
+INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) VALUES
+('2025-08-04', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Prática de conversação: Viagens', NULL, FALSE),
+('2025-08-06', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Reading Comprehension: Artigos de jornal', NULL, FALSE),
+('2025-08-11', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Grammar Focus: Conditionals', NULL, FALSE),
+('2025-08-13', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Listening Practice: Notícias', NULL, FALSE),
+('2025-08-18', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Revisão geral do mês', NULL, FALSE),
+('2025-08-20', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Preparação para o teste', NULL, FALSE);
+
+-- Eventos para Setembro de 2025
+INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) VALUES
+('2025-09-01', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Início do Módulo 2', NULL, FALSE),
+('2025-09-03', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Vocabulário: Compras', NULL, FALSE),
+('2025-09-08', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Discussão: Meio ambiente', NULL, FALSE),
+('2025-09-10', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Grammar Focus: Passive Voice', NULL, FALSE);
+
+-- Eventos para Outubro de 2025
+INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) VALUES
+('2025-10-06', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Debate: Tecnologia e sociedade', NULL, FALSE),
+('2025-10-08', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Vocabulário: Saúde e bem-estar', NULL, FALSE),
+('2025-10-13', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Grammar Focus: Reported Speech', NULL, FALSE),
+('2025-10-15', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Apresentações orais dos alunos', NULL, FALSE);
+
+-- Eventos para Novembro de 2025
+INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) VALUES
+('2025-11-03', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Revisão de tempos verbais', NULL, FALSE),
+('2025-11-05', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Simulação de entrevistas de emprego', NULL, FALSE),
+('2025-11-10', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Vocabulário: Viagens e Turismo', NULL, FALSE),
+('2025-11-12', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Cultura Americana vs Britânica', NULL, FALSE);
+
+-- Eventos para Dezembro de 2025
+INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) VALUES
+('2025-12-01', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Revisão final do ano', NULL, FALSE),
+('2025-12-03', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Atividade de Natal em Inglês', NULL, FALSE),
+('2025-12-08', '14:00:00', '15:30:00', 2, 1, 1, 'Sala 101', 'Encerramento do Semestre', NULL, FALSE),
+('2025-12-10', '10:00:00', '12:00:00', 2, 1, 1, 'Sala 101', 'Festa de Confraternização (Aula Extra)', NULL, TRUE);
+
+-- Inserir um pagamento pendente para a mensalidade de Agosto
+INSERT INTO pagamento (idforma_pagamento, idaluno, valor, data_vencimento, status_pagamento, observacoes)    
+VALUES
+(1, 1, 350.00, '2025-08-05', 'pendente', 'Mensalidade de Agosto - Inglês');
+
+-- Inserir um pagamento pendente para a mensalidade de Setembro
+INSERT INTO pagamento (idforma_pagamento, idaluno, valor, data_vencimento, status_pagamento, observacoes)    
+VALUES
+(1, 1, 350.00, '2025-09-05', 'pendente', 'Mensalidade de Setembro - Inglês');
+
+-- Inserir uma nova avaliação com nota baixa para a Ana Souza
+INSERT INTO avaliacao (idaluno_turma, idfuncionario, descricao, titulo, data_avaliacao, nota, peso, observacao) VALUES
+(1, 4, 'Atividade de Vocabulário - Unidade 2', 'Quiz Vocabulário', '2025-07-25', 4.0, 1.0, 'Precisa revisar o vocabulário da Unidade 2.');

@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once __DIR__ . "/../models/Contato.php"; 
+require_once __DIR__ . "/../models/contato.php"; 
 require_once __DIR__ . "/../config/conexao.php"; 
 
 $contatoModel = new Contato(); 

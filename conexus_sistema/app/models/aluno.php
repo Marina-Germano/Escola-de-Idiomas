@@ -35,16 +35,28 @@ class Aluno {
         return $stmt->execute([$idaluno]);
     }
 
-    public function listarTodos() {
+    public function listar() {
         $stmt = $this->pdo->query(
-            "SELECT a.idaluno, u.nome AS nome, u.cpf, u.email, u.telefone, u.data_nascimento, t.descricao AS turma
+            "SELECT a.idaluno, u.nome AS nome, u.cpf, u.email, u.telefone, u.data_nascimento
              FROM aluno a
-             JOIN usuario u ON u.idusuario = a.idusuario
-             LEFT JOIN aluno_turma at ON at.idaluno = a.idaluno
-             LEFT JOIN turma t ON t.idturma = at.idturma"
-        );
+             JOIN usuario u ON u.idusuario = a.idusuario");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function listarTodos() {
+    $stmt = $this->pdo->query(
+        "SELECT a.idaluno, u.nome AS nome, u.cpf, u.email, u.telefone, u.data_nascimento,
+                GROUP_CONCAT(DISTINCT t.descricao ORDER BY t.descricao SEPARATOR ', ') AS turma
+         FROM aluno a
+         JOIN usuario u ON u.idusuario = a.idusuario
+         LEFT JOIN aluno_turma at ON at.idaluno = a.idaluno
+         LEFT JOIN turma t ON t.idturma = at.idturma
+         GROUP BY a.idaluno, u.nome, u.cpf, u.email, u.telefone, u.data_nascimento"
+    );
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 
     public function listarId($idaluno) {
         $stmt = $this->pdo->prepare("SELECT * FROM aluno AS a JOIN usuario AS u ON u.idusuario=a.idusuario WHERE idaluno = ?");
@@ -52,12 +64,29 @@ class Aluno {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+
     public function buscarIdPorUsuario($idusuario) {
-        $stmt = $this->pdo->prepare("SELECT idaluno FROM aluno WHERE idusuario = ?");
-        $stmt->execute([$idusuario]);
-        $dados = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $dados ? $dados['idaluno'] : null;
+    $sql = "SELECT a.idaluno, u.nome AS nome_aluno
+            FROM aluno a
+            JOIN usuario u ON a.idusuario = u.idusuario
+            WHERE a.idusuario = ?";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([$idusuario]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    
+    public function buscarPorId($idaluno) {
+    $sql = "SELECT a.idaluno, u.nome AS nome_aluno
+            FROM aluno a
+            JOIN usuario u ON a.idusuario = u.idusuario
+            WHERE a.idaluno = ?";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([$idaluno]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
 
     public function buscarIdPorCpf($cpf) {
         $stmt = $this->pdo->prepare(

@@ -56,7 +56,7 @@ if ($idusuario !== null) {
                <h3><?= $fetch_profile['nome']; ?></h3>
                <span><?= $fetch_profile['papel']; ?></span>
                 <div class="flex-btn">
-                    <a href="../components/user_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>Sair</span></a>
+                    <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>Sair</span></a>
                 </div>
          <?php
             }

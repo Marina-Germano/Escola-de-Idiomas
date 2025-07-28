@@ -42,7 +42,6 @@
     const phpCurrentYear = <?= $year ?>; 
     const phpCurrentMonth = <?= $month - 1 ?>; 
 </script>
-
-<script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
+  <script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
 </body>
 </html>
