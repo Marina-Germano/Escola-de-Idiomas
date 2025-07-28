@@ -70,4 +70,21 @@ class Aluno {
         $dados = $stmt->fetch(PDO::FETCH_ASSOC);
         return $dados ? $dados['idaluno'] : null;
     }
+
+    public function listarNaoVinculados($idturma) {
+    $sql = "SELECT a.idaluno, u.nome, u.cpf, a.situacao
+            FROM aluno a
+            JOIN usuario u ON u.idusuario = a.idusuario
+            WHERE a.idaluno NOT IN (
+                SELECT at.idaluno
+                FROM aluno_turma at
+                WHERE at.idturma = :idturma
+            )";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':idturma', $idturma, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }

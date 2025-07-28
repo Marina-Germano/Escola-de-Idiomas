@@ -1,17 +1,21 @@
 <?php
 session_start();
 require_once __DIR__ . '/../models/presenca.php';
+require_once __DIR__ . '/../models/funcionario.php';
 
 $presenca = new Presenca();
+$funcionarioModel = new Funcionario();
 $acao = $_GET['acao'] ?? '';
-
 
 switch ($acao) {
     case 'registrar':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idfuncionario = $_SESSION['idusuario'] ?? null;
+            $idusuario = $_SESSION['idusuario'] ?? null;
             $idturma = $_POST['idturma'] ?? null;
             $faltas = $_POST['faltas'] ?? []; // array com idaluno_turma dos faltantes
+
+            // Buscar o idfuncionario baseado no idusuario da sessão
+            $idfuncionario = $funcionarioModel->buscarIdFuncionarioPorUsuario($idusuario);
 
             if ($idfuncionario && $idturma) {
                 require_once __DIR__ . '/../models/aluno_turma.php';
@@ -87,15 +91,14 @@ switch ($acao) {
         break;
 
     case 'listarAlunos':
-    $idturma = $_GET['idturma'] ?? null;
-    if ($idturma) {
-        require_once __DIR__ . '/../models/aluno_turma.php';
-        $alunoTurmaModel = new AlunoTurma();
-        $alunos = $alunoTurmaModel->listarTodos($idturma);
-        include '../views/teacher/list_students.php';
-    } else {
-        echo "Turma não especificada para chamada.";
-    }
-    break;
-
+        $idturma = $_GET['idturma'] ?? null;
+        if ($idturma) {
+            require_once __DIR__ . '/../models/aluno_turma.php';
+            $alunoTurmaModel = new AlunoTurma();
+            $alunos = $alunoTurmaModel->listarTodos($idturma);
+            include '../views/teacher/list_students.php';
+        } else {
+            echo "Turma não especificada para chamada.";
+        }
+        break;
 }

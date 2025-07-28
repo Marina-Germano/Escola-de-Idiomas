@@ -19,7 +19,6 @@ if (!$idturma) {
 
 $alunoTurmaModel = new AlunoTurma();
 $alunos = $alunoTurmaModel->listarTodos($idturma); // lista alunos da turma
-
 ?>
 
 <!DOCTYPE html>
@@ -28,39 +27,62 @@ $alunos = $alunoTurmaModel->listarTodos($idturma); // lista alunos da turma
     <meta charset="UTF-8" />
     <title>Registrar Presença - Turma <?= htmlspecialchars($idturma) ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-    <link rel="stylesheet" href="../../../public/css/admin_style.css" />
+    <link rel="stylesheet" href="../../../public/css/teacher_style.css" />
 </head>
 <body>
 <?php include '../components/teacher_header.php'; ?>
 
-<h2>Registrar Presença - Turma <?= htmlspecialchars($idturma) ?></h2>
+<div class="box-container-list">
+    <div class="flex-between heading-bar">
+        <h1 class="heading">Registrar Presença - Turma <?= htmlspecialchars($idturma) ?></h1>
+        <div class="action-links">
+            <a href="list_class.php" class="inline-btn">Minhas Turmas</a>
+        </div>
+    </div>
 
-<form method="POST" action="../../controllers/presencaController.php?acao=registrar">
-    <input type="hidden" name="idturma" value="<?= htmlspecialchars($idturma) ?>" />
+    <section class="box-container-list">
+        <form method="POST" action="../../controllers/presencaController.php?acao=registrar" class="form-box">
+            <input type="hidden" name="idturma" value="<?= htmlspecialchars($idturma) ?>" />
 
-    <table>
-        <thead>
-            <tr>
-                <th>Aluno</th>
-                <th>Faltou?</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($alunos as $aluno): ?>
-                <tr>
-                    <td><?= htmlspecialchars($aluno['nome_aluno']) ?></td>
-                    <td>
-                        <!-- Checkbox: se marcado, aluno está ausente -->
-                        <input type="checkbox" name="faltas[]" value="<?= htmlspecialchars($aluno['idaluno_turma']) ?>" />
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            <div class="form-grid full-span">
+                <?php if (empty($alunos)): ?>
+                    <p>Nenhum aluno encontrado nesta turma.</p>
+                <?php else: ?>
+                    <table class="styled-table">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Nome do Aluno</th>
+                                <th>Faltou?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($alunos as $aluno): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($aluno['nome_aluno']) ?></td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" name="faltas[]" value="<?= htmlspecialchars($aluno['idaluno_turma']) ?>" />
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+            </div>
+            <div class="text-end" style="justify-content: flex-end; margin-top: 20px;">
+                <div class="form-actions" style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn">Salvar Presenças</button>
+                    <button type="button" onclick="marcarTodosFaltaram(false)" class="btn">Desmarcar Todos</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
 
-    <button type="submit" class="btn">Salvar Presenças</button>
-</form>
-
-<script src="../../../public/js/admin_script.js"></script>
+<script src="../../../public/js/admin_script.js">
+    function marcarTodosFaltaram(marcar) {
+        const checkboxes = document.querySelectorAll('input[name="faltas[]"]');
+        checkboxes.forEach(cb => cb.checked = marcar);
+    }
+</script>
 </body>
 </html>

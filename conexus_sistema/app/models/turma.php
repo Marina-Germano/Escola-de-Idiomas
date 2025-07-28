@@ -46,11 +46,23 @@ public function listarTurma() {
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    public function listarId($id) {
+     public function listarId($id) {
         $result = $this->pdo->prepare("SELECT * FROM turma WHERE idturma = ?");
         $result->execute([$id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+
+public function buscarPorId($idturma) {
+    $sql = "SELECT t.*, i.nome AS idioma, n.nome AS nivel 
+            FROM turma t
+            JOIN idioma i ON t.ididioma = i.ididioma
+            JOIN nivel n ON t.idnivel = n.idnivel
+            WHERE t.idturma = :idturma";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':idturma', $idturma, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 }
 ?>

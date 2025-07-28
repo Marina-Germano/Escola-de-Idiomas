@@ -48,7 +48,10 @@ $itens = $materialModel->listar(); // ou outro nome apropriado para seu método
                                 </a>
                                 <a href="../../controllers/materialController.php?acao=excluir&id=<?= $item['idmaterial'] ?>" class="inline-delete-btn"
                                 onclick="return confirm('Tem certeza que deseja excluir este material?');">
-                                <i class="fas fa-trash-alt"></i> Excluir
+                                    <i class="fas fa-trash-alt"></i> Excluir
+                                </a>
+                                <a href="link_material.php?idmaterial=<?= $item['idmaterial'] ?>" class="inline-option-btn">
+                                    <i class="fa-solid fa-link"></i> Vincular
                                 </a>
                             </td>
                         </tr>

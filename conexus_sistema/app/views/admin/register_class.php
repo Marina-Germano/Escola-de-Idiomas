@@ -42,7 +42,7 @@ $item = [];
 
 if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
     $modoEdicao = true;
-    $item = $turmaModel->listarId($_GET['id']); // fica turmaModel mesmo?
+    $item = $turmaModel->listarId($_GET['id']);
 }
 
 ?>

@@ -4,6 +4,7 @@ $turmaModel = new Turma();
 $itens = $turmaModel->listarTurma();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -53,7 +54,8 @@ $itens = $turmaModel->listarTurma();
                                 onclick="return confirm('Tem certeza que deseja excluir esta turma?');">
                                     <i class="fas fa-trash-alt"></i> Excluir
                                 </a>
-                                <a href="student_class.php" class="inline-btn">
+                                <a href="student_class.php?idturma=<?= $item['idturma'] ?>" 
+                                class="inline-btn">
                                     <i class="fa-solid fa-user-plus"></i> Adicionar Alunos
                                 </a>
                             </td>

@@ -54,6 +54,13 @@ class Funcionario {
         return $dados ? $dados['idfuncionario'] : null;
     }
 
+    public function buscarIdFuncionarioPorUsuario($idusuario) {
+        $stmt = $this->pdo->prepare("SELECT idfuncionario FROM funcionario WHERE idusuario = ?");
+        $stmt->execute([$idusuario]);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['idfuncionario'] : null;
+    }
+
     // Novo método para buscar funcionário por CPF
     public function buscarIdPorCpf($cpf) {
         $result = $this->pdo->prepare(

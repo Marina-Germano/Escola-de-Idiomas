@@ -10,7 +10,7 @@ class AlunoTurma {
 
     public function cadastrar($idaluno, $idturma, $data_matricula = null) {
         if ($data_matricula) {
-            $result = $this->pdo->prepare("INSERT INTO aluno_turma (idaluno, idturma, data_matricula) VALUES (?, ?, ?)");
+           $result = $this->pdo->prepare("INSERT INTO aluno_turma (idaluno, idturma, data_matricula) VALUES (?, ?, ?)");
             return $result->execute([$idaluno, $idturma, $data_matricula]);
         } else {
             $result = $this->pdo->prepare("INSERT INTO aluno_turma (idaluno, idturma) VALUES (?, ?)");
@@ -49,5 +49,14 @@ class AlunoTurma {
         $result->execute([$idaluno_turma]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function vincularAlunoTurma($idaluno, $idturma) {
+    $sql = "INSERT INTO aluno_turma (idaluno, idturma) VALUES (:idaluno, :idturma)";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':idaluno', $idaluno);
+    $stmt->bindParam(':idturma', $idturma);
+    return $stmt->execute();
+}
+
 }
 ?>

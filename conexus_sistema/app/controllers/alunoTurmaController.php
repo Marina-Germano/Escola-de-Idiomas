@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once "../models/aluno_turma.php";
 
 $alunoTurma = new AlunoTurma();
@@ -26,25 +27,26 @@ if (!isset($_GET['acao'])) {
 $acao = $_GET['acao'];
 
 switch ($acao) {
-    case 'cadastrar':
+    case 'vincular':
         if (!temPermissao()) {
             http_response_code(403);
             echo "Acesso negado. Apenas usuários autorizados podem matricular alunos em turmas.";
             exit;
         }
 
-        $idaluno = $_POST['idaluno'] ?? null;
-        $idturma = $_POST['idturma'] ?? null;
-        $data_matricula = $_POST['data_matricula'] ?? null;
+        $idaluno = $_GET['idaluno'] ?? null;
+        $idturma = $_GET['idturma'] ?? null;
+        //$data_matricula = $_POST['data_matricula'] ?? null;
 
-        if (!$idaluno || !$idturma) {
+        if (!isset($_GET['idaluno'], $_GET['idturma'])) {
             echo "Erro: ID do aluno e ID da turma são obrigatórios.";
-            exit;
-        }
+        exit;
+}
 
-        $alunoTurma->cadastrar($idaluno, $idturma, $data_matricula);
 
-        header("Location: ../views/components/sucess.php?cadastrar=ok");
+        $alunoTurma->cadastrar($idaluno, $idturma);
+        //"Location: ../views/admin/list_student.php?idturma=$idturma&vinculado=ok"
+        header("Location: ../views/admin/list_students.php?idturma=" . $idturma . "&vinculado=ok");
             exit;
 
     case 'alterar':
@@ -55,8 +57,8 @@ switch ($acao) {
         }
 
         $idaluno_turma = $_POST['idaluno_turma'] ?? null;
-        $idaluno = $_POST['idaluno'] ?? null;
-        $idturma = $_POST['idturma'] ?? null;
+        $idaluno = $_GET['idaluno'] ?? null;
+        $idturma = $_GET['idturma'] ?? null;
         $data_matricula = $_POST['data_matricula'] ?? null;
 
         if (!$idaluno_turma || !$idaluno || !$idturma || !$data_matricula) {

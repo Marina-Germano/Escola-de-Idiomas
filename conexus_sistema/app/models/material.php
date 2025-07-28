@@ -175,4 +175,24 @@ class Material {
             return [];
         }
     }
+
+    public function vincularTurma($idmaterial, $idturma) {
+    try {
+        $sql = "UPDATE material SET idturma = :idturma WHERE idmaterial = :idmaterial";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':idturma', $idturma, PDO::PARAM_INT);
+        $stmt->bindParam(':idmaterial', $idmaterial, PDO::PARAM_INT);
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Erro: " . $e->getMessage();
+        return false;
+    }
+}
+
+public function listarNaoVinculados() {
+    $sql = "SELECT * FROM material WHERE idturma IS NULL";
+    $stmt = $this->pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
