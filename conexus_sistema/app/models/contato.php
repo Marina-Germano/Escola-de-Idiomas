@@ -34,7 +34,7 @@ class Contato {
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function listarPorUsuario($idusuario) {
+    public function listarPorUsuario($idusuario) { // listar pelo id 
         $stmt = $this->pdo->prepare("SELECT * FROM contato WHERE idusuario = ? ORDER BY data_envio DESC");
         $stmt->execute([$idusuario]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

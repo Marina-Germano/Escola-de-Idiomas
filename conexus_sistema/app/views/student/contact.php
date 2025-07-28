@@ -4,20 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Entre em Contato - Conexus</title>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
-
-<link
-rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-/>
-
+<link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
 <link rel="stylesheet" href="/escola-de-idiomas/conexus_sistema/public/css/style.css">
-
 </head>
 <body>
 <?php 
-include __DIR__ . '/../components/student_header.php'; 
+include __DIR__ . '/../components/student_header.php'; //cabeçalho 
 ?>
 
     <section class="contact">
@@ -81,6 +74,6 @@ include __DIR__ . '/../components/student_header.php';
     </div>
 
 </section>
-<script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script>
+<script src="/escola-de-Idiomas/conexus_sistema/public/js/script.js"></script> 
 </body>
 </html>

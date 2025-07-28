@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 session_start();
 
@@ -49,6 +53,8 @@ try {
     if ($idaluno) {
         $proximaAula = $calendarioAulaModel->getProximaAulaPorAluno($idaluno);
     }
+    error_log(print_r($proximaAula, true));
+
 
     // proximo 6 materias
     if ($idaluno) {
@@ -63,6 +69,5 @@ try {
     $erroHome = "Ocorreu um erro inesperado ao carregar os dados. Por favor, tente novamente mais tarde.";
 }
 
-    include __DIR__ . '/../views/student/home.php';
-
+include __DIR__ . '/../views/student/home.php';
 ?>

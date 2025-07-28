@@ -1,11 +1,11 @@
 <?php
 session_start();
 require_once "../models/material.php";
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require_once "../models/aluno.php";
+require_once "../config/conexao.php";
 
 $material = new Material();
+$alunoModel = new Aluno();
 
 function estaLogado() {
     return isset($_SESSION['idusuario']);
@@ -33,12 +33,12 @@ if (!estaLogado()) {
     exit;
 }
 
-if (!isset($_GET['acao'])) {
-    echo "Nenhuma ação definida.";
-    exit;
+$acao = $_GET['acao'] ?? null;
+if (!$acao && $_SESSION['papel'] === 'aluno') {
+    $acao = 'listar_materiais_aluno_view';
 }
 
-$acao = $_GET['acao'];
+$acao = $_GET['acao'] ; //?? 'listar_materiais_aluno_view';
 
 switch ($acao) {
     case 'cadastrar':
@@ -166,6 +166,45 @@ switch ($acao) {
             exit;
         }
         echo json_encode($material->listarPorTurma($_GET['idturma']));
+        break;
+
+    case 'listar_materiais_aluno_view': 
+    case 'listar_aluno': // Adicionado para compatibilidade com a URL que você está usando
+        $idusuario = $_SESSION['idusuario'];
+        $idalunoLogado = null;
+
+        try {
+            $pdo = Conexao::conectar(); // Reutilize a conexão
+            $stmt = $pdo->prepare("SELECT idaluno FROM aluno WHERE idusuario = :idusuario");
+            $stmt->bindParam(':idusuario', $idusuario, PDO::PARAM_INT);
+            $stmt->execute();
+            $resultadoAluno = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($resultadoAluno) {
+                $idalunoLogado = $resultadoAluno['idaluno'];
+            } else {
+                error_log("ERRO: idusuario " . $idusuario . " não encontrado na tabela aluno.");
+                header('Location: /escola-de-idiomas/conexus_sistema/app/views/login.php'); 
+                exit;
+            }
+        } catch (PDOException $e) {
+            error_log("ERRO PDO ao buscar idaluno: " . $e->getMessage());
+            header('Location: /escola-de-idiomas/conexus_sistema/app/views/erro.php'); 
+            exit;
+        }
+
+        if ($idalunoLogado) {
+            $materiaisDoAluno = $material->listarMateriaisPorAluno($idalunoLogado);
+            if (isset($materiaisDoAluno['error'])) {
+                error_log("Erro ao carregar materiais para o aluno " . $idalunoLogado . ": " . $materiaisDoAluno['error']);
+                $materiaisDoAluno = []; 
+            }
+        } else {
+            $materiaisDoAluno = [];
+            error_log("ID do aluno não encontrado para o usuário logado.");
+        }
+        
+        
+        include __DIR__ . '/../views/student/material.php';
         break;
 
     default:

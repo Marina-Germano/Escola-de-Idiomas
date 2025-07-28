@@ -1,3 +1,19 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../models/material.php';
+
+$idaluno = $_SESSION['idusuario'] ?? null;
+
+$materialModel = new Material();
+
+if ($idaluno) {
+    $materiaisDoAluno = $materialModel->listarMateriaisPorAluno($idaluno);
+} else {
+    $materiaisDoAluno = [];
+}
+
+// a partir daqui vem o HTML da sua view
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -21,7 +37,7 @@
                 <?php foreach ($materiaisDoAluno as $material): ?>
                     <div class="box">
                         <div class="tutor">
-                            <img src="<?= htmlspecialchars($material['professor_foto'] ?? '/Escola-de-Idiomas-1/conexus_sistema/public/img/pic-1.jpg') ?>" alt="Foto do Professor">
+                            <img src="<?= htmlspecialchars($material['professor_foto'] ?? '/escola-de-idiomas/conexus_sistema/public/img/pic-1.jpg') ?>" alt="Foto do Professor">
                             <div class="info">
                                 <h3><?= htmlspecialchars($material['professor_nome'] ?? 'Professor Desconhecido') ?></h3>
                                 <h4>Professor(a)</h4>
@@ -29,15 +45,15 @@
                             </div>
                         </div>
                         <div class="thumb">
-                            <img src="<?= htmlspecialchars($material['turma_imagem'] ?? '/Escola-de-Idiomas-1/conexus_sistema/public/img/english.png') ?>" alt="Thumbnail do Material">
+                            <img src="<?= htmlspecialchars($material['turma_imagem'] ?? '/escola-de-idiomas/conexus_sistema/public/img/english-course-1024x576.jpg') ?>" alt="Thumbnail do Material">
                             <span><?= htmlspecialchars($material['quantidade'] ?? '0') ?> arquivos</span>
                         </div>
                         <h3 class="title"><?= htmlspecialchars($material['titulo'] ?? 'Material Desconhecido') ?></h3>
-                        <a href="/Escola-de-Idiomas-1/conexus_sistema/app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
+                        <a href="" class="inline-btn">Acessar módulo</a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p class="empty" style="text-align: center; padding: 2rem; color: #666;">Nenhum material encontrado para seus cursos. 📚</p>
+                <p class="empty" style="text-align: center; padding: 2rem; color: #666;">Nenhum material encontrado para seus cursos.</p>
             <?php endif; ?>
         </div>
     </section>

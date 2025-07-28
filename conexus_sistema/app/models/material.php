@@ -60,8 +60,7 @@ class Material {
     
     public function listarMateriaisPorAluno($idaluno) {
         try {
-            $sql = "
-                SELECT
+            $sql = "SELECT
                     m.idmaterial,
                     m.titulo,
                     m.descricao,
@@ -76,27 +75,16 @@ class Material {
                     i.descricao AS idioma,
                     n.descricao AS nivel,
                     tm.descricao AS tipo_material
-                FROM
-                    material m
-                JOIN
-                    turma t ON m.idturma = t.idturma
-                JOIN
-                    aluno_turma at ON t.idturma = at.idturma
-                JOIN
-                    usuario u ON m.idfuncionario = u.idusuario
-                JOIN
-                    idioma i ON m.ididioma = i.ididioma
-                JOIN
-                    nivel n ON m.idnivel = n.idnivel
-                JOIN
-                    tipo_material tm ON m.idtipo_material = tm.idtipo_material
-                WHERE
-                    at.idaluno = :idaluno
-                GROUP BY
-                    m.idmaterial, u.nome, u.foto, t.imagem, t.ididioma, i.descricao, n.descricao, tm.descricao
-                ORDER BY
-                    m.data_cadastro DESC;
-            ";
+                FROM material m
+                JOIN turma t ON m.idturma = t.idturma
+                JOIN aluno_turma at ON t.idturma = at.idturma
+                JOIN usuario u ON m.idfuncionario = u.idusuario
+                JOIN idioma i ON m.ididioma = i.ididioma
+                JOIN nivel n ON m.idnivel = n.idnivel
+                JOIN tipo_material tm ON m.idtipo_material = tm.idtipo_material
+                WHERE at.idaluno = :idaluno
+                GROUP BY m.idmaterial, u.nome, u.foto, t.imagem, t.ididioma, i.descricao, n.descricao, tm.descricao
+                ORDER BY m.data_cadastro DESC;";
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':idaluno', $idaluno, PDO::PARAM_INT);
@@ -113,8 +101,7 @@ class Material {
 
     public function getUltimosMateriaisPorAluno($idaluno, $limit = 6) {
         try {
-            $sql = "
-                SELECT
+            $sql = "SELECT
                     m.idmaterial,
                     m.titulo,
                     m.descricao,
@@ -129,31 +116,20 @@ class Material {
                     i.descricao AS nome_idioma,
                     n.descricao AS nome_nivel,
                     tm.descricao AS tipo_material
-                FROM
-                    material m
-                JOIN
-                    turma t ON m.idturma = t.idturma
-                JOIN
-                    aluno_turma at ON t.idturma = at.idturma
-                JOIN
-                    usuario u ON m.idfuncionario = u.idusuario
-                JOIN
-                    idioma i ON m.ididioma = i.ididioma
-                JOIN
-                    nivel n ON m.idnivel = n.idnivel
-                JOIN
-                    tipo_material tm ON m.idtipo_material = tm.idtipo_material
-                WHERE
-                    at.idaluno = :idaluno
-                GROUP BY
-                    m.idmaterial, u.nome, u.foto, t.imagem, t.ididioma, i.descricao, n.descricao, tm.descricao
-                ORDER BY
-                    m.data_cadastro DESC
-                LIMIT :limit;
-            ";
+                FROM material m
+                JOIN turma t ON m.idturma = t.idturma
+                JOIN aluno_turma at ON t.idturma = at.idturma
+                JOIN usuario u ON m.idfuncionario = u.idusuario
+                JOIN idioma i ON m.ididioma = i.ididioma
+                JOIN nivel n ON m.idnivel = n.idnivel
+                JOIN tipo_material tm ON m.idtipo_material = tm.idtipo_material
+                WHERE at.idaluno = :idaluno
+                GROUP BY m.idmaterial, u.nome, u.foto, t.imagem, t.ididioma, i.descricao, n.descricao, tm.descricao
+                ORDER BY m.data_cadastro DESC
+                LIMIT " . intval($limit);
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':idaluno', $idaluno, PDO::PARAM_INT);
-            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            //$stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             error_log("DEBUG Material::getUltimosMateriaisPorAluno - " . count($results) . " últimos materiais encontrados para idaluno " . $idaluno);

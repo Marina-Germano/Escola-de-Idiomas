@@ -63,6 +63,17 @@ public function buscarPorId($idturma) {
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+public function getIdiomasByAluno($idusuario) {
+    $sql = "SELECT DISTINCT i.descricao AS nome_idioma
+            FROM aluno_turma at
+            JOIN aluno a ON a.idaluno = at.idaluno
+            JOIN turma t ON t.idturma = at.idturma
+            JOIN idioma i ON i.ididioma = t.ididioma
+            WHERE a.idusuario = ?";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([$idusuario]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 }
 ?>

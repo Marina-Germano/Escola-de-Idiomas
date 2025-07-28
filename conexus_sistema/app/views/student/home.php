@@ -4,14 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home - Conexus</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
-    <link rel="stylesheet" href="../../../public/css/style.css">
-
+    <link rel="stylesheet" href="/escola-de-idiomas/conexus_sistema/public/css/style.css">
 </head>
 <body>
-<?php include __DIR__ . '/../components/student_header.php'; // Caminho absoluto para o include ?>
+<?php include __DIR__ . '../../components/student_header.php'; ?>
 
 
 <section class="home-grid">
@@ -19,10 +17,10 @@
 </section>
 
 <!-- Próxima Aula -->
-<section class="courses">
+<section class="next-class">
     <h2 class="heading">Próxima Aula</h2>
     <div class="box-container">
-        <?php if (isset($proximaAula) && $proximaAula): ?>
+        <?php if (isset($proximaAula) && $proximaAula): // verificação  evento  ?>
             <div class="box">
                 <p><strong>Curso:</strong> <?= htmlspecialchars($proximaAula['nome_idioma'] . ' - ' . $proximaAula['nome_turma']) ?></p>
                 <p><strong>Data:</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($proximaAula['data_aula']))) ?></p>
@@ -48,17 +46,18 @@
             <?php foreach ($ultimosMateriais as $material): ?>
                 <div class="box">
                     <div class="tutor">
-                        <img src="<?= htmlspecialchars($material['professor_foto'] ?? '../../public/img/pic-6.jpg') ?>" alt="Foto do Professor">
+                        <img src="<?= htmlspecialchars($material['professor_foto'] ?? '/escola-de-idiomas/conexus_sistema/public/img/pic-6.jpg') ?>" alt="Foto do Professor">
                         <div class="info">
                             <h3><?= htmlspecialchars($material['professor_nome'] ?? 'Professor Desconhecido') ?></h3>
+                            <h4>Professor(a)</h4>
                             <span><?= htmlspecialchars($material['data_cadastro'] ?? '') ?></span>
                         </div>
                     </div>
                     <div class="thumb">
                         <?php
-                        $materialImagemSrc = '../../public/img/default-material.jpg';
+                        $materialImagemSrc = '/escola-de-idiomas/conexus_sistema/public/img/default-material.jpg';
                         if (isset($material['turma_ididioma']) && $material['turma_ididioma'] == 1) {
-                            $materialImagemSrc = '../../public/img/english-course-1024x576.jpg';
+                            $materialImagemSrc = '/escola-de-idiomas/conexus_sistema/public/img/english-course-1024x576.jpg';
                         } elseif (!empty($material['turma_imagem'])) {
                             $materialImagemSrc = htmlspecialchars($material['turma_imagem']);
                         }
@@ -67,7 +66,7 @@
                         <span><?= htmlspecialchars($material['quantidade'] ?? '0') ?> arquivos</span>
                     </div>
                     <h3 class="title"><?= htmlspecialchars($material['titulo'] ?? 'Material Desconhecido') ?></h3>
-                    <a href="../../app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
+                    <a href="/escola-de-idiomas/conexus_sistema/app/views/student/playlist.php?get_id=<?= htmlspecialchars($material['idmaterial'] ?? '') ?>" class="inline-btn">veja o módulo</a>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
@@ -77,7 +76,7 @@
 </section>
 
 <?php if (isset($erroHome)): ?>
-    <div class="message form" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 1rem; margin: 1rem auto; border-radius: 0.5rem; text-align: center;">
+    <div class="message form">
         <span><?= htmlspecialchars($erroHome) ?></span>
     </div>
 <?php endif; ?>
