@@ -71,13 +71,20 @@ class CalendarioAula {
                         ca.data_aula, ca.hora_inicio, ca.hora_fim, ca.observacoes, ca.sala, 
                         t.descricao AS nome_turma, i.descricao AS nome_idioma, 
                         u.nome AS professor_nome, ca.link_reuniao
-                    FROM calendario_aula ca
-                    JOIN turma t ON ca.idturma = t.idturma
-                    JOIN aluno_turma at ON t.idturma = at.idturma
-                    JOIN idioma i ON t.ididioma = i.ididioma
-                    JOIN funcionario f ON ca.idfuncionario = f.idfuncionario
-                    JOIN usuario u ON f.idusuario = u.idusuario
-                    WHERE at.idaluno = :idaluno 
+                    FROM
+                        calendario_aula ca
+                    JOIN
+                        turma t ON ca.idturma = t.idturma
+                    JOIN
+                        aluno_turma at ON t.idturma = at.idturma
+                    JOIN
+                        idioma i ON t.ididioma = i.ididioma
+                    JOIN
+                        funcionario f ON ca.idfuncionario = f.idfuncionario
+                    JOIN
+                        usuario u ON f.idusuario = u.idusuario
+                    WHERE
+                        at.idaluno = :idaluno 
                         AND CONCAT(ca.data_aula, ' ', ca.hora_fim) > :current_datetime -- compara com a data e hora atual
                     ORDER BY ca.data_aula ASC, ca.hora_inicio ASC 
                     LIMIT 1;";

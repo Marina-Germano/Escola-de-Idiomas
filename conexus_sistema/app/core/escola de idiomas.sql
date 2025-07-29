@@ -329,19 +329,19 @@ INSERT INTO material (idtipo_material, ididioma, idnivel, idturma, titulo, descr
 (1, 1, 1, 1, 'Pronomes Essenciais: Guia para Iniciantes', 'Este livro é o ponto de partida ideal para entender os pronomes em inglês. Explora de forma clara e didática os pronomes pessoais, possessivos e demonstrativos, com muitos exemplos e exercícios simples para fixação. Essencial para construir frases básicas corretamente.', 1, 'pdf', '/materiais/pronomes_essenciais_basico.pdf'),
 
 -- 2. Dominando os Pronomes: Casos e Usos Avançados (Apostila)
-(2, 1, 2, 1, 'Dominando os Pronomes: Casos e Usos Avançados', 'Apostila completa para aprofundar o conhecimento sobre pronomes. Aborda pronomes reflexivos, recíprocos, relativos e indefinidos, com foco em seus usos e posições nas frases. Inclui exercícios desafiadores e dicas para evitar erros comuns.', 1, 'pdf', '/materiais/dominando_pronomes_intermediario.pdf', 2),
+(2, 1, 2, 1, 'Dominando os Pronomes: Casos e Usos Avançados', 'Apostila completa para aprofundar o conhecimento sobre pronomes. Aborda pronomes reflexivos, recíprocos, relativos e indefinidos, com foco em seus usos e posições nas frases. Inclui exercícios desafiadores e dicas para evitar erros comuns.', 1, 'pdf', '/materiais/dominando_pronomes_intermediario.pdf'),
 
 -- 3. Pronomes em Contexto: Conversação e Escrita (PDF)
-(3, 1, 3, 1, 'Pronomes em Contexto: Conversação e Escrita', 'Material em PDF focado na aplicação prática dos pronomes em inglês, tanto na conversação quanto na escrita formal e informal. Contém exemplos de diálogos, trechos de textos e atividades para aprimorar a fluidez e a precisão no uso dos pronomes em diferentes situações.', 1, 'pdf', '/materiais/pronomes_contexto_avancado.pdf', 2),
+(3, 1, 3, 1, 'Pronomes em Contexto: Conversação e Escrita', 'Material em PDF focado na aplicação prática dos pronomes em inglês, tanto na conversação quanto na escrita formal e informal. Contém exemplos de diálogos, trechos de textos e atividades para aprimorar a fluidez e a precisão no uso dos pronomes em diferentes situações.', 1, 'pdf', '/materiais/pronomes_contexto_avancado.pdf'),
 
 -- 4. Quiz de Pronomes: Teste seus Conhecimentos (PDF)
-(3, 1, 1, 1, 'Quiz de Pronomes: Teste seus Conhecimentos', 'Um PDF interativo com uma série de quizzes e jogos rápidos para testar o entendimento dos pronomes básicos. Ideal para revisão e autoavaliação, tornando o aprendizado divertido e eficaz.', 1, 'pdf', '/materiais/quiz_pronomes_basico.pdf', 2),
+(3, 1, 1, 1, 'Quiz de Pronomes: Teste seus Conhecimentos', 'Um PDF interativo com uma série de quizzes e jogos rápidos para testar o entendimento dos pronomes básicos. Ideal para revisão e autoavaliação, tornando o aprendizado divertido e eficaz.', 1, 'pdf', '/materiais/quiz_pronomes_basico.pdf'),
 
 -- 5. Pronomes Indefinidos: Guia Completo (Apostila)
-(2, 1, 2, 1, 'Pronomes Indefinidos: Guia Completo', 'Apostila dedicada exclusivamente aos pronomes indefinidos (e.g., *some*, *any*, *no*, *every* e seus compostos). Explica as regras de uso, concordância e as exceções, com exercícios práticos para dominar este tópico frequentemente confuso.', 1, 'pdf', '/materiais/pronomes_indefinidos_intermediario.pdf', 2),
+(2, 1, 2, 1, 'Pronomes Indefinidos: Guia Completo', 'Apostila dedicada exclusivamente aos pronomes indefinidos (e.g., *some*, *any*, *no*, *every* e seus compostos). Explica as regras de uso, concordância e as exceções, com exercícios práticos para dominar este tópico frequentemente confuso.', 1, 'pdf', '/materiais/pronomes_indefinidos_intermediario.pdf'),
 
 -- 6. Pronomes Relativos: Conectando Ideias (Livro)
-(1, 1, 3, 1, 'Pronomes Relativos: Conectando Idéias', 'Este livro detalha o uso dos pronomes relativos (*who*, *whom*, *whose*, *which*, *that*) para construir frases complexas e coesas. Aborda cláusulas relativas restritivas e não restritivas, com exemplos de textos acadêmicos e jornalísticos para prática avançada.', 1, 'pdf', '/materiais/pronomes_relativos_avancado.pdf', 2);
+(1, 1, 3, 1, 'Pronomes Relativos: Conectando Idéias', 'Este livro detalha o uso dos pronomes relativos (*who*, *whom*, *whose*, *which*, *that*) para construir frases complexas e coesas. Aborda cláusulas relativas restritivas e não restritivas, com exemplos de textos acadêmicos e jornalísticos para prática avançada.', 1, 'pdf', '/materiais/pronomes_relativos_avancado.pdf');
 
 
 -- Eventos para Julho de 2025 (adicionando mais alguns além do que já existe)

@@ -1,6 +1,7 @@
 <?php
 require_once "../../models/turma.php";
 require_once "../../models/aluno_turma.php";
+require_once "../../models/presenca.php";
 
 $acao = $_GET['acao'] ?? '';
 $idturma = $_GET['id'] ?? '';
@@ -63,6 +64,10 @@ if ($acao === 'listar' && $idturma) {
 
                                 <a href="presence.php?acao=listarAlunos&idturma=<?=$item['idturma'] ?>" class="btn btn-secondary">
                                     <i class="fas fa-edit"></i>Marcar Presença</a>
+
+                                <a href="test_score.php?acao=listarAlunos&idturma=<?=$item['idturma'] ?>" class="btn btn-secondary">
+                                    <i class="fa-solid fa-award"></i>Publicar Notas</a>
+                                    
 
                             </td>
                         </tr>
