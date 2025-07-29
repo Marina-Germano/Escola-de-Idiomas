@@ -44,6 +44,7 @@ if (isset($_GET['idaluno'])) {
     <title>Conexus - Cadastrar Pagamento</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="../../../public/css/admin_style.css">
+
     </head>
 <body>
 
@@ -92,10 +93,13 @@ if (isset($_GET['idaluno'])) {
                 <div id="campoCartaoCredito" class="campo-pagamento">
                     <p><strong>Nome no Cartão (Crédito)</strong></p>
                     <input type="text" name="nome_cartao_credito" maxlength="255" placeholder="Nome impresso no cartão" class="box">
+
                     <p><strong>Bandeira do Cartão (Crédito)</strong></p> 
                     <input type="text" name="bandeira_cartao_credito" maxlength="20" placeholder="Ex: Visa, Mastercard" class="box">
+
                     <p><strong>Últimos Dígitos do Cartão (Crédito)</strong></p> 
                     <input type="text" name="ultimos_digitos_cartao_credito" maxlength="4" placeholder="Apenas os 4 últimos dígitos" class="box">
+
                     <p><strong>Parcelas (Crédito)</strong></p>
                     <input type="number" name="parcelas_credito" min="1" max="12" value="1" class="box">
                 </div>
@@ -103,8 +107,10 @@ if (isset($_GET['idaluno'])) {
                 <div id="campoCartaoDebito" class="campo-pagamento">
                     <p><strong>Nome no Cartão (Débito)</strong></p>
                     <input type="text" name="nome_cartao_debito" maxlength="255" placeholder="Nome impresso no cartão" class="box">
+
                     <p><strong>Bandeira do Cartão (Débito)</strong></p> 
                     <input type="text" name="bandeira_cartao_debito" maxlength="20" placeholder="Ex: Visa, Mastercard" class="box">
+
                     <p><strong>Últimos Dígitos do Cartão (Débito)</strong></p> 
                     <input type="text" name="ultimos_digitos_cartao_debito" maxlength="4" placeholder="Apenas os 4 últimos dígitos" class="box">
                 </div>
@@ -112,6 +118,7 @@ if (isset($_GET['idaluno'])) {
                 <div id="campoPix" class="campo-pagamento">
                     <p><strong>Chave Pix Utilizada</strong></p>
                     <input type="text" name="chave_pix" maxlength="255" placeholder="CPF, CNPJ, Telefone, E-mail ou Chave Aleatória" class="box">
+
                     <p><strong>ID da Transação Pix (opcional)</strong></p>
                     <input type="text" name="id_transacao_pix" maxlength="255" placeholder="ID único da transação Pix" class="box">
                 </div>
@@ -130,7 +137,11 @@ if (isset($_GET['idaluno'])) {
 <script>
     // mostrar campos  pagamento
     function mostrarCamposPagamento() {
-        const formaPagamento = document.getElementById('formaPagamento').value;
+        const select = document.getElementById('formaPagamento');
+        const selectedOption = select.options[select.selectedIndex];
+        const tipo = selectedOption.getAttribute('data-tipo');
+
+        //const formaPagamento = document.getElementById('formaPagamento').value;
         const campos = document.querySelectorAll('.campo-pagamento');
 
 
@@ -139,15 +150,15 @@ if (isset($_GET['idaluno'])) {
         });
 
 
-        if (formaPagamento === 'dinheiro') {
+        if (tipo === 'dinheiro') {
             document.getElementById('campoDinheiro').style.display = 'block';
-        } else if (formaPagamento === 'boleto') {
+        } else if (tipo === 'boleto') {
             document.getElementById('campoBoleto').style.display = 'block';
-        } else if (formaPagamento === 'cartao_credito') {
+        } else if (tipo === 'cartao_credito') {
             document.getElementById('campoCartaoCredito').style.display = 'block';
-        } else if (formaPagamento === 'cartao_debito') {
+        } else if (tipo === 'cartao_debito') {
             document.getElementById('campoCartaoDebito').style.display = 'block';
-        } else if (formaPagamento === 'pix') {
+        } else if (tipo === 'pix') {
             document.getElementById('campoPix').style.display = 'block';
         }
     }

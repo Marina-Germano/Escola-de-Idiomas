@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../models/emprestimo_material.php';
 
@@ -107,12 +110,12 @@ $emprestimos = $emprestimoMaterial->listarTodos();
             <form action="?acao=cadastrar" method="POST" class="form-box">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="idaluno"><strong>ID do Aluno <span>*</span></strong></label>
+                        <label for="idaluno"><strong>Aluno <span>*</span></strong></label>
                         <input type="number" id="idaluno" name="idaluno" required class="box" placeholder="Digite o ID do aluno">
                     </div>
 
                     <div class="form-group">
-                        <label for="idmaterial"><strong>ID do Material <span>*</span></strong></label>
+                        <label for="idmaterial"><strong>Material <span>*</span></strong></label>
                         <input type="number" id="idmaterial" name="idmaterial" required class="box" placeholder="Digite o ID do material">
                     </div>
 
@@ -152,14 +155,14 @@ $emprestimos = $emprestimoMaterial->listarTodos();
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="idaluno">ID do Aluno <span>*</span></label>
+                        <label for="idaluno">Aluno <span>*</span></label>
                         <input type="number" id="idaluno" name="idaluno" required class="box"
                             value="<?= htmlspecialchars($emprestimo_para_edicao['idaluno']) ?>"
                             placeholder="Digite o ID do aluno">
                     </div>
 
                     <div class="form-group">
-                        <label for="idmaterial">ID do Material <span>*</span></label>
+                        <label for="idmaterial">Material <span>*</span></label>
                         <input type="number" id="idmaterial" name="idmaterial" required class="box"
                             value="<?= htmlspecialchars($emprestimo_para_edicao['idmaterial']) ?>"
                             placeholder="Digite o ID do material">
@@ -215,8 +218,8 @@ $emprestimos = $emprestimoMaterial->listarTodos();
                     <thead class="table-header">
                         <tr>
                             <th>ID Empréstimo</th>
-                            <th>ID Aluno</th>
-                            <th>ID Material</th>
+                            <th>Aluno</th>
+                            <th>Material</th>
                             <th>Data Empréstimo</th>
                             <th>Devolução Prevista</th>
                             <th>Data Devolvido</th>
@@ -230,8 +233,8 @@ $emprestimos = $emprestimoMaterial->listarTodos();
                             <?php foreach ($emprestimos as $emprestimo): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($emprestimo['idemprestimo']); ?></td>
-                                    <td><?php echo htmlspecialchars($emprestimo['idaluno']); ?></td>
-                                    <td><?php echo htmlspecialchars($emprestimo['idmaterial']); ?></td>
+                                    <td><?php echo htmlspecialchars($emprestimo['nome_aluno']); ?></td>
+                                    <td><?php echo htmlspecialchars($emprestimo['titulo_material']); ?></td>
                                     <td><?php echo htmlspecialchars($emprestimo['data_emprestimo']); ?></td>
                                     <td><?php echo htmlspecialchars($emprestimo['data_prevista_devolucao']); ?></td>
                                     <td><?php echo ($emprestimo['data_devolvido'] ? htmlspecialchars($emprestimo['data_devolvido']) : 'Pendente'); ?></td>

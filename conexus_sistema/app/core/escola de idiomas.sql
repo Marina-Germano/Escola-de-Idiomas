@@ -286,7 +286,7 @@ INSERT INTO idioma (descricao) VALUES
 
 INSERT INTO turma (ididioma, idnivel, idfuncionario, descricao, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, tipo_recorrencia) 
 VALUES
-(1, 1, 2,'Turma de Inglês Básico - Tarde', 'Segunda e Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 'semanal');
+(1, 1, 2,'Turma de Inglês Básico - Tarde', 'Segunda, Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 'semanal');
 
 INSERT INTO tipo_material (descricao) VALUES
 ('Livro'),
@@ -399,3 +399,10 @@ VALUES
 -- Inserir uma nova avaliação com nota baixa para a Ana Souza
 INSERT INTO avaliacao (idaluno_turma, idfuncionario, descricao, titulo, data_avaliacao, nota, peso, observacao) VALUES
 (1, 4, 'Atividade de Vocabulário - Unidade 2', 'Quiz Vocabulário', '2025-07-25', 4.0, 1.0, 'Precisa revisar o vocabulário da Unidade 2.');
+
+INSERT INTO aluno (idusuario, cep, rua, numero, bairro, complemento, responsavel, tel_responsavel)
+VALUES 
+(2, '04567890', 'Av. Paulista', '1578', 'Bela Vista', 'Apto 402', 'João Oliveira', '11997776666'),
+(3, '08000000', 'Rua do Sol', '25', 'Centro', '', 'Ana Lima', '11991234567'),
+(4, '13045678', 'Rua das Acácias', '456', 'Vila Verde', 'Fundos', 'Carlos Mendes', '11990001122');
+

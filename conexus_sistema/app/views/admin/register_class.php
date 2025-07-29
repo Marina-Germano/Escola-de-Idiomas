@@ -33,7 +33,7 @@ $idiomas = $idiomaModel->listarTodos();
 $nivelModel = new Nivel();
 $niveis = $nivelModel->listarTodos();
 
-$stmt = $conn->prepare("SELECT tipo_recorrencia FROM turma");
+$stmt = $conn->prepare("SELECT DISTINCT tipo_recorrencia FROM turma");
 $stmt->execute();
 $tiposRecorrencia = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -142,6 +142,7 @@ method="post" enctype="multipart/form-data">
 
     </div>
   </div>
+  
   <input type="submit" name="submit" value="Cadastrar Turma" class="btn">
 </form>
 </section>

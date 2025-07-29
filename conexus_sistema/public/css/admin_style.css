@@ -1226,4 +1226,7 @@ body.dark .table th {
    }
 
 }
+.campo-pagamento {
+        display: none;
+    }
 

@@ -23,10 +23,30 @@
             return $result->execute([$id]);
         }
 
-        public function listarTodos() {
+        public function listarTodo() {
             $result = $this->pdo->query("SELECT * FROM emprestimo_material");
             return $result->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function listarTodos() {
+            $sql = "SELECT 
+                        em.idemprestimo,
+                u.nome AS nome_aluno,
+                m.titulo AS titulo_material,
+                em.data_emprestimo,
+                em.data_prevista_devolucao,
+                em.data_devolvido,
+                em.valor_multa,
+                em.status
+            FROM emprestimo_material em
+            INNER JOIN aluno a ON em.idaluno = a.idaluno
+            LEFT JOIN usuario u ON a.idusuario = u.idusuario
+            INNER JOIN material m ON em.idmaterial = m.idmaterial";
+
+            $stmt = $this->pdo->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
 
         public function listarId($id) {
             $result = $this->pdo->prepare("SELECT * FROM emprestimo_material WHERE idemprestimo = ?");
