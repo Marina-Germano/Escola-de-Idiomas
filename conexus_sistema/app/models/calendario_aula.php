@@ -84,15 +84,12 @@ class CalendarioAula {
                     JOIN
                         usuario u ON f.idusuario = u.idusuario
                     WHERE
-                        at.idaluno = :idaluno 
-                        AND CONCAT(ca.data_aula, ' ', ca.hora_fim) > :current_datetime -- compara com a data e hora atual
+                        at.idaluno = ?
+                        AND CONCAT(ca.data_aula, ' ', ca.hora_fim) > now()-- compara com a data e hora atual
                     ORDER BY ca.data_aula ASC, ca.hora_inicio ASC 
-                    LIMIT 1;";
+                    LIMIT 1";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([
-                ':idaluno' => $idaluno,
-                ':current_datetime' => $currentDateTime
-            ]);
+            $stmt->execute([$idaluno]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {

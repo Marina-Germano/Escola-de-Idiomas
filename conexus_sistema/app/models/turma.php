@@ -21,8 +21,6 @@ public function cadastrar($ididioma, $idnivel, $descricao, $dias_semana, $hora_i
     return $stmt->execute([$ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia]);
 }
 
-
-
     public function alterar($idturma, $ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia = null) {
     $result = $this->pdo->prepare("UPDATE turma SET ididioma = ?, idnivel = ?, descricao = ?, dias_semana = ?, hora_inicio = ?, capacidade_maxima = ?, sala = ?, imagem = ?, idfuncionario = ?, tipo_recorrencia = ? WHERE idturma = ?");
     return $result->execute([$ididioma, $idnivel, $descricao, $dias_semana, $hora_inicio, $capacidade_maxima, $sala, $imagem, $idfuncionario, $tipo_recorrencia, $idturma]);

@@ -49,9 +49,10 @@ try {
         error_log("ERRO: homeController.php - " . $erroHome);
     }
 
+
     // buscar pxm aula
     if ($idaluno) {
-        $proximaAula = $calendarioAulaModel->getProximaAulaPorAluno($idaluno);
+        $proximaAula = $calendarioAulaModel->getProximaAulaPorAluno($idaluno[0]["idaluno"]);
     }
     error_log(print_r($proximaAula, true));
 

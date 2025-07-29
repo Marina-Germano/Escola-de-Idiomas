@@ -44,13 +44,15 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
 
 <section class="form-container">
 
-    <form action="../../controllers/materialController.php?acao=cadastrar"
+    <form action="../../controllers/materialController.php?acao=<?= $modoEdicao ? 'alterar' : 'cadastrar' ?>"
     method="POST" enctype="multipart/form-data">
         <!-- <h2 style="margin-bottom: 20px;">Cadastro Completo de Material</h2> -->
 
         <div class="flex">
             <div class="col">
-
+<?php if ($modoEdicao): ?>
+            <input type="hidden" name="idmaterial" value="<?= $item['idmaterial'] ?>">
+        <?php endif; ?>
                 <p><strong>Título <span>*</span></strong></p>
                 <input type="text" name="titulo" maxlength="255" required placeholder="Título do material" class="box"
                 value="<?= $modoEdicao ? htmlspecialchars($item['titulo']) : '' ?>">

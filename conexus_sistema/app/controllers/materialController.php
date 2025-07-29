@@ -79,10 +79,10 @@ switch ($acao) {
             'idnivel'           => $_POST['idnivel'],
             'idturma'           => $_POST['idturma'],
             'titulo'            => $_POST['titulo'],
-            'descricao'         => $_POST['descricao'],
+            'descricao'         => $_POST['descricao'] ?? "",
             'quantidade'        => $_POST['quantidade'],
-            'formato_arquivo'   => $_POST['formato_arquivo'],
-            'arquivo'           => $_POST['arquivo'],
+            'formato_arquivo'   => $_POST['formato_arquivo'] ?? "",
+            'arquivo'           => $_POST['arquivo'] ?? ""
         ]);
         redirecionarUsuario();
         break;

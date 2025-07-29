@@ -56,5 +56,10 @@ class Avaliacao {
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function registrar($idavaliacao, $nota, $peso = 1.0) {
+        $result = $this->pdo->prepare("UPDATE avaliacao SET nota = ?, peso = ? WHERE idavaliacao = ?");
+        return $result->execute([$nota, $peso, $idavaliacao]);
+    }
 }
 ?>

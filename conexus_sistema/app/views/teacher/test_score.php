@@ -42,7 +42,7 @@ $alunos = $alunoTurmaModel->listarTodos($idturma); // lista alunos da turma
     </div>
 
     <section class="box-container-list">
-        <form method="POST" action="../../controllers/presencaController.php?acao=registrar" class="form-box">
+        <form method="POST" action="../../controllers/avaliacaoController.php?acao=registrar" class="form-box">
             <input type="hidden" name="idturma" value="<?= htmlspecialchars($idturma) ?>" />
 
             <div class="form-grid full-span">

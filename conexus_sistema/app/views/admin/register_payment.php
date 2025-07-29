@@ -67,9 +67,9 @@ if (isset($_GET['idaluno'])) {
                 <select name="forma_pagamento" class="box" id="formaPagamento" onchange="mostrarCamposPagamento()">
                     <option value="">Selecione a forma de pagamento</option>
                 <?php foreach ($formasPagamento as $forma): ?>
-                    <option value="<?= $forma['forma_pagamento'] ?>" 
+                    <option value="<?= htmlspecialchars($forma['forma_pagamento']) ?>" 
                         <?= $modoEdicao && $item['forma_pagamento'] == $forma['forma_pagamento'] ? 'selected' : '' ?>>
-                        <?= $forma['forma_pagamento'] ?>
+                        <?= htmlspecialchars($forma['forma_pagamento']) ?>
                     </option>
                 <?php endforeach; ?>
                 </select>
@@ -139,7 +139,7 @@ if (isset($_GET['idaluno'])) {
     function mostrarCamposPagamento() {
         const select = document.getElementById('formaPagamento');
         const selectedOption = select.options[select.selectedIndex];
-        const tipo = selectedOption.getAttribute('data-tipo');
+        const tipo = selectedOption.getAttribute('value');
 
         //const formaPagamento = document.getElementById('formaPagamento').value;
         const campos = document.querySelectorAll('.campo-pagamento');
@@ -150,15 +150,15 @@ if (isset($_GET['idaluno'])) {
         });
 
 
-        if (tipo === 'dinheiro') {
+        if (tipo === 'Dinheiro') {
             document.getElementById('campoDinheiro').style.display = 'block';
-        } else if (tipo === 'boleto') {
+        } else if (tipo === 'Boleto') {
             document.getElementById('campoBoleto').style.display = 'block';
-        } else if (tipo === 'cartao_credito') {
+        } else if (tipo === 'Cartao de Credito') {
             document.getElementById('campoCartaoCredito').style.display = 'block';
-        } else if (tipo === 'cartao_debito') {
+        } else if (tipo === 'Cartão de Debito') {
             document.getElementById('campoCartaoDebito').style.display = 'block';
-        } else if (tipo === 'pix') {
+        } else if (tipo === 'Pix') {
             document.getElementById('campoPix').style.display = 'block';
         }
     }

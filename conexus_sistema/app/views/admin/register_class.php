@@ -55,7 +55,9 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
 method="post" enctype="multipart/form-data">
   <div class="flex">
     <div class="col">
-
+<?php if ($modoEdicao): ?>
+            <input type="hidden" name="idturma" value="<?= $item['idturma'] ?>">
+        <?php endif; ?>
       <p>Idioma <span>*</span></p>
       <select name="ididioma" class="box" required>
           <option value="" disabled selected>-- selecione o idioma --</option>

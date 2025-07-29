@@ -15,12 +15,11 @@
 <section class="home-grid">
     <h1 class="heading">Bem Vindo, <?= htmlspecialchars($nomeAluno ?? 'Aluno') ?>!</h1>
 </section>
-
 <!-- Próxima Aula -->
 <section class="next-class">
     <h2 class="heading">Próxima Aula</h2>
     <div class="box-container">
-        <?php if (isset($proximaAula) && $proximaAula): // verificação  evento  ?>
+        <?php if (isset($proximaAula)): // verificação  evento  ?>
             <div class="box">
                 <p><strong>Curso:</strong> <?= htmlspecialchars($proximaAula['nome_idioma'] . ' - ' . $proximaAula['nome_turma']) ?></p>
                 <p><strong>Data:</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($proximaAula['data_aula']))) ?></p>

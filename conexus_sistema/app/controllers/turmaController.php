@@ -80,18 +80,21 @@ switch ($acao) {
             $caminhoImagem = "../uploads/" . $imagem;
             move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoImagem);
         }
+        $diasSemana = is_array($_POST['dias_semana'])
+    ? implode(', ', $_POST['dias_semana'])
+    : $_POST['dias_semana'];
 
         $turma->alterar(
             $_POST['idturma'],
             $_POST['ididioma'],
             $_POST['idnivel'],
             $_POST['descricao'],
-            $_POST['dias_semana'],
+            $diasSemana,
             $_POST['hora_inicio'],
             $_POST['capacidade_maxima'],
             $_POST['sala'],
             $caminhoImagem,
-            $_POST['idprofessor'],
+            $_POST['idfuncionario'],
             $_POST['tipo_recorrencia'] ?? null
         );
 

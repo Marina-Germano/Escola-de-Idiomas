@@ -3,7 +3,7 @@
 session_start();
 
 // Verifica se o usuário está logado e se possui o papel de 'aluno' ou 'admin'.
-if (!isset($_SESSION['idusuario']) || ($_SESSION['papel'] !== 'aluno' && $_SESSION['papel'] !== 'admin')) {
+if (!isset($_SESSION['idusuario'])) {
     error_log("DEBUG: Redirecionando para login. Usuário não logado ou papel incorreto.");
     header('Location: /escola-de-idiomas/conexus_sistema/app/views/login.php');
     exit();
@@ -200,6 +200,20 @@ switch ($acao) {
         }
         header('Content-Type: application/json');
         echo json_encode($avaliacaoModel->listarId($_GET['idavaliacao']));
+        break;
+    
+    case 'registrar':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idavaliacao = $_POST['idavaliacao'];
+            $peso = $_POST['peso'];
+            $nota = $_POST['nota'] ?? []; // array com idaluno_turma dos faltantes
+
+            $avaliacaoModel->listarTodos($idavaliacao, $peso, $nota);
+
+            header('Location: ../views/teacher/list_class.php?mensagem=Presenças registradas');
+            exit;
+           
+        }
         break;
 
     default:

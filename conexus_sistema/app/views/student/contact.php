@@ -74,6 +74,6 @@ include __DIR__ . '/../components/student_header.php'; //cabeçalho
     </div>
 
 </section>
-<script src="/escola-de-Idiomas/conexus_sistema/public/js/script.js"></script> 
+<script src="/escola-de-idiomas/conexus_sistema/public/js/script.js"></script> 
 </body>
 </html>
