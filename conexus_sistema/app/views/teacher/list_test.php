@@ -1,17 +1,16 @@
 <?php
-require_once "../../models/material.php";
-$materialModel = new Material();
-$itens = $materialModel->listar(); // ou outro nome apropriado para seu método
+require_once "../../models/avaliacao.php";
+$avaliacaoModel = new Avaliacao();
+$itens = $avaliacaoModel->listarTodos(); // ou outro nome apropriado para seu método
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materiais</title>
+    <title>Avaliação</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="../../../public/css/teacher_style.css">
 </head>
@@ -21,8 +20,8 @@ $itens = $materialModel->listar(); // ou outro nome apropriado para seu método
 
 <div class="box-container-list">
     <div class="flex-between heading-bar">
-        <h1 class="heading">Materiais</h1>
-        <a href="register_material.php" class="inline-btn"><i class="fas fa-plus"></i>Adicionar Material</a>
+        <h1 class="heading">Avaliação</h1>
+        <a href="test_score.php" class="inline-btn"><i class="fas fa-plus"></i>Adicionar avaliacao</a>
     </div>
 
     <?php if (!empty($itens)): ?>
@@ -30,29 +29,24 @@ $itens = $materialModel->listar(); // ou outro nome apropriado para seu método
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-header">
                     <tr>
-                        <th>Título</th>
-                        <th>Quantidade</th>
-                        <th>Data do Cadastro</th>
+                        <th>Avaliação</th>
                         <th class="text-end">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($itens as $item): ?>
                         <tr>
-                            <td><?= htmlspecialchars($item['titulo']) ?></td>
-                            <td><?= htmlspecialchars($item['quantidade']) ?></td>
-                            <td><?= htmlspecialchars($item['data_cadastro']) ?></td>
+                            <td><?= htmlspecialchars($item['descricao']) ?></td>
                             <td class="text-end">
-                                <a href="register_material.php?acao=editar&id=<?= $item['idmaterial'] ?>" class="inline-option-btn">
+                                <a href="register_test.php?acao=editar&id=<?= $item['idavaliacao'] ?>&turma=<?= $item['idturma'] ?>" class="inline-option-btn">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
-                                <a href="../../controllers/materialController.php?acao=excluir&id=<?= $item['idmaterial'] ?>" class="inline-delete-btn"
-                                onclick="return confirm('Tem certeza que deseja excluir este material?');">
+                                <a href="../../controllers/avaliacaoController.php?acao=excluir&idavaliacao=<?= $item['idavaliacao'] ?>" class="inline-delete-btn"
+                                onclick="return confirm('Tem certeza que deseja excluir este avaliacao?');">
                                     <i class="fas fa-trash-alt"></i> Excluir
                                 </a>
-                                <a href="link_material.php?idmaterial=<?= $item['idmaterial'] ?>" class="inline-option-btn">
-                                    <i class="fa-solid fa-link"></i> Vincular
-                                </a>
+                                <a href="../../controllers/avaliacaoController.php?acao=listarAlunos&idturma=<?=$item['idturma'] ?>" class="btn btn-secondary">
+                                    <i class="fas fa-edit"></i>Notas</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

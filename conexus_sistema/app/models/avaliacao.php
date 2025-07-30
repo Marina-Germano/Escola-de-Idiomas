@@ -8,14 +8,14 @@ class Avaliacao {
         $this->pdo = Conexao::conectar();
     }
 
-    public function cadastrar($idaluno_turma, $idfuncionario, $descricao, $titulo, $data_avaliacao, $nota, $peso = 1.0, $observacao = null) {
+    public function cadastrar($idaluno_turma, $idfuncionario, $idturma, $descricao, $titulo, $data_avaliacao, $nota, $peso = 1.0, $observacao = null) {
         $result = $this->pdo->prepare("INSERT INTO avaliacao VALUES (null, ?, ?, ?, ?, ?, ?)");
-        return $result->execute([$idaluno_turma, $idfuncionario, $descricao, $titulo, $data_avaliacao, $nota, $peso, $observacao]);
+        return $result->execute([$idaluno_turma, $idfuncionario, $idturma, $descricao, $titulo, $data_avaliacao, $nota, $peso, $observacao]);
     }
 
-    public function alterar($idavaliacao, $idaluno_turma, $idfuncionario, $descricao, $titulo, $data_avaliacao, $nota, $peso = 1.0, $observacao = null) {
-        $result = $this->pdo->prepare("UPDATE avaliacao SET idaluno_turma = ?, idfuncionario = ?, descricao = ?, titulo = ?, data_avaliacao = ?, nota = ?, peso = ?, observacao = ? WHERE idavaliacao = ?");
-        return $result->execute([$idaluno_turma, $idfuncionario, $descricao, $titulo, $data_avaliacao, $nota, $peso, $observacao, $idavaliacao]);
+    public function alterar($idavaliacao, $idaluno_turma, $idfuncionario, $idturma, $descricao, $titulo, $data_avaliacao, $nota, $peso = 1.0, $observacao = null) {
+        $result = $this->pdo->prepare("UPDATE avaliacao SET idaluno_turma = ?, idfuncionario = ?, idturma?, descricao = ?, titulo = ?, data_avaliacao = ?, nota = ?, peso = ?, observacao = ? WHERE idavaliacao = ?");
+        return $result->execute([$idaluno_turma, $idfuncionario, $idturma, $descricao, $titulo, $data_avaliacao, $nota, $peso, $observacao, $idavaliacao]);
     }
 
     public function excluir($id) {
@@ -29,10 +29,11 @@ class Avaliacao {
     }
 
     public function listarId($id) {
-        $result = $this->pdo->prepare("SELECT * FROM avaliacao WHERE idavaliacao = ?");
-        $result->execute([$id]);
-        return $result->fetch(PDO::FETCH_ASSOC);
+    $stmt = $this->pdo->prepare("SELECT * FROM avaliacao WHERE idavaliacao = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC); // <-- isso é essencial!
     }
+
 
     public function getAvaliacoesByAlunoAndIdioma($idusuario, $idioma_descricao = null) {
         $sql = "SELECT av.titulo, av.descricao as nome_atividade, av.nota, av.peso, av.data_avaliacao, t.descricao as nome_turma, i.descricao as nome_idioma

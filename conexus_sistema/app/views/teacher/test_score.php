@@ -19,7 +19,7 @@ if (!$idturma) {
 }
 
 $alunoTurmaModel = new AlunoTurma();
-$alunos = $alunoTurmaModel->listarTodos($idturma); // lista alunos da turma
+$alunos = $alunoTurmaModel->listarTodos($idturma); // deve trazer idaluno_turma + nome_aluno
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +43,8 @@ $alunos = $alunoTurmaModel->listarTodos($idturma); // lista alunos da turma
 
     <section class="box-container-list">
         <form method="POST" action="../../controllers/avaliacaoController.php?acao=registrar" class="form-box">
-            <input type="hidden" name="idturma" value="<?= htmlspecialchars($idturma) ?>" />
+            <input type="hidden" name="idturma" value="<?= htmlspecialchars($idturma) ?>">
+            <input type="hidden" name="idfuncionario" value="<?= htmlspecialchars($idfuncionario) ?>">
 
             <div class="form-grid full-span">
                 <?php if (empty($alunos)): ?>
@@ -58,17 +59,25 @@ $alunos = $alunoTurmaModel->listarTodos($idturma); // lista alunos da turma
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($alunos as $aluno): ?>
+                            <?php foreach ($alunos as $index => $aluno): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($aluno['nome_aluno']) ?></td>
-                                    <td style="text-align: center;"><input type="number" name="nota" id=""></td>
-                                    <td style="text-align: center;"><input type="number" name="peso" id=""></td>
+                                    <td>
+                                        <?= htmlspecialchars($aluno['nome_aluno']) ?>
+                                        <input type="hidden" name="idaluno_turma[]" value="<?= $aluno['idaluno_turma'] ?>">
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input type="number" name="nota[]" step="0.01" min="0" max="10" required>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input type="number" name="peso[]" step="0.01" min="0" value="1.0" required>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 <?php endif; ?>
             </div>
+
             <div class="text-end" style="justify-content: flex-end; margin-top: 20px;">
                 <div class="form-actions" style="display: flex; gap: 10px;">
                     <button type="submit" class="btn">Salvar Notas</button>

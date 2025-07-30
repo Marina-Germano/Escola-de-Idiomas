@@ -71,7 +71,7 @@ switch ($acao) {
         header("Location: ../views/components/sucess.php?alterar=ok");
             exit;
 
-        case 'excluir':
+    case 'excluir':
         if (!temPermissao()) {
             http_response_code(403);
             echo "Acesso negado.";

@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once __DIR__ . '/../../models/material.php';
 
 $idaluno = $_SESSION['idusuario'] ?? null;

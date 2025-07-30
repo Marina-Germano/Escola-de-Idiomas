@@ -17,9 +17,13 @@ error_log("DEBUG: idusuario logado: " . $idusuarioLogado . ", Papel: " . $papelU
 // Inclui os arquivos de conexão com o banco de dados e o modelo de avaliação.
 require_once __DIR__ . "/../config/conexao.php"; 
 require_once __DIR__ . "/../models/avaliacao.php"; 
+require_once __DIR__ . "/../models/turma.php"; 
+require_once __DIR__ . "/../models/aluno_turma.php";
 
 // Cria uma instância do modelo Avaliacao.
 $avaliacaoModel = new Avaliacao();
+$turmaModel = new Turma();
+$alunoTurmaModel = new AlunoTurma();
 
 // Função para verificar permissão de manipulação (CRUD).
 function temPermissaoManipulacao() {
@@ -105,6 +109,7 @@ switch ($acao) {
         // Validação e sanitização dos inputs (IMPORTANTE! Adicione conforme a necessidade)
         $idaluno_turma = $_POST['idaluno_turma'] ?? null;
         $idfuncionario = $_SESSION['idfuncionario'] ?? null; // Assume que o id do funcionário está na sessão
+        $idturma = $_POST['idturma'] ?? null;
         $descricao = $_POST['descricao'] ?? null;
         $titulo = $_POST['titulo'] ?? null;
         $data_avaliacao = $_POST['data_avaliacao'] ?? null;
@@ -122,6 +127,7 @@ switch ($acao) {
         $ok = $avaliacaoModel->cadastrar(
             $idaluno_turma,
             $idfuncionario,
+            $idturma,
             $descricao,
             $titulo,
             $data_avaliacao,
@@ -130,7 +136,16 @@ switch ($acao) {
             $observacao
         );
 
-        echo $ok ? "Avaliação cadastrada com sucesso!" : "Erro ao cadastrar avaliação.";
+        if ($ok) {
+            // --- ALTERAÇÃO SUGERIDA ---
+            header('Location: ../views/teacher/list_test.php?mensagem=Avaliação cadastrada com sucesso!');
+            // --- FIM DA ALTERAÇÃO SUGERIDA ---
+        } else {
+            // --- ALTERAÇÃO SUGERIDA ---
+            header('Location: ../views/teacher/list_test.php?mensagem=Erro ao cadastrar avaliação!');
+            // --- FIM DA ALTERAÇÃO SUGERIDA ---
+        }
+        exit(); // Garante que o script pare após o redirecionamento
         break;
 
     case 'alterar':
@@ -143,6 +158,7 @@ switch ($acao) {
         // Validação e sanitização (adicione mais, se necessário)
         $idavaliacao = $_POST['idavaliacao'] ?? null;
         $idaluno_turma = $_POST['idaluno_turma'] ?? null;
+        $idturma = $_POST['idturma'] ?? null;
         $descricao = $_POST['descricao'] ?? null;
         $titulo = $_POST['titulo'] ?? null;
         $data_avaliacao = $_POST['data_avaliacao'] ?? null;
@@ -159,6 +175,7 @@ switch ($acao) {
         $ok = $avaliacaoModel->alterar(
             $idavaliacao,
             $idaluno_turma,
+            $idturma,
             $descricao,
             $titulo,
             $data_avaliacao,
@@ -167,14 +184,22 @@ switch ($acao) {
             $observacao
         );
 
-        echo $ok ? "Avaliação alterada com sucesso!" : "Erro ao alterar avaliação.";
+        if ($ok) {
+            // --- ALTERAÇÃO SUGERIDA ---
+            header('Location: ../views/teacher/list_test.php?mensagem=Avaliação alterada com sucesso!');
+            // --- FIM DA ALTERAÇÃO SUGERIDA ---
+        } else {
+            // --- ALTERAÇÃO SUGERIDA ---
+            header('Location: ../views/teacher/list_test.php?mensagem=Erro ao alterar avaliação!');
+            // --- FIM DA ALTERAÇÃO SUGERIDA ---
+        }
+        exit(); // Garante que o script pare após o redirecionamento
         break;
-
     case 'excluir':
         if (!temPermissaoManipulacao()) {
             http_response_code(403);
-            echo "Apenas usuários autorizados podem excluir avaliações.";
-            exit;
+            header('Location: ../views/teacher/list_teste.php');
+                exit;
         }
 
         if (!isset($_GET['idavaliacao'])) {
@@ -184,7 +209,16 @@ switch ($acao) {
         }
 
         $ok = $avaliacaoModel->excluir($_GET['idavaliacao']);
-        echo $ok ? "Avaliação excluída com sucesso!" : "Erro ao excluir avaliação.";
+        if ($ok) {
+            // --- ALTERAÇÃO SUGERIDA ---
+            header('Location: ../views/teacher/list_test.php?mensagem=Avaliação excluída com sucesso!');
+            // --- FIM DA ALTERAÇÃO SUGERIDA ---
+        } else {
+            // --- ALTERAÇÃO SUGERIDA ---
+            header('Location: ../views/teacher/list_test.php?mensagem=Erro ao excluir avaliação!');
+            // --- FIM DA ALTERAÇÃO SUGERIDA ---
+        }
+        exit(); // Garante que o script pare após o redirecionamento
         break;
 
     case 'listarTodos':
@@ -211,8 +245,29 @@ switch ($acao) {
             $avaliacaoModel->listarTodos($idavaliacao, $peso, $nota);
 
             header('Location: ../views/teacher/list_class.php?mensagem=Presenças registradas');
+            exit; 
+        }
+        break;
+    
+    case 'listarAlunos':
+        if (!temPermissaoManipulacao()) {
+            http_response_code(403);
+            echo "Apenas usuários autorizados podem listar alunos para chamada.";
             exit;
-           
+        }
+
+        $idturma = $_GET['idturma'] ?? null;
+        if ($idturma) {
+            $alunos = $alunoTurmaModel->listarTodos($idturma); // Método hipotético no AlunoTurmaModel
+            if ($alunos === false) { // Supondo que o método retorne false em caso de erro
+                error_log("ERRO: Falha ao listar alunos para a turma " . $idturma);
+                $alunos = []; // Garante que $alunos seja um array vazio para a view
+                echo "Erro ao buscar alunos da turma.";
+            }
+            include __DIR__ . '/../views/teacher/test_score.php';
+        } else {
+            http_response_code(400);
+            echo "Turma não especificada para chamada.";
         }
         break;
 

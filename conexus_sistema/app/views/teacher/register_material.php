@@ -50,7 +50,7 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
 
         <div class="flex">
             <div class="col">
-<?php if ($modoEdicao): ?>
+        <?php if ($modoEdicao): ?>
             <input type="hidden" name="idmaterial" value="<?= $item['idmaterial'] ?>">
         <?php endif; ?>
                 <p><strong>Título <span>*</span></strong></p>
@@ -60,22 +60,22 @@ if (isset($_GET['acao']) && $_GET['acao'] === 'editar' && isset($_GET['id'])) {
                 <p><strong>Tipo de Material</strong></p>
                 <select name="idtipo_material" class="box">
                     <?php foreach ($tipos as $t): ?>
-            <option value="<?= $t['idtipo_material'] ?>"><?= $t['descricao'] ?></option>
-        <?php endforeach; ?>
+                        <option value="<?= $t['idtipo_material'] ?>"><?= $t['descricao'] ?></option>
+                    <?php endforeach; ?>
                     </select>
 
                 <p><strong>Idioma</strong></p>
                 <select name="ididioma" class="box">
-                    <?php foreach ($idiomas as $i): ?>
-            <option value="<?= $i['ididioma'] ?>"><?= $i['descricao'] ?></option>
-        <?php endforeach; ?>
-    </select><br>
+                                <?php foreach ($idiomas as $i): ?>
+                        <option value="<?= $i['ididioma'] ?>"><?= $i['descricao'] ?></option>
+                    <?php endforeach; ?>
+                </select><br>
 
                 <p><strong>Nível</strong></p>
                 <select name="idnivel" class="box">
                     <?php foreach ($nivels as $n): ?>
-            <option value="<?= $n['idnivel'] ?>"><?= $n['descricao'] ?></option>
-        <?php endforeach; ?>
+                        <option value="<?= $n['idnivel'] ?>"><?= $n['descricao'] ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 

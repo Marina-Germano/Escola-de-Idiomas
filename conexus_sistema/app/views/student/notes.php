@@ -39,7 +39,7 @@
 // Verifica se há um curso 
 if (!empty($cursoSelecionado) && $cursoSelecionado !== 'default' && !empty($atividades)):
 ?>
-    <table>
+    <table class="tabela-boletim grande">
         <thead>
             <tr>
                 <th>Atividade</th>

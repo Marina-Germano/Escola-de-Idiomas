@@ -1,5 +1,9 @@
-CREATE DATABASE escola_idiomas;
+CREATE DATABASE escola_idiomas
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
 USE escola_idiomas;
+
 
 CREATE TABLE usuario (
     idusuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -177,6 +181,7 @@ CREATE TABLE avaliacao(
 	idavaliacao INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idaluno_turma INT NOT NULL,
     idfuncionario INT NOT NULL,
+    idturma INT NOT NULL,
     descricao VARCHAR(255) NOT NULL, -- prova de ingles, atividade verbo to be
     titulo VARCHAR(255),
     data_avaliacao DATE NOT NULL,
@@ -184,6 +189,7 @@ CREATE TABLE avaliacao(
     peso DECIMAL(3,2) DEFAULT 1.0,
     observacao TEXT,
     
+    FOREIGN KEY (idturma) REFERENCES turma(idturma),
     FOREIGN KEY (idaluno_turma) REFERENCES aluno_turma(idaluno_turma),
     FOREIGN KEY (idfuncionario) REFERENCES funcionario(idfuncionario)
 );
@@ -286,7 +292,7 @@ INSERT INTO idioma (descricao) VALUES
 
 INSERT INTO turma (ididioma, idnivel, idfuncionario, descricao, dias_semana, hora_inicio, capacidade_maxima, sala, imagem, tipo_recorrencia) 
 VALUES
-(1, 1, 2,'Turma de Inglês Básico - Tarde', 'Segunda, Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 'semanal');
+(1, 1, 2, 'Turma de Inglês Básico - Tarde', 'Segunda, Quarta', '14:00:00', 20, 'Sala 101', '/imagens/ingles_basico.jpg', 'semanal');
 
 INSERT INTO tipo_material (descricao) VALUES
 ('Livro'),
@@ -308,9 +314,6 @@ VALUES
 
 INSERT INTO aluno_turma (idaluno, idturma) VALUES
 (1, 1);
-
-INSERT INTO avaliacao (idaluno_turma, idfuncionario, descricao, titulo, data_avaliacao, nota, peso, observacao) VALUES
-(1, 2, 'Prova de inglês - Unidade 1', 'Prova 1', '2025-07-01', 8.5, 1.0, 'Bom desempenho.');
 
 INSERT INTO calendario_aula (data_aula, hora_inicio, hora_fim, idfuncionario, idturma, idmaterial, sala, observacoes, link_reuniao, aula_extra) 
 VALUES
@@ -397,8 +400,9 @@ VALUES
 (1, 1, 350.00, '2025-09-05', 'pendente', 'Mensalidade de Setembro - Inglês');
 
 -- Inserir uma nova avaliação com nota baixa para a Ana Souza
-INSERT INTO avaliacao (idaluno_turma, idfuncionario, descricao, titulo, data_avaliacao, nota, peso, observacao) VALUES
-(1, 4, 'Atividade de Vocabulário - Unidade 2', 'Quiz Vocabulário', '2025-07-25', 4.0, 1.0, 'Precisa revisar o vocabulário da Unidade 2.');
+INSERT INTO avaliacao (idaluno_turma, idfuncionario, idturma, descricao, titulo, data_avaliacao, nota, peso, observacao) VALUES
+(1, 2, 1, 'Atividade de Vocabulário - Unidade 2', 'Quiz Vocabulário', '2025-07-25', 4.0, 1.0, 'Precisa revisar o vocabulário da Unidade 2.'),
+(1, 2, 1, 'Prova de inglês - Unidade 1', 'Prova 1', '2025-07-01', 8.5, 1.0, 'Bom desempenho.');
 
 INSERT INTO aluno (idusuario, cep, rua, numero, bairro, complemento, responsavel, tel_responsavel)
 VALUES 

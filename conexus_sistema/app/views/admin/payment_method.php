@@ -1,11 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 require_once "../../models/aluno.php";
 
 $alunoModel = new Aluno();
-$itens = $alunoModel->listar(); // ou outro nome apropriado para seu método
+$itens = $alunoModel->listarTodos(); // ou outro nome apropriado para seu método
 ?>
 
 
@@ -43,7 +41,7 @@ $itens = $alunoModel->listar(); // ou outro nome apropriado para seu método
                             <td><?= htmlspecialchars($item['nome']) ?></td>
                             <td><?= htmlspecialchars($item['cpf']) ?></td>
                             <td class="text-end">
-                                <a href="register_payment.php?acao=editar&id=<?= $item['idaluno'] ?>" 
+                                <a href="/escola-de-idiomas/conexus_sistema/app/views/admin/register_payment.php?idaluno=<?= $item['idaluno'] ?>"
                                 class="inline-option-btn"></i> Adicionar Pagamento</a>
                             </td>
                         </tr>

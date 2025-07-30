@@ -81,6 +81,7 @@ if ($idusuario !== null) {
          <a href="list_class.php"><i class="fa-solid fa-bars-staggered"></i><span>Listar Turmas</span></a>
          <a href="list_material.php"><i class="fas fa-comment"></i><span>Listar Materiais</span></a>
          <a href="material_class.php"><i class="fas fa-graduation-cap"></i><span>Materiais da Turma</span></a>
+         <a href="list_test.php"><i class="fas fa-graduation-cap"></i><span>Listar Avaliações</span></a>
          <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>Sair</span></a>
       </nav>
 

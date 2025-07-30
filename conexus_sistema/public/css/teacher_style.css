@@ -1106,6 +1106,27 @@ section{
     font-size: 2rem;
 }
 
+.form-section {
+   padding: 20px;
+   margin-bottom: 30px;
+   border-radius: 12px;
+   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.select-turma {
+    background-color: var(--light-bg); /* cor clara associada ao vinho */
+}
+
+.atividade-form {
+    background-color: var(--light-bg);/* cor clara associada ao laranja */
+}
+
+.info-message {
+   text-align: center;
+   margin-top: 20px;
+   color: var(--dark-orange);
+   font-weight: bold;
+}
 
 .text-end a {
    margin-left: 1rem;

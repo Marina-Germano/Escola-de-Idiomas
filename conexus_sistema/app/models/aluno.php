@@ -39,7 +39,8 @@ class Aluno {
         $stmt = $this->pdo->query(
             "SELECT a.idaluno, u.nome AS nome, u.cpf, u.email, u.telefone, u.data_nascimento
              FROM aluno a
-             JOIN usuario u ON u.idusuario = a.idusuario");
+             JOIN usuario u ON u.idusuario = a.idusuario
+             WHERE u.papel = 'aluno';");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

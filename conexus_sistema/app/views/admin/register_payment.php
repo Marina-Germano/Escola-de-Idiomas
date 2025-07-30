@@ -1,9 +1,11 @@
 <?php
-session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
+$idaluno = $_GET['idaluno'] ?? null;
+
+if (!$idaluno) {
+    echo "Aluno não especificado.";
+    exit();
+}
 
 require_once __DIR__ . '../../../config/conexao.php';
 require_once __DIR__ . '../../../models/forma_pagamento.php';
@@ -51,12 +53,14 @@ if (isset($_GET['idaluno'])) {
 <?php include '../components/admin_header.php'; ?>
 <section class="form-container">
 
-    <form action="../../controllers/pagamentoController.php?acao=cadastrar" method="POST">
+    <form method="POST" action="/escola-de-idiomas/conexus_sistema/app/controllers/pagamento_controller.php">
+    <input type="hidden" name="acao" value="cadastrar_pagamento">
+    <input type="hidden" name="idaluno" value="<?= htmlspecialchars($idaluno) ?>">
 
         <div class="flex">
             <div class="col">
                 <p><strong>Valor do Pagamento <span>*</span></strong></p>
-                <input type="number" name="valor_pagamento" min="0" step="0.01" required placeholder="Ex: 150.00" class="box"
+                <input type="number" name="valor" min="0" step="0.01" required placeholder="Ex: 150.00" class="box"
                 value="<?= $modoEdicao ? htmlspecialchars($item['valor']) : '' ?>">
 
                 <p><strong>Data de Vencimento <span>*</span></strong></p>
@@ -64,7 +68,7 @@ if (isset($_GET['idaluno'])) {
                 value="<?= $modoEdicao && isset($item['data_vencimento']) ? htmlspecialchars($item['data_vencimento']) : '' ?>">
 
                 <p><strong>Forma de Pagamento <span>*</span></strong></p>
-                <select name="forma_pagamento" class="box" id="formaPagamento" onchange="mostrarCamposPagamento()">
+                <select name="idforma_pagamento" class="box" id="formaPagamento" onchange="mostrarCamposPagamento()">
                     <option value="">Selecione a forma de pagamento</option>
                 <?php foreach ($formasPagamento as $forma): ?>
                     <option value="<?= htmlspecialchars($forma['forma_pagamento']) ?>" 
@@ -90,7 +94,7 @@ if (isset($_GET['idaluno'])) {
                     <input type="date" name="vencimento_boleto" class="box">
                 </div>
 
-                <div id="campoCartaoCredito" class="campo-pagamento">
+                <div id="campoCartão de Crédito" class="campo-pagamento">
                     <p><strong>Nome no Cartão (Crédito)</strong></p>
                     <input type="text" name="nome_cartao_credito" maxlength="255" placeholder="Nome impresso no cartão" class="box">
 

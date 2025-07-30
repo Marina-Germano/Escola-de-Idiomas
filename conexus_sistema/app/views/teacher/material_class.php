@@ -24,7 +24,6 @@ $turmas = $turmaModel->listarTurma();
 <div class="box-container-list">
     <div class="flex-between heading-bar">
         <h1 class="heading">Materiais da Turma</h1>
-        <a href="list_material.php" class="inline-option-btn"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
     </div>
 
     <?php if (!empty($turmas)): ?>

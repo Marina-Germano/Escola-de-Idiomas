@@ -1,9 +1,17 @@
 <?php
+session_start();
 
-   include 'connect.php';
+// Limpa todas as variáveis de sessão
+session_unset();
 
-   setcookie('tutor_id', '', time() - 1, '/');
+// Destroi a sessão
+session_destroy();
 
-   header('location:../login.php');
+// Impede cache do navegador (opcional, mas recomendado)
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires: Sat, 1 Jan 2000 00:00:00 GMT");
 
+// Redireciona para a tela de login
+header('Location:/escola-de-idiomas/conexus_sistema/app/views/login.php');
+exit;
 ?>
